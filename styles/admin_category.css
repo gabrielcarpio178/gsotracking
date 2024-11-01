@@ -1,0 +1,2919 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    text-decoration:none;
+    outline:none;
+    border:none;
+    /* text-transform:capitalize; */
+    transition:all .2s linear;
+    font-family: "Poppins", sans-serif;
+}
+
+/* *::selection{
+    background:#7eabae;
+    color:#443434;
+} */
+
+ html{
+    font-size:58.5%;
+    overflow-x:hidden;
+}
+
+/* html::-webkit-scrollbar{
+    width: 1.4rem;
+  }
+html::-webkit-scrollbar-track{
+    background: #eadbc4;
+    border: 1px solid #443434;
+  }
+html::-webkit-scrollbar-thumb{
+    background: #443434;
+    border-radius: 5px; } */
+  
+body{
+   background:#7eabae;
+   overflow-x:hidden;
+   padding-left:27rem;
+}
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1000;
+    height:100%;
+    width:27rem;
+    background:#F8F8F8;
+    display:flex;
+    align-items:center;
+    /* justify-content:center; */
+    flex-flow:column;
+    filter: drop-shadow(3px 1px 1px #adadad);
+}
+
+header .user{
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+    width: 20rem;
+    height:5rem;
+    /* border: 2px solid black; */
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    gap: 1rem;
+}
+
+header .user img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:4rem;
+    width:4rem;
+    /* border: 2px solid black; */
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.menutext{
+    font-size: 1.5rem;
+    margin-left: -25%;
+    text-transform: capitalize;
+    font-weight: 800;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    /* margin-right: auto; */
+}
+
+header .navbar{
+    width:100%;
+}
+
+header .navbar ul li{
+    list-style:none;
+
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+}
+ .navbar ul li:hover {
+    /* background-color: #007bff;  */
+    color: white; 
+} 
+
+.navbar ul li:hover a {
+    background:#000000;
+    color: white; /* Change the color of the link text on hover */
+}
+
+
+.navbar ul li i{
+    font-size: 2.5rem;
+    left: 33%;
+    top: 1.7rem;
+    /* margin-right: 1rem; */
+    position: absolute;
+    margin-left: -6rem;
+}
+
+header .navbar ul  #active{
+    background-color: #000000;
+    color: #F8F8F8;
+}
+
+
+header .navbar ul li  a{
+    display:block;
+    border-radius: 15px 0 0 15px;
+    padding-left: 15rem;
+    background:#F8F8F8;
+    padding-top: 20px;
+    height: 6rem;
+    margin-left:-6rem;
+    color:#000000;
+    font-size:1.5rem;
+    font-weight: bold;
+}
+
+
+
+
+header .navbar ul li:last-child{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+} 
+
+.div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div span{
+    border: 1px solid #D4D4D4;
+    width: 40rem;
+    margin-right: 3rem;
+    margin-left: 2rem;
+    margin-top: 2rem;
+}
+
+
+#menu{
+    position:fixed;
+    top:2rem;
+    right:2rem;
+    background: transparent;
+    color:#443434;
+    cursor:pointer;
+    font-size:2.5rem;
+    padding:1rem 1.5rem;
+    z-index:1000;
+    display:none;
+}
+
+
+
+
+
+@media (max-width:1200px){
+    html{
+        font-size:55%;
+    }
+    
+}
+
+
+@media (max-width:991px){
+    header{
+        
+        left:-120%;
+    }
+    
+    #menu{
+        display:block;
+    }
+    
+    header.toggle{
+        left:0;
+    }
+    
+    body{
+        padding:0;
+    }
+}
+
+
+@media (max-width:768px){
+    html{
+        font-size:50%;
+    }
+    
+}
+
+
+
+
+
+
+@media (max-width:400px){
+    header{
+        width:100wh;
+    }
+    
+
+}
+
+
+.container {
+    background-color: #000000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 2;
+    background-image: url(images/Rectangle\ 1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 10px;
+    max-height: 120px;
+    height: 10vh;
+    padding: 2rem;
+}
+
+
+
+.div1 {
+    /* margin-top: -4rem; */
+    /* margin-bottom: -3rem; */
+    display: flex;
+    width: 400px;
+    height: 100px;
+}
+
+
+
+.div1 .content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 1rem;
+}
+
+.div1 .logo {
+    margin-right: 1rem;
+    border: 2px solid #7eabae;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.div1 .logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.div1 .content p {
+    font-size: 12px;
+    color: #F8F8F8;
+}
+
+.div2 .content2 {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2rem;
+}
+
+.search {
+    position: relative;
+
+}
+
+.search i {
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgb(121, 97, 97);
+    top: 1rem;
+    left: 1.5rem;
+}
+
+.search input {
+    width: 100%;
+    padding: .6rem;
+    border-radius: 20px;
+    border: none;
+    padding-left: 4rem;
+}
+
+.notpic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+    gap: 3rem;
+    width: 200px;
+}
+
+.notpic .ahehe a i {
+    font-size: 2.5rem;
+    text-decoration: none;
+    color: #F8F8F8;
+}
+
+.notpic .profile img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+
+
+
+
+.container .containermain {
+    background-color: #FFFFFF;
+    padding: 4rem;
+    height: 81.5vh;
+    position: relative;
+}
+
+.boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 4rem;
+    padding-left: 20rem;
+}
+
+.boxes .box {
+    flex: 0 1 calc(35% - 1rem);
+    height: 180px;
+    background-color: #74C5FF;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #F8F8F8;
+    gap: 7px;
+}
+
+.boxes .box button {
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+.boxes .box button:hover {
+    border: 2px solid #4CA4E2;
+    color: #F8F8F8;
+}
+
+.boxes .box span {
+    font-size: 1.2rem;
+}
+
+#category {
+    font-size: 19px;
+    color: #000000;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.officecontent {
+    padding: 3rem;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+}
+
+.officeheader {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 2px solid #EFEFEF;
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.mainoffice {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.mainofficeheader {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 10px;
+    font-size: 2rem;
+}
+
+.mainofficeheader #back {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mainofficeheader i,
+.mainofficeheader span {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+.mainofficecontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 3rem;
+    position: relative;
+}
+
+.mainofficecontent .add-product-btn {
+    padding: 10px;
+    color: #ffffff;
+    background-color: #3884c2;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+
+
+
+
+.search-container {
+    padding: 10px;
+    position: relative;
+}
+
+.search-container i {
+    position: absolute;
+    font-size: 14px;
+    left: 2rem;
+    top: 2.5rem;
+    color: #000000;
+}
+
+.search-container input {
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #E7E7E7;
+    width: 25%;
+    padding-left: 3rem;
+    color: #000000;
+}
+
+.anp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px;
+    border-bottom: 2px solid #c9c9c9;
+    width: 100%;
+
+}
+
+.q {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    padding-left: 2rem;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#equipmentInput {
+    width: 100%;
+    padding-right: 3rem;
+    /* Add space for the dropdown arrow */
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.quantity-price {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+    margin-right: auto;
+    margin-left: 2rem;
+    gap: 10px;
+    margin-top: 2rem;
+
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.quantity-price p {
+    margin-top: 5px;
+    font-size: 1.5rem;
+
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#quantityInput {
+    width: 50px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.price input {
+    width: 100px;
+    padding: 5px;
+    border: 2px solid #E6E6E6;
+    border-radius: 10px;
+}
+
+.addbutton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.addbutton button {
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+/* ... existing code ... */
+
+
+
+
+
+/* ... existing code ... */
+
+.edit-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    margin-left: 10%;
+}
+
+
+
+
+.delete-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    margin-left: 10%;
+}
+
+.edit-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+
+}
+
+.edit-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.edit-modal-body input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+
+
+
+
+.delete-modal-content {
+    border-radius: 20px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+
+}
+
+.edit-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+
+}
+
+
+.delete-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.edit-close:hover,
+.edit-close:focus {
+
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+
+
+
+.delete-close:hover,
+.delete-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.edit-modal-footer {
+
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+
+}
+
+
+.delete-modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.edit-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+}
+
+.edit-modal-footer button:hover {
+    background-color: #3884c2;
+}
+
+
+
+
+
+
+.delete-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    border-radius: 10px;
+}
+
+/* ... existing code ... */
+
+
+
+
+
+
+
+
+
+/* .constructioncontent css */
+
+
+
+.constructioncontent {
+    padding: 3rem;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+}
+
+
+
+.constructionheader {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 2px solid #EFEFEF;
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.mainconstuction {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.mainconstructionheader {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 10px;
+    font-size: 2rem;
+}
+
+.mainconstructionheader #back {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mainconstructionheader i,
+.mainconstructionheader span {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+.mainconstructioncontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    /* border: 2px solid #000000; */
+    padding: 3rem;
+    position: relative;
+}
+
+
+.mainconstructioncontent .add-product-btn {
+    padding: 10px;
+    color: #ffffff;
+    background-color: #3884c2;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.anp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px;
+    border-bottom: 2px solid #c9c9c9;
+    width: 100%;
+
+}
+
+.q {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    padding-left: 2rem;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#equipmentInput {
+    width: 100%;
+    padding-right: 3rem;
+    /* Add space for the dropdown arrow */
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.quantity-price {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+    margin-right: auto;
+    margin-left: 2rem;
+    gap: 10px;
+    margin-top: 2rem;
+
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.quantity-price p {
+    margin-top: 5px;
+    font-size: 1.5rem;
+
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#quantityInput {
+    width: 50px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.price input {
+    width: 100px;
+    padding: 5px;
+    border: 2px solid #E6E6E6;
+    border-radius: 10px;
+}
+
+.addbutton2 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.constructioncontent .addbutton2 button {
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+
+/* Add your existing styles here */
+
+/* Style for the construction content table */
+.construction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.construction-table th,
+.construction-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    width: 20%;
+    /* Ensure equal width for all columns */
+}
+
+.construction-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+}
+
+.construction-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.construction-table tr:hover {
+    background-color: #ddd;
+}
+
+
+/* Construction Edit Modal CSS */
+/* ... existing CSS ... */
+
+.construction-edit-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.construction-delete-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.construction-edit-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+}
+
+.construction-edit-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.construction-edit-modal-body input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.construction-delete-modal-content {
+    border-radius: 20px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.construction-edit-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.construction-delete-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.construction-edit-close:hover,
+.construction-edit-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.construction-delete-close:hover,
+.construction-delete-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.construction-edit-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.construction-delete-modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.construction-edit-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+}
+
+.construction-edit-modal-footer button:hover {
+    background-color: #3884c2;
+}
+
+.construction-delete-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    border-radius: 10px;
+}
+
+/* ... existing CSS ... */
+
+
+
+/* electronicscontent css */
+
+
+
+.electronicscontent {
+    padding: 3rem;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    position: relative;
+}
+
+
+
+.electronicsheader {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 2px solid #EFEFEF;
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.mainelectronics {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    position: relative;
+    padding: 2rem;
+}
+
+
+
+.mainelectronicscontent .add-product-btn {
+    padding: 10px;
+    color: #ffffff;
+    background-color: #3884c2;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+
+
+
+
+.mainelectronicsheader {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 10px;
+    font-size: 2rem;
+}
+
+.mainelectronicsheader #back {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mainelectronicsheader i,
+.mainelectronicsheader span {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+.mainelectronicscontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    /* border: 2px solid #000000; */
+    padding: 3rem;
+    position: relative;
+
+}
+
+.anp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px;
+    border-bottom: 2px solid #c9c9c9;
+    width: 100%;
+
+}
+
+.q {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    padding-left: 2rem;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#equipmentInput {
+    width: 100%;
+    padding-right: 3rem;
+    /* Add space for the dropdown arrow */
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.quantity-price {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+    margin-right: auto;
+    margin-left: 2rem;
+    gap: 10px;
+    margin-top: 2rem;
+
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.quantity-price p {
+    margin-top: 5px;
+    font-size: 1.5rem;
+
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#quantityInput {
+    width: 50px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.price input {
+    width: 100px;
+    padding: 5px;
+    border: 2px solid #E6E6E6;
+    border-radius: 10px;
+}
+
+.addbutton3 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.electronicscontent .addbutton3 button {
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+
+/* Style for the electronics content table */
+.eletronics-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.electronics-table th,
+.electronics-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    width: 20%;
+    /* Ensure equal width for all columns */
+}
+
+.electronics-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+.electronics-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.electronics-table tr:hover {
+    background-color: #ddd;
+}
+
+
+
+
+/* electronics Edit Modal CSS */
+/* ... existing CSS ... */
+
+.electronics-edit-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.electronics-delete-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.electronics-edit-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+}
+
+.electronics-edit-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.electronics-edit-modal-body input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.electronics-delete-modal-content {
+    border-radius: 20px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.electronics-edit-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.electronics-delete-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.electronics-edit-close:hover,
+.electronics-edit-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.electronics-delete-close:hover,
+.electronics-delete-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.electronics-edit-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.electronics-delete-modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.electronics-edit-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+}
+
+.electronics-edit-modal-footer button:hover {
+    background-color: #3884c2;
+}
+
+.electronics-delete-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    border-radius: 10px;
+}
+
+/* ... existing CSS ... */
+
+
+
+
+
+
+
+
+
+
+
+/* itcontent css */
+
+.itcontent {
+    padding: 3rem;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    overflow-x: auto;
+    position: relative;
+}
+
+
+
+.itheader {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 2px solid #EFEFEF;
+    padding: 10px;
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.mainit {
+    display: flex;
+    flex-direction: column;
+    /* margin-top: 2rem; */
+    position: relative;
+    width: 100%;
+    gap: 1rem;
+}
+
+.mainitheader {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 10px;
+    font-size: 2rem;
+
+}
+
+.mainitheader #back {
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mainitheader i,
+.mainitheader span {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+
+.mainitcontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    /* border: 2px solid #000000; */
+    padding: 3rem;
+    position: relative;
+
+}
+
+.mainitcontent .add-product-btn {
+    padding: 10px;
+    color: #ffffff;
+    background-color: #3884c2;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.anp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 2rem;
+    padding: 10px;
+    border-bottom: 2px solid #c9c9c9;
+    width: 100%;
+
+}
+
+.q {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 18px;
+    padding: 10px;
+    padding-left: 2rem;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#equipmentInput {
+    width: 100%;
+    padding-right: 3rem;
+    /* Add space for the dropdown arrow */
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.quantity-price {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    justify-content: center;
+    /* justify-content: flex-start; */
+    align-items: flex-start;
+    margin-right: auto;
+    margin-left: 2rem;
+    gap: 10px;
+    margin-top: 2rem;
+
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.quantity-price p {
+    margin-top: 5px;
+    font-size: 1.5rem;
+
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+#quantityInput {
+    width: 50px;
+    text-align: center;
+    background-color: transparent;
+}
+
+.price input {
+    width: 100px;
+    padding: 5px;
+    border: 2px solid #E6E6E6;
+    border-radius: 10px;
+}
+
+.addbutton4 {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.itcontent .addbutton4 button {
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    padding: 5px;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+
+
+/* Style for the it content table */
+.it-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.it-table th,
+.it-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    width: 20%;
+    /* Ensure equal width for all columns */
+}
+
+.it-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+}
+
+.it-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.it-table tr:hover {
+    background-color: #ddd;
+}
+
+
+
+/* it Edit Modal CSS */
+/* ... existing CSS ... */
+
+.it-edit-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.it-delete-modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+    margin-left: 10%;
+}
+
+.it-edit-modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+}
+
+.it-edit-modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.it-edit-modal-body input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #E6E6E6;
+}
+
+.it-delete-modal-content {
+    border-radius: 20px;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.it-edit-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.it-delete-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.it-edit-close:hover,
+.it-edit-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.it-delete-close:hover,
+.it-delete-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.it-edit-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.it-delete-modal-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.it-edit-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+}
+
+.it-edit-modal-footer button:hover {
+    background-color: #3884c2;
+}
+
+.it-delete-modal-footer button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CA4E2;
+    color: #F8F8F8;
+    border-radius: 10px;
+}
+
+/* ... existing CSS ... */
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width:1200px) {
+    html {
+        font-size: 55%;
+    }
+
+}
+
+
+@media (max-width:991px) {
+    header {
+
+        left: -120%;
+    }
+
+    #menu {
+        display: block;
+    }
+
+    header.toggle {
+        left: 0;
+    }
+
+    body {
+        padding: 0;
+    }
+}
+
+
+@media (max-width:768px) {
+    html {
+        font-size: 50%;
+    }
+
+}
+
+
+
+@media (max-width:400px) {
+    header {
+        width: 100wh;
+    }
+
+
+}
+
+.dropdown-content {
+    max-height: 200px;
+    /* Adjust this value as needed */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    /* For Firefox */
+    scrollbar-color: #888 #f1f1f1;
+    /* For Firefox */
+}
+
+/* Webkit browsers like Chrome, Safari */
+.dropdown-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dropdown-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.quantity-input {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-input input {
+    width: 50px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.quantity-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.back-button {
+    cursor: pointer;
+    /* border: 1px solid !important; */
+    width: fit-content;
+}
+
+
+
+#overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(95, 93, 93, 0.6);
+    /* Semi-transparent background */
+    backdrop-filter: blur(2px);
+    /* Apply blur effect to the background */
+}
+
+#modal {
+    max-width: 800px;
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    margin-right: 30rem;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1rem;
+}
+
+
+.cmod {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.hm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+}
+
+.hm i {
+    cursor: pointer;
+}
+
+.hu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.addn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    padding: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.bmod {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+.item select {
+
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 1rem;
+
+}
+
+
+.quan {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: flex-end;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.quantity-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 3rem;
+}
+
+.quantity-container button {
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+}
+
+.notes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+
+.notes .notescontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.notes .notescontainer textarea {
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 10px;
+}
+
+.subcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.subcon button {
+    width: 120px;
+    background-color: #4CAF50;
+    padding: 8px;
+    border: 2px solid #000000;
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+
+
+
+
+
+/* constructor */
+
+
+
+.constructioncontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    height: 100vh;
+}
+
+.oc1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.bk1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    font-size: 30px;
+    cursor: pointer;
+    gap: 20px;
+}
+
+.cone {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ocbd1 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+#overlay1 {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(95, 93, 93, 0.6);
+    /* Semi-transparent background */
+    backdrop-filter: blur(2px);
+    /* Apply blur effect to the background */
+}
+
+#modal1 {
+    max-width: 800px;
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    margin-right: 30rem;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1rem;
+}
+
+
+.cmod {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.hm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+}
+
+.hm i {
+    cursor: pointer;
+}
+
+.hu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-bottom: 2px solid #635d5d;
+    padding: 10px;
+}
+
+.bmod {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+.item select {
+
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 1rem;
+
+}
+
+
+.quan {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: flex-end;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.quantity-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 3rem;
+}
+
+.quantity-container button {
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+}
+
+.notes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+
+.notes .notescontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.notes .notescontainer textarea {
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 10px;
+}
+
+.subcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.subcon button {
+    width: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ELECT */
+
+
+.electronicscontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    height: 100vh;
+}
+
+.oc2 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.bk2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    font-size: 30px;
+    cursor: pointer;
+    gap: 20px;
+}
+
+
+.econ {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ocbd2 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+#overlay2 {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(95, 93, 93, 0.6);
+    /* Semi-transparent background */
+    backdrop-filter: blur(2px);
+    /* Apply blur effect to the background */
+}
+
+#modal2 {
+    max-width: 800px;
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    margin-right: 30rem;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1rem;
+}
+
+
+.cmod {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.hm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+}
+
+.hm i {
+    cursor: pointer;
+}
+
+.hu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-bottom: 2px solid #635d5d;
+    padding: 10px;
+}
+
+.bmod {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+.item select {
+
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 1rem;
+
+}
+
+
+.quan {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: flex-end;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.quantity-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 3rem;
+}
+
+.quantity-container button {
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+}
+
+.notes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+
+.notes .notescontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.notes .notescontainer textarea {
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 10px;
+}
+
+.subcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.subcon button {
+    width: 120px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* it */
+
+
+
+.itcontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    height: 100vh;
+}
+
+.oc3 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+}
+
+.bk3 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    font-size: 30px;
+    cursor: pointer;
+    gap: 20px;
+}
+
+
+.ite {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ocbd3 {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+#overlay3 {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba(95, 93, 93, 0.6);
+    /* Semi-transparent background */
+    backdrop-filter: blur(2px);
+    /* Apply blur effect to the background */
+}
+
+#modal3 {
+    max-width: 800px;
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    margin-right: 30rem;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 1rem;
+}
+
+
+.cmod {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.hm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 20px;
+}
+
+.hm i {
+    cursor: pointer;
+}
+
+.hu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-bottom: 2px solid #635d5d;
+    padding: 10px;
+}
+
+.bmod {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 10px;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+.item select {
+
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 1rem;
+
+}
+
+
+.quan {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    text-align: flex-end;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.quantity-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 3rem;
+}
+
+.quantity-container button {
+    font-size: 16px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.quantity-container input {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    padding: 5px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+}
+
+.notes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 18px;
+}
+
+
+.notes .notescontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.notes .notescontainer textarea {
+    width: 400px;
+    background-color: #D4D4D4;
+    padding: 10px;
+}
+
+.subcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.subcon button {
+    width: 120px;
+}
+
+
+

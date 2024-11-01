@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/signup.css">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Box 1 (Image and Text) -->
+        <div class="box box2">
+            <div class="content">
+                <button class="create-account"><a href="login.html">Log In</a></button>
+                <p class="register-text">already have an account?</p>
+            </div>
+        </div>
+
+        <!-- Box 2 (Sign-Up Form) -->
+        <div class="box box1">
+            <img src="styles/images/logo2.png" alt="Logo" class="logo">
+            <h1>Sign Up</h1>
+            <p class="welcome">Let's get you started.</p>
+            <form id="signup-form" action="logic/signup_script.php" method="post" onsubmit="return validateLogin()">
+                <!-- Step 1: Full Name, Birthdate, and Gender -->
+                <div id="step-1">
+                    <!-- Full Name -->
+                    <input type="text" name="fullname" id="fullname" placeholder="Full Name" required>
+
+                    <!-- Birthdate with Label -->
+                    <div class="form-group">
+                        <label for="birthdate" id="bd">Birthdate:</label>
+                        <input type="date" id="birthdate" name="birthdate" required>
+                    </div>
+
+                    <!-- Gender Selection -->
+                    <div class="gender-selection">
+                        <label>Gender:</label>
+                        <label for="male">
+                            <input type="radio" id="male" name="gender" value="male" required> Male
+                        </label>
+                        <label for="female">
+                            <input type="radio" id="female" name="gender" value="female"> Female
+                        </label>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <button type="button" class="next-button" onclick="nextStep()">Next</button>
+                    <p class="info-text">Qr Code Scanning with Informed Mechanism <br>
+                        Driven & Equipment Tracking System</p>
+                </div>
+
+                <!-- Step 2: Email and Phone Number -->
+                <div id="step-2" style="display: none;">
+                    <!-- Email -->
+                    <input type="email" name="email" id="email" placeholder="Email" required>
+
+                    <!-- Phone Number -->
+                    <input type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number" oninput="validatePhoneNumber(this)" required>
+
+                    <!-- Navigation Buttons -->
+                    <button type="button" class="back-button" onclick="prevStep()">Back</button>
+                    <button type="button" class="next-button" onclick="nextStep()">Next</button>
+                    <p class="info-text">Qr Code Scanning with Informed Mechanism <br>
+                        Driven & Equipment Tracking System</p>
+                </div>
+
+                <!-- Step 3: Password and Confirm Password -->
+                <div id="step-3" style="display: none;">
+                    <!-- Password -->
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+
+                    <!-- Confirm Password -->
+                    <input type="password" id="confirmpassword" placeholder="Confirm Password" required>
+
+                    <!-- Navigation Buttons -->
+                    <button type="button" class="back-button" onclick="prevStep()">Back</button>
+                    <button type="submit" class="next-button">Submit</button>
+                    <p class="info-text">Qr Code Scanning with Informed Mechanism <br>
+                        Driven & Equipment Tracking System</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts/signup.js"></script>
+</body>
+
+</html>
