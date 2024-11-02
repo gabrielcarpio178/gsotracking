@@ -452,6 +452,7 @@ require '../../logic/dbCon.php';
     .en .n {
         font-size: 22px;
         color: #3B3B3B;
+        text-transform: capitalize;
     }
 
     .stat {
@@ -499,6 +500,7 @@ require '../../logic/dbCon.php';
         align-items: flex-start;
         justify-content: flex-start;
         gap: 15px;
+        text-transform: capitalize;
     }
 
     .ft {
@@ -862,6 +864,7 @@ require '../../logic/dbCon.php';
                 <div class="input-content">
                     <label for="email" class="label-input">Email</label>
                     <input type="email" class="input-data" id="email">
+                    <input type="hidden" class="input-data" id="current_email">
                 </div>
                 <div class="input-content">
                     <label for="pnumber" class="label-input">Phone number <span class="message" id="pmessage"></span></label>
@@ -1049,15 +1052,15 @@ require '../../logic/dbCon.php';
                                         <p>Employee Id:</p>
                                         <p>Name:</p>
                                         <p>Position:</p>
+                                        <p>Department:</p>
                                         <p>BirthDate:</p>
-                                        <p>Reason Code:</p>
                                     </div>
                                     <div class="ls">
                                         <p>${employee.usercode}</p>
                                         <p>${employee.fullname}</p>
-                                        <p>${employee.role}</p>
+                                        <p>${employee.position}</p>
+                                        <p>${employee.department}</p>
                                         <p>${employee.birthdate}</p>
-                                        <p>No reason</p>
                                     </div>
                                 </div>
                             </div>
@@ -1241,6 +1244,7 @@ require '../../logic/dbCon.php';
                     $(`input[name=sex][value='${data.gender}']`).prop("checked",true);
                     $("#birthday").val(data.birthdate);
                     $("#email").val(data.email);
+                    $("#current_email").val(data.email);
                     $("#pnumber").val(data.phone_number);
                     $("#employee_id").val(data.usercode);
                     $("#department").val(data.department);
@@ -1256,6 +1260,7 @@ require '../../logic/dbCon.php';
             var sex = $('input[name="sex"]:checked').val();
             var birthday = $("#birthday").val();
             var email = $("#email").val();
+            var current_email = $("#current_email").val();
             var pnumber = $("#pnumber").val();
             var employee_id = $("#employee_id").val();
             var department = $("#department").val();
@@ -1266,7 +1271,8 @@ require '../../logic/dbCon.php';
                 type: 'POST',
                 data: {
                     fullname, 
-                    sex, 
+                    sex,
+                    current_email, 
                     birthday, 
                     email, 
                     pnumber, 
@@ -1279,6 +1285,7 @@ require '../../logic/dbCon.php';
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
+                    // alert(res);
                     $("#loader_div").css('display', 'none');
                     if(res!=='email is already used'){
                         Swal.fire({

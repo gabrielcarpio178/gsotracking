@@ -486,6 +486,7 @@ $stmt->close();
                             confirmButtonText: "Yes",
                             cancelButtonText: "No",
                         }).then((result) => {
+                            // console.log(result);
                             if (result.isConfirmed) {
                                 setTimeout(function() {
                                     $("#loader_div").css("display", "block");

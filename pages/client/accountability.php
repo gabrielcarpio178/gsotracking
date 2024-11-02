@@ -80,7 +80,7 @@ $profile = $row['profile'] ?? $defaultProfile;
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
             <div>
                 <h3 style="letter-spacing: 2px;"><?php echo $_SESSION['fullname'] ?></h3>
-                <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
+                <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['position']  ?></h5>
             </div>
         </div>
         <span class="menutext">menu</span>

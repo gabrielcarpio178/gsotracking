@@ -1,6 +1,31 @@
 <?php
 session_start();
 require '../../logic/dbCon.php';
+function getnumberemployees($conn){
+    $stmt = $conn->prepare("SELECT COUNT(*) AS employee_count FROM `users` WHERE role!='admin';");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['employee_count'];
+}
+function getnumberitems($conn){
+    $stmt = $conn->prepare("SELECT COUNT(*) AS number_items FROM `purchase_request` AS pr JOIN `purchase_request_list` AS pl ON pr.purchase_request_code = pl.purchase_request_code WHERE pr.status = 'accept';");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['number_items'];
+}
+
+function getsum_const($conn){
+    $stmt = $conn->prepare("SELECT SUM(pl.price) AS sum_cost FROM `purchase_request` AS pr JOIN `purchase_request_list` AS pl ON pr.purchase_request_code = pl.purchase_request_code WHERE pr.status = 'accept';");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['sum_cost'];
+}
+if($_SESSION['role']!=='admin'){
+    header("Location: ../../index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -114,10 +139,76 @@ require '../../logic/dbCon.php';
             <h2>Equipment Records</h2>
             <hr>
         </div>
-
-        <div class="chartData">
-            <canvas id="myChart"></canvas>
+        <style>
+            .datas-display{
+                display: flex;
+                flex-direction: row;
+                gap: 10px 0;
+                padding: 10px 20px;
+            }
+            .icon{
+                font-size: 8rem;
+            }
+            .datas-numbers{
+                display: flex;
+                flex-direction: column;
+                /* border: 1px solid black; */
+                width: 30%;
+                height: 100vh;
+                gap: 25px 0;
+            }
+            .data-number{
+                height: 22%;
+                border-radius: 10px/10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 0 10px;
+                padding: 0 20px;
+                box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
+-webkit-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
+            }
+            .number-label{
+                font-size: 1.5rem;
+                font-weight: bold;
+                width: 100%;
+                text-align: center;
+                line-height: 25px;
+            }
+            .number{
+                font-size: 2.5rem;
+            }
+        </style>
+        <div class="datas-display">
+            <div class="datas-numbers">
+                <div class="employee_number data-number">
+                    <i class="fa-solid fa-user icon"></i>
+                    <div class="number-label">
+                        <div class="label">Number Of Employees</div>
+                        <div class="number"><?=getnumberemployees($conn) ?></div>
+                    </div>
+                </div>
+                <div class="items_purchase_number data-number">
+                    <i class="fa-solid fa-cart-shopping icon"></i>
+                    <div class="number-label">
+                        <div class="label">Number Of Items Purchase</div>
+                        <div class="number"><?=getnumberitems($conn) ?></div>
+                    </div>
+                </div>
+                <div class="total_cost_number data-number">
+                    <i class="fa-solid fa-money-check-dollar icon"></i>
+                    <div class="number-label">
+                        <div class="label">Total Cost</div>
+                        <div class="number">₱ <?=number_format(getsum_const($conn), 2, '.', '') ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="chartData">
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
+
     </div>
 
     <script src="../../scripts/jquery.min.js"></script>

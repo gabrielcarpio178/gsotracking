@@ -113,7 +113,7 @@ require '../../logic/dbCon.php';
                             <th>transaction type</th>
                             <th>location</th>
                             <th>end user</th>
-                            <th>notes</th>
+                          
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -137,7 +137,6 @@ require '../../logic/dbCon.php';
                             echo "<td>" . $row['type'] . "</td>";
                             echo "<td>" . $row['location'] . "</td>";
                             echo "<td>" . $row['role'] . "</td>";
-                            echo "<td>" . $row['notes'] . "</td>";
                             echo "</tr>";
                         }
                         ?>

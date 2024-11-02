@@ -26,7 +26,10 @@ function isValidEmail($conn, $email, $usercode){
     return $get_result->fetch_assoc()['total_num'];
 }
 
-function isValid($conn, $email){
+function isValid($conn, $email, $current_email){
+    if($email===$current_email){
+        return 0;
+    }
     $stmt = $conn->prepare('SELECT COUNT(*) AS total_num FROM users WHERE email = ?');
     $stmt->bind_param('s', $email);
     $stmt->execute();

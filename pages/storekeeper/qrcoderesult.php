@@ -15,30 +15,30 @@ session_start();
 
 <head>
 <meta charset="UTF-8">
-    <title>QR Result</title>
-    <link rel="icon" type="image/gif" href="../../styles/images/logo2.png">    
+    <title>View Items</title>
+    <link rel="icon" type="image/gif" href="../../styles/images/logo2.png"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="../../styles/accountability.css?v=1.1">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
 <style>
-    .loader-content{
+    .btn_print{
+        left: 50%;
         position: absolute;
-        border: 1px solid black;
+        top: 60%;
         width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.3);
-        z-index: 9999;
-        left: 0;
-        display: none;
     }
+    .btn_print > button{
+        width: 20%;
+    }
+    .container{
+        border: none;
+    }
+ 
     </style>
-    <div class="loader-content" id="loader_div">
-        <?php include '../client/loader.php' ?>
-    </div>
     <header>
 
         <div class="user">
@@ -57,8 +57,8 @@ session_start();
                     <a href="equipment_list.php">EQUIPMENT LIST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-qrcode" id="active"></i>
-                    <a href="storekeep_qr.php" id="active">QR CODE SCANNING</a>
+                    <i class="fa-solid fa-qrcode"></i>
+                    <a href="storekeep_qr.php">QR CODE SCANNING</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -75,7 +75,7 @@ session_start();
         </nav>
     </header>
     <div id="menu" class="fas fa-bars"></div>
-    <div class="container">
+    <div class="container"  id="print_content">
         <div class="header">
             <div class="div1">
                 <div class="content">
@@ -88,18 +88,16 @@ session_start();
             <div class="div2">
                 <div class="content2">
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
-                        </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
 
-        <main class="containermain">
+        <main class="containermain" style="border: none; background-color: white;">
             <h1>RESULT</h1>
             <div class="personal_info">
                 <div class="qr-fname">Full name: <span id="qr_name"></span></div>
@@ -124,13 +122,27 @@ session_start();
                 </table>
                 <div class="total_cost">Total Cost: <span id="total_cost"></span></div>
             </div>
+            
         </main>
     </div>  
+    <div class="btn_print"><button class="btn-viem-items" onclick="print()">Print</button></div>
     <script src="../../scripts/jquery.min.js"></script>
     <script>
         $(document).ready(()=>{
             loadDataResult(<?=$id?>)
         });
+
+        function print(){
+            var element = document.getElementById('print_content');
+            var opt = {
+                margin:       0,
+                filename:     'gso-tracking-items.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(opt).save();
+        }
 
         function loadDataResult(code){
             $.ajax({
@@ -141,9 +153,8 @@ session_start();
                 },
                 cache: false,
                 success: res=>{
-                    console.log(JSON.parse(res));
+                    
                     displayData(JSON.parse(res))
-                
                 }
             })
         }
@@ -151,6 +162,8 @@ session_start();
             $("#qr_name").text(datas.user_info.fullname);
             $("#qr_item").text(datas.user_info.purchase_request_code);
             $("#qr_status").text(datas.user_info.status);
+            var isHide = datas.user_info.status == "accept"?'block':'none';
+            $(".btn_print").css('display', isHide);
             let data_html = '';
             let total_cost = 0;
             datas.items.forEach(data=>{
@@ -168,6 +181,9 @@ session_start();
             $("#tableBody").html(data_html);
             $("#total_cost").text(total_cost);
         }
+        document.getElementById("print").addEventListener('click', ()=>{
+            alert('click')
+        })
     </script>
     
 </body>

@@ -75,9 +75,12 @@ $data2['it'] = $data22['it']; // No slicing here
             display: none;
         }
     </style>
-    <div class="request-content" id="req_content">
-        <?php include "../client/print_items.php"; ?>
-    </div>
+    <!-- <div class="request-content" id="req_content">
+        <?php
+        //  include "../client/print_items.php";
+         //   include "print_purchase.php"; 
+         ?>
+    </div> -->
     <header>
         <div class="user">
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
@@ -226,19 +229,21 @@ $data2['it'] = $data22['it']; // No slicing here
         }
 
         function viewitems(purchase_id){
+            window.location = `qrcoderesult.php?id=${purchase_id}`
             // console.log(purchase_id);
-            document.getElementById("req_content").style.display = "block";
-            $.ajax({
-                url: '../../logic/dbaccountabilityData.php',
-                type: 'POST',
-                cache: false,
-                data: {
-                    id : purchase_id
-                },
-                success: res=>{
-                    displayData(JSON.parse(res))
-                }
-            });
+            // document.getElementById("req_content").style.display = "block";
+
+            // $.ajax({
+            //     url: '../../logic/dbaccountabilityData.php',
+            //     type: 'POST',
+            //     cache: false,
+            //     data: {
+            //         id : purchase_id
+            //     },
+            //     success: res=>{
+            //         displayData(JSON.parse(res))
+            //     }
+            // });
         }
 
         function displayData(data){

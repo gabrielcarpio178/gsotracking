@@ -7,9 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <title>QR SCANNING</title>
-    <link rel="icon" type="image/gif" href="imgOP/gif001.gif">
-
-
+    <link rel="icon" type="image/gif" href="../../styles/images/logo2.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
