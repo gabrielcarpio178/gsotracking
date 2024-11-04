@@ -6,13 +6,13 @@ if(isset($_POST['email'])&&isset($_POST['password'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare('SELECT `usercode`, `email`, `password`, `fullname`,`role`, `position`,`status`,`profile`,`gender` FROM users WHERE email = ?');
+    $stmt = $conn->prepare('SELECT `usercode`, `email`, `password`, `fullname`,`role`, `position`, `department`,`status`,`profile`,`gender` FROM users WHERE email = ?');
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id, $fetchedEmail, $hashedPassword, $fullname, $role, $position ,$status, $profile, $gender);
+        $stmt->bind_result($id, $fetchedEmail, $hashedPassword, $fullname, $role, $position, $department,$status, $profile, $gender);
         $stmt->fetch();
 
         if ($status == 'active') {
@@ -23,6 +23,7 @@ if(isset($_POST['email'])&&isset($_POST['password'])){
                 $_SESSION['loginSession'] = true;
                 $_SESSION['email'] = $email;
                 $_SESSION['position'] = $position;
+                $_SESSION['department'] = $department;
                 $_SESSION['role'] = $role;
                 $_SESSION['profile'] = $profile != '' ? $profile : ($gender == 'male' ? '../../styles/images/boy.jpeg' : '../../styles/images/girl.jpeg');
                 // header("Location: ../pages/$role/equipment_list.php");

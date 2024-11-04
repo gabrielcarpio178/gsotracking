@@ -79,6 +79,7 @@ $profile = $row['profile'] ?? $defaultProfile;
             <div>
                 <h3 style="letter-spacing: 2px;"><?php echo $_SESSION['fullname'] ?></h3>
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['position'] ?></h5>
+                <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['department'] ?></h5>
             </div>
         </div>
         <span class="menutext">menu</span>
@@ -316,7 +317,7 @@ $profile = $row['profile'] ?? $defaultProfile;
                    </div>
                     <div class="inputs-data">
                         <label for="estimated_cost">Estimated Total Cost</label>
-                       <input type="number" class="input-data" id="estimated_cost" readonly>
+                       <input type="text" class="input-data" id="estimated_cost" readonly>
                    </div>
                    <div class="btn-buttons">
                         <button type="button" class="btn-button" id="show_table"><span class="label-btn">Show list</span><span class="list-count" id="list_count"></span></button>
@@ -367,9 +368,15 @@ $profile = $row['profile'] ?? $defaultProfile;
     function getEstimatedCost(){
         let quantity_g = (quantity.value!=0)?quantity.value:0;
         let estimated_g = (estimated.value!=0)?estimated.value:0;
-        estimated_cost.value = parseInt(quantity_g)*parseInt(estimated_g)
+        var display_value = quantity_g*estimated_g;
+        estimated_cost.value = addCommas(display_value)
     }
-    
+
+    function addCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+
     add_request_list.addEventListener('submit', e=>{
         e.preventDefault();
         var item_ = item.value;
@@ -407,9 +414,9 @@ $profile = $row['profile'] ?? $defaultProfile;
                 <tr>
                     <td>${data['item-name']}</td>
                     <td>${data['specs']}</td>
-                    <td>${data['quantity']}</td>
-                    <td>${data['budget']}</td>
-                    <td>${parseInt(data['quantity'])*parseInt(data['budget'])}</td>
+                    <td>${addCommas(data['quantity'])}</td>
+                    <td>${addCommas(data['budget'])}</td>
+                    <td>${addCommas(parseInt(data['quantity'])*parseInt(data['budget']))}</td>
                     <td><button class="btn-remove" onclick="removeData(${id})">remove</button></td>
                 </tr>
             `;

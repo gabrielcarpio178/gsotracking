@@ -18,7 +18,7 @@ if(isset($_POST['code'])){
     }
 
     try {
-        $sql = mysqli_query($conn, "SELECT u.fullname, p.purchase_request_code, p.status FROM purchase_request AS P JOIN users as u ON u.usercode = p.requester_code WHERE p.purchase_request_code = '$code';");
+        $sql = mysqli_query($conn, "SELECT u.fullname, p.purchase_request_code, p.status FROM purchase_request AS p JOIN users AS u ON u.usercode = p.requester_code WHERE p.purchase_request_code = '$code';");
         $row = mysqli_fetch_assoc($sql);
         $data['user_info'] = $row;
         $data['items'] = getItem($code, $conn);

@@ -134,3 +134,7 @@ button:hover {
     width: 100%;
     color:  red;
 }
+
+h2{
+    text-transform: uppercase;
+}

@@ -42,7 +42,7 @@ session_start();
                 <div class="title-content">
                     <h1>CITY OF BAGO</h1>
                     <hr>
-                    <h2>NEGROS OCCINDETAL</h2>
+                    <h2>Negros Occidental</h2>
                 </div>
                 <div class="bcc-logo img-content">
                     <img src="styles/images/logo2.png" alt="logo-image" class="bcc-img">
