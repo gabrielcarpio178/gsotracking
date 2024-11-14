@@ -4,7 +4,7 @@ require 'dbCon.php';
 if(isset($_POST['search'])&&isset($_POST['status'])&&isset($_POST['date_data'])){
     //get purchase request list data
     function getpurchasereq($purchase_request_code, $conn){
-        $stmt = $conn->prepare("SELECT `item_name`, `quantity`, `price`, `specs` FROM `purchase_request_list` WHERE purchase_request_code = ?");
+        $stmt = $conn->prepare("SELECT `id`, `item_name`, `quantity`, `price`, `specs` FROM `purchase_request_list` WHERE purchase_request_code = ?");
         $stmt->bind_param("s", $purchase_request_code);
         $stmt->execute();
         $result_data = $stmt->get_result();

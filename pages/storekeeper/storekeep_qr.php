@@ -55,6 +55,10 @@ session_start();
                     <a href="storekeep_qr.php" id="active">QR CODE SCANNING</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-qrcode"></i>
+                    <a href="print_qr.php">PRINT QR</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>

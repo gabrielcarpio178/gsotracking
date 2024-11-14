@@ -28,6 +28,7 @@ $stmt->close();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <style>
         /* *{
             outline: 1px solid black;
@@ -94,17 +95,17 @@ $stmt->close();
             gap: 0 10px;
         }
 
-        form{
+        .form{
             display: flex;
             flex-direction: row;
             gap: 0 15px;
         }
 
-        form .btn-reject{
+        .form .btn-reject{
             background-color: red;
         }
 
-        form button {
+        .form button {
             background-color: #4ECB71;
             color: white;
             padding: 10px 20px;
@@ -195,6 +196,10 @@ $stmt->close();
                     <a href="purchase_request.php" id="active">PURCHASE REQUEST</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <a href="equipment.php">EQUIPMENT</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>
@@ -251,118 +256,127 @@ $stmt->close();
                     <input type="date" name="filter_date" id="filter_date" oninput="getdate(this.value)">
                 </div>
             </div>
+            <form id="submitdata" style="display: none;" action="../../logic/CREATE/approve.php" method="POST">
+                <input type="text" id="request_code" name="request_code"  value=""/>
+                <input type="text" id="request_data" name="request_data" value="" />
+                <input type="text" id="request_data_list" name="request_data_list" value="" />
+                <input type="text" id="status" name="status" value="">
+            </form>
             <div class="holder" id="holder">
-                <?php
-                $status = 'pending';
-                $status2 = 'send';
+                
+            <?php
+                // $status = 'pending';
+                // $status2 = 'send';
 
-                // Fetching purchase requests
-                $stmt = $conn->prepare("SELECT * FROM purchase_request ORDER BY id DESC");
-                $stmt->execute();
-                $result = $stmt->get_result();
+                // // Fetching purchase requests
+                // $stmt = $conn->prepare("SELECT * FROM purchase_request ORDER BY id DESC");
+                // $stmt->execute();
+                // $result = $stmt->get_result();
 
-                if ($result->num_rows > 0) {
-                    $data32 = [];
-                    while ($row = $result->fetch_assoc()) {
-                        // Determine button based on status
-                        $button = $row['status'] == 'pending'
-                            ? '<button type="button" onclick="confirmation(`accept`)" value="accept">ACCEPT</button><button type="button" onclick="confirmation(`reject`)" value="reject" class="btn-reject">REJECT</button>'
-                            : ($row['status'] == 'reject'
-                                ? '<button type="button" disabled>REQUEST REJECTED</button>'
-                                : '<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('.$row['purchase_request_code'].')">PRINT</button>');
+                // if ($result->num_rows > 0) {
+                //     $data32 = [];
+                //     while ($row = $result->fetch_assoc()) {
+                //         // Determine button based on status
+                //         $button = $row['status'] == 'pending'
+                //             ? '<button type="button" onclick="confirmation(`accept`, '.$row['purchase_request_code'].')" value="accept">ACCEPT</button><button type="button" onclick="confirmation(`reject`, '.$row['purchase_request_code'].')" value="reject" class="btn-reject">REJECT</button>'
+                //             : ($row['status'] == 'reject'
+                //                 ? '<button type="button" disabled>REQUEST REJECTED</button>'
+                //                 : '<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('.$row['purchase_request_code'].')">PRINT</button>');
 
-                        // Sanitize output to prevent XSS
-                        $requestCode = htmlspecialchars($row['purchase_request_code']);
-                        $requesterCode = htmlspecialchars($row['requester_code']);
-                        $fullname = htmlspecialchars(quickQuery($conn, $requesterCode, 'fullname'));
-                        $department = htmlspecialchars(quickQuery($conn, $requesterCode, 'department'));
-                        $phoneNumber = htmlspecialchars(quickQuery($conn, $requesterCode, 'phone_number'));
-                        $role = htmlspecialchars(quickQuery($conn, $requesterCode, 'role'));
-                        $datetime = date('Y-m-d', strtotime($row['datetime']));
-                        $timeAgo = timeAgo($row['datetime']);
+                //         // Sanitize output to prevent XSS
+                //         $requestCode = htmlspecialchars($row['purchase_request_code']);
+                //         $requesterCode = htmlspecialchars($row['requester_code']);
+                //         $fullname = htmlspecialchars(quickQuery($conn, $requesterCode, 'fullname'));
+                //         $department = htmlspecialchars(quickQuery($conn, $requesterCode, 'department'));
+                //         $phoneNumber = htmlspecialchars(quickQuery($conn, $requesterCode, 'phone_number'));
+                //         $role = htmlspecialchars(quickQuery($conn, $requesterCode, 'role'));
+                //         $datetime = date('Y-m-d', strtotime($row['datetime']));
+                //         $timeAgo = timeAgo($row['datetime']);
 
-                        // Fetch purchase request items
-                        $stmt2 = $conn->prepare("SELECT * FROM purchase_request_list WHERE purchase_request_code = ?");
-                        $stmt2->bind_param("s", $requestCode);
-                        $stmt2->execute();
-                        $result2 = $stmt2->get_result();
+                //         // Fetch purchase request items
+                //         $stmt2 = $conn->prepare("SELECT * FROM purchase_request_list WHERE purchase_request_code = ?");
+                //         $stmt2->bind_param("s", $requestCode);
+                //         $stmt2->execute();
+                //         $result2 = $stmt2->get_result();
 
-                        $data = [];
-                        if ($result2->num_rows > 0) {
-                            while ($row2 = $result2->fetch_assoc()) {
-                                $data[] = $row2; // Collect all rows
-                            }
-                        }
-                        $stmt2->close(); // Close second statement
+                //         $data = [];
+                //         if ($result2->num_rows > 0) {
+                //             while ($row2 = $result2->fetch_assoc()) {
+                //                 $data[] = $row2; // Collect all rows
+                //             }
+                //         }
+                //         $stmt2->close(); // Close second statement
 
-                        // Output the request details
-                        echo '
-                        <div class="holds">
-                            <div class="personal_info">
-                                <div class="personal-header">
-                                    <h2 class="client">
-                                        From Client
-                                    </h2>
-                                    </div>
-                                    <div class="system-name">
-                                        <h2 class="personal-name">' . $fullname . '</h2>
-                                        <div class="user-data">
-                                            <div class="time-ago">' . $timeAgo . '</div>
-                                            <div class="department-position">' . $department . '</div>
-                                            <div class="personal-id">ID: ' . $requesterCode . '</div>
-                                            <div class="Date">Date: ' . date('M-d-Y H:i a', strtotime($row['datetime'])) . '</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="data-request">
-                                <div class="data-list">
-                            ';
+                //         // Output the request details
+                //         echo '
+                //         <div class="holds">
+                //             <div class="personal_info">
+                //                 <div class="personal-header">
+                //                     <h2 class="client">
+                //                         From Client
+                //                     </h2>
+                //                     </div>
+                //                     <div class="system-name">
+                //                         <h2 class="personal-name">' . $fullname . '</h2>
+                //                         <div class="user-data">
+                //                             <div class="time-ago">' . $timeAgo . '</div>
+                //                             <div class="department-position">' . $department . '</div>
+                //                             <div class="personal-id">ID: ' . $requesterCode . '</div>
+                //                             <div class="Date">Date: ' . date('M-d-Y H:i a', strtotime($row['datetime'])) . '</div>
+                //                         </div>
+                //                     </div>
+                //                 </div>
+                //             <div class="data-request">
+                //                 <div class="data-list">
+                //             ';
 
-                        // Displaying purchase request items
-                        $total_list = 0;
-                        foreach ($data as $index => $data2) {
-                            $total_list += $data2['price']*$data2['quantity'];
-                            echo '
-                                <div class="items-info">
-                                    <div class="items item">' . $index+1 . '.</div>
-                                    <div class="items item">Item: ' . $data2['item_name'] . '</div>
-                                    <div class="items specs">Specs: ' . $data2['specs'] . '</div>
-                                    <div class="items quantity">Quantity: ' . $data2['quantity'] . '</div>
-                                    <div class="items est-unit">Estemated Unit: ' . $data2['price'] . '.00</div>
-                                    <div class="items est-Cost">Estemated Cost: ' . $data2['price']*$data2['quantity'] . '.00</div>
-                                </div>
-                            ';
-                        }
+                //         // Displaying purchase request items
+                //         $total_list = 0;
+                //         foreach ($data as $index => $data2) {
+                //             $total_list += $data2['price']*$data2['quantity'];
+                //             echo '
+                //                 <div class="items-info">
+                //                     <div class="items item">' . $index+1 . '.</div>
+                //                     <div class="items item">Item: ' . $data2['item_name'] . '</div>
+                //                     <div class="items specs">Specs: ' . $data2['specs'] . '</div>
+                //                     <div class="items quantity">Quantity: ' . $data2['quantity'] . '</div>
+                //                     <div class="items est-unit">Estemated Unit: ' . $data2['price'] . '.00</div>
+                //                     <div class="items est-Cost">Estemated Cost: ' . $data2['price']*$data2['quantity'] . '.00</div>
+                //                 </div>
+                //             ';
+                //         }
 
-                        // Form for approving/rejecting request
-                        echo '
-                            </div>
-                            <div class="total_cost">
-                                Total Cost: <span class="total_data">'.$total_list.'.00</span>
-                            </div>
-                            <form action="../../logic/CREATE/approve.php" method="POST" id="form_submit">
-                                <input type="hidden" name="request_code" value="' . $requestCode . '"/>
-                                <input type="hidden" name="request_data" value=\'' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . '\' />
-                                <input type="hidden" name="request_data_list" value=\'' . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . '\' />
-                                <input type="hidden" name="status" value="" id="status">
-                                ' . $button . '
-                            </form>
-                            </div>
-                        </div>';
-                    }
-                } else {
-                    echo "<p>No pending purchase requests.</p>";
-                }
+                //         // Form for approving/rejecting request
+                //         echo '
+                //             </div>
+                //             <div class="total_cost">
+                //                 Total Cost: <span class="total_data">'.$total_list.'.00</span>
+                //             </div>
+                //             <form action="../../logic/CREATE/approve.php" method="POST" id="form_submit_'.$row['purchase_request_code'].'">
+                //                 <input type="hidden" name="request_code" value="' . $requestCode . '"/>
+                //                 <input type="hidden" name="request_data" value=\'' . htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8') . '\' />
+                //                 <input type="hidden" name="request_data_list" value=\'' . htmlspecialchars(json_encode($data), ENT_QUOTES, 'UTF-8') . '\' />
+                //                 <input type="hidden" name="status" value="" id="status">
+                //                 ' . $button . '
+                //             </form>
+                //             </div>
+                //         </div>';
+                //     }
+                // } else {
+                //     echo "<p>No pending purchase requests.</p>";
+                // }
 
-                $stmt->close(); // Close first statement
-                ?>
+                // $stmt->close(); // Close first statement
+                // ?>
 
-                <script>
+
+<script>
                     let search_in = '';
                     let date_data_in = '';
                     let status_data_in = ''
                     $(function() {
                         var isDatepickerActive = false;
+                        filtercontent(search_in, status_data_in, date_data_in);
                         const req_content = document.querySelector("#req_content");
                         $("#toggleDatepicker").on('click', function() {
                             if (!isDatepickerActive) {
@@ -406,6 +420,98 @@ $stmt->close();
                         });
 
                     });
+
+                    function confirmation(request_data_list, request_data, purchase_request_code,action, form){
+                        // console.log(action);
+                        $("#status").val(action);
+                        $("#request_code").val(purchase_request_code);
+                        $("#request_data").val(request_data);
+                        $("#request_data_list").val(request_data_list);
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: `Do want to ${action}`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                        }).then((result) => {
+                            // console.log(result);
+                            if (result.isConfirmed) {
+                                setTimeout(function() {
+                                    $("#loader_div").css("display", "block");
+                                }, 1000);
+                                $("#loader_div").css("display", "none");
+                                $(`#submitdata`).submit();
+                            }
+                        });
+                    }
+
+                    function addCommas(number) {
+                        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+
+                    function filtercontent(search, status_data, date_data){
+                        $.ajax({
+                            url: '../../logic/filterdata.php',
+                            type: 'POST',
+                            data: {
+                                search : search,
+                                status : status_data,
+                                date_data : date_data
+                            },
+                            cache: false,
+                            success: res=>{
+                                // console.log(res);
+                                var result = JSON.parse(res);
+                                console.log(result);
+                                let data_html = '';
+                                for(let i in result){
+                                    var button = result[i].status == 'pending'
+                            ? `<button type="button" onclick="confirmation('${result[i].request_data_list}','${result[i].request_data}','${result[i].purchase_request_code}','accept', '${result[i].purchase_request_code}')" value="accept">ACCEPT</button><button type="button" onclick="confirmation('${result[i].request_data_list}','${result[i].request_data}','${result[i].purchase_request_code}','reject', '${result[i].purchase_request_code}')" value="reject" class="btn-reject">REJECT</button>`
+                            : (result[i].status == 'reject'
+                                ? '<button type="button" disabled>REQUEST REJECTED</button>'
+                                : `<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('${result[i].purchase_request_code}')">PRINT</button>`);
+                                    data_html += `
+                                        
+                                        <div class="holds">
+                                            <div class="personal_info">
+                                                <div class="personal-header">
+                                                    <h2 class="client">
+                                                        From Client
+                                                    </h2>
+                                                    </div>
+                                                    <div class="system-name">
+                                                        <h2 class="personal-name">${result[i].fullname}</h2>
+                                                        <div class="user-data">
+                                                            <div class="time-ago">${result[i].timeago}</div>
+                                                            <div class="department-position">${result[i].department}</div>
+                                                            <div class="personal-id">ID: ${result[i].usercode}</div>
+                                                            <div class="Date">Date: ${result[i].date}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="data-request">
+                                                <div class="data-list">
+                                                    ${dataHtml(result[i].purchase_list)}
+                                                </div>
+                                                <div class="total_cost">
+                                                    Total Cost: <span class="total_data">3900.00</span>
+                                                </div>
+                                                <div class="form">
+                                                    ${button}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                $("#holder").html(data_html);
+                                
+                            }
+                        })
+                    }
+
                     function cancel(){
                         req_content.style.display = 'none';
                     }
@@ -455,9 +561,9 @@ $stmt->close();
                         $("#position_name").html(res_obj.position);
                         $("#data_name").html(name_);
                         $("#date_print").html(date_);
-                        $("#total_cost").html(`<span><b>Total: </b></span> ₱${total_cost}.00`);
-                        $("#estimated_unit").html(estimated_unit);
-                        $("#estimated_cost").html(estimated_cost);
+                        $("#total_cost").html(`<span><b>Total: </b></span> ₱${addCommas(total_cost)}.00`);
+                        $("#estimated_unit").html(addCommas(estimated_unit));
+                        $("#estimated_cost").html(addCommas(estimated_cost));
                         $("#date_").html(date_);
                         $("#item_no").text(res_obj.purchase_request_code);
                         $("#quantity").text(quantity);
@@ -474,28 +580,6 @@ $stmt->close();
                         };
                         html2pdf().from(element).set(opt).save();
                     }
-                    function confirmation(action){
-                        $("#status").val(action);
-                        Swal.fire({
-                            title: "Are you sure?",
-                            text: `Do want to ${action}`,
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes",
-                            cancelButtonText: "No",
-                        }).then((result) => {
-                            // console.log(result);
-                            if (result.isConfirmed) {
-                                setTimeout(function() {
-                                    $("#loader_div").css("display", "block");
-                                }, 1000);
-                                $("#loader_div").css("display", "none");
-                                $("#form_submit").submit();
-                            }
-                        });
-                    }
 
                     //get filter data
                     
@@ -511,71 +595,10 @@ $stmt->close();
                         search_in = search;
                         filtercontent(search_in, status_data_in, date_data_in);
                     }
-                    function filtercontent(search, status_data, date_data){
-                        $.ajax({
-                            url: '../../logic/filterdata.php',
-                            type: 'POST',
-                            data: {
-                                search : search,
-                                status : status_data,
-                                date_data : date_data
-                            },
-                            cache: false,
-                            success: res=>{
-                                // console.log(res);
-                                var result = JSON.parse(res);
-                                let data_html = '';
-                                for(let i in result){
-                                    var button = result[i].status == 'pending'
-                            ? '<button type="button" onclick="confirmation(`accept`)" value="accept">ACCEPT</button><button type="button" onclick="confirmation(`reject`)" value="reject" class="btn-reject">REJECT</button>'
-                            : (result[i].status == 'reject'
-                                ? '<button type="button" disabled>REQUEST REJECTED</button>'
-                                : `<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('${result[i].purchase_request_code}')">PRINT</button>`);
-                                    data_html += `
-                                        
-                                        <div class="holds">
-                                            <div class="personal_info">
-                                                <div class="personal-header">
-                                                    <h2 class="client">
-                                                        From Client
-                                                    </h2>
-                                                    </div>
-                                                    <div class="system-name">
-                                                        <h2 class="personal-name">${result[i].fullname}</h2>
-                                                        <div class="user-data">
-                                                            <div class="time-ago">${result[i].timeago}</div>
-                                                            <div class="department-position">${result[i].department}</div>
-                                                            <div class="personal-id">ID: ${result[i].usercode}</div>
-                                                            <div class="Date">Date: ${result[i].date}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <div class="data-request">
-                                                <div class="data-list">
-                                                    ${dataHtml(result[i].purchase_list)}
-                                                </div>
-                                                <div class="total_cost">
-                                                    Total Cost: <span class="total_data">3900.00</span>
-                                                </div>
-                                                <form action="../../logic/CREATE/approve.php" method="POST" id="form_submit">
-                                                    <input type="hidden" name="request_code" value="${result[i].purchase_request_code}"/>
-                                                    <input type="hidden" name="request_data" value=\'${result[i].request_data}\' />
-                                                    <input type="hidden" name="request_data_list" value=\'${result[i].request_data_list}\' />
-                                                    <input type="hidden" name="status" value="" id="status">
-                                                    ${button}
-                                                </form>
-                                            </div>
-                                        </div>
-                                    `;
-                                }
-                                $("#holder").html(data_html);
-                                
-                            }
-                        })
-                    }
+                    
                     function dataHtml(datas){
                         let content = '';
-                        let x = 0;
+                        let x = 1;
                         datas.forEach(data=>{
                             content+=`
                                 <div class="items-info">
@@ -583,18 +606,25 @@ $stmt->close();
                                     <div class="items item">Item: ${data.item_name}</div>
                                     <div class="items specs">Specs: ${data.specs}</div>
                                     <div class="items quantity">Quantity: ${data.quantity}.00</div>
-                                    <div class="items est-unit">Estemated Unit: ${data.price}.00</div>
-                                    <div class="items est-Cost">Estemated Cost: ${data.quantity*data.price}.</div>
+                                    <div class="items est-unit">Estemated Unit: ${addCommas(data.price)}</div>
+                                    <div class="items est-Cost">Estemated Cost: ${addCommas(data.quantity*data.price)}.</div>
                                 </div>
                             `
                         })
                         return content;
                     }
                 </script>
+
+
+
+                
             </div>
         </main>
     </div>
-    <script src="../../scripts/jquery.min.js"></script>
+
+    
+    
+    
 </body>
 
 </html>

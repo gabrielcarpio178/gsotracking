@@ -945,6 +945,10 @@ require '../../logic/dbCon.php';
                     <a href="purchase_request.php">PURCHASE REQUEST</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <a href="equipment.php">EQUIPMENT</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>
@@ -1024,9 +1028,7 @@ require '../../logic/dbCon.php';
                     employee_id: search
                 },
                 success: function(response) {
-                    // console.log(response);
                     const data = JSON.parse(response);
-                    // console.log(data);
 
                     if (Array.isArray(data) && data.length > 0) { // Check if data is an array with at least one record
                         data.forEach((employee) => { // Loop through each employee record

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2024 at 07:00 AM
+-- Generation Time: Nov 14, 2024 at 01:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -160,7 +160,8 @@ INSERT INTO `purchase_request` (`id`, `requester_code`, `purchase_request_code`,
 (16, 202400018, 2024003, '2024-10-06 03:46:15', 0, 'pending'),
 (17, 202400018, 2024004, '2024-10-07 02:57:38', 1, 'pending'),
 (18, 202400018, 2024005, '2024-10-10 05:55:07', 1, 'accept'),
-(19, 202400018, 2024006, '2024-10-31 06:09:03', 1, 'accept');
+(19, 202400018, 2024006, '2024-10-31 06:09:03', 1, 'accept'),
+(20, 202400018, 2024007, '2024-11-14 13:55:30', 1, 'accept');
 
 -- --------------------------------------------------------
 
@@ -175,6 +176,7 @@ CREATE TABLE `purchase_request_list` (
   `quantity` int(11) NOT NULL,
   `price` double(11,2) NOT NULL,
   `specs` varchar(255) NOT NULL,
+  `maintance` datetime DEFAULT NULL,
   `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -182,18 +184,19 @@ CREATE TABLE `purchase_request_list` (
 -- Dumping data for table `purchase_request_list`
 --
 
-INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `item_name`, `quantity`, `price`, `specs`, `status`) VALUES
-(23, 2024, 'LAPTOP', 123, 1231.00, ' 31234234', 'pending'),
-(24, 2024, 'PC', 4234, 12312.00, 'ahahahah', 'pending'),
-(25, 2024, 'PRINTER', 12312, 4234.00, '234234', 'pending'),
-(26, 2024001, 'HHAHA', 12412312, 123123.00, ' hahahah', 'pending'),
-(27, 2024001, 'HEGE', 123123, 13412.00, '12aegarr', 'pending'),
-(28, 2024001, 'awdxwadxawd', 123123123, 999999999.99, 'dwaxdawexwae', 'pending'),
-(29, 2024002, 'Keyboard', 2, 200.00, 'Ga siga2 tas puti', 'pending'),
-(30, 2024003, 'mouse', 4, 300.00, 'maski ani basta a4tech', 'pending'),
-(31, 2024004, 'aircon', 2, 20000.00, 'dd', 'pending'),
-(32, 2024005, 'Laptop', 1, 2000.00, 'Window 11\r\nI5\r\n16rom\r\n1tb internal storage', 'pending'),
-(33, 2024006, 'laptop', 2, 25000.00, '5i acer', 'pending');
+INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `item_name`, `quantity`, `price`, `specs`, `maintance`, `status`) VALUES
+(23, 2024, 'LAPTOP', 123, 1231.00, ' 31234234', NULL, 'pending'),
+(24, 2024, 'PC', 4234, 12312.00, 'ahahahah', NULL, 'pending'),
+(25, 2024, 'PRINTER', 12312, 4234.00, '234234', NULL, 'pending'),
+(26, 2024001, 'HHAHA', 12412312, 123123.00, ' hahahah', NULL, 'pending'),
+(27, 2024001, 'HEGE', 123123, 13412.00, '12aegarr', NULL, 'pending'),
+(28, 2024001, 'awdxwadxawd', 123123123, 999999999.99, 'dwaxdawexwae', NULL, 'pending'),
+(29, 2024002, 'Keyboard', 2, 200.00, 'Ga siga2 tas puti', '2024-11-14 20:54:04', '2952017637'),
+(30, 2024003, 'mouse', 4, 300.00, 'maski ani basta a4tech', NULL, 'pending'),
+(31, 2024004, 'aircon', 2, 20000.00, 'dd', NULL, 'pending'),
+(32, 2024005, 'Laptop', 1, 2000.00, 'Window 11\r\nI5\r\n16rom\r\n1tb internal storage', '2024-11-14 20:54:04', '1666423311'),
+(33, 2024006, 'laptop', 2, 25000.00, '5i acer', '2024-11-14 20:54:04', '6368639713'),
+(34, 2024007, 'tv', 2, 50000.00, 'smart tv', '2024-11-14 20:56:30', '7853513836');
 
 -- --------------------------------------------------------
 
@@ -405,13 +408,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `purchase_request_list`
 --
 ALTER TABLE `purchase_request_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `request_equipment`

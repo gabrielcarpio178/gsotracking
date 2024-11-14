@@ -69,6 +69,10 @@ require '../../logic/dbCon.php';
                     <a href="purchase_request.php">PURCHASE REQUEST</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <a href="equipment.php">EQUIPMENT</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>

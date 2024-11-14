@@ -304,6 +304,10 @@ header .navbar ul li:last-child{
                     <a href="purchase_request.php">PURCHASE REQUEST</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <a href="equipment.php">EQUIPMENT</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear" id="active"></i>
                     <a href="settings.php" id="active">SETTINGS</a>
                 </li>

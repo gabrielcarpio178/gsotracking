@@ -22,8 +22,8 @@ if(isset($_POST['email'])&&isset($_POST['password'])){
                 $_SESSION['fullname'] = $fullname;
                 $_SESSION['loginSession'] = true;
                 $_SESSION['email'] = $email;
-                $_SESSION['position'] = $position;
-                $_SESSION['department'] = $department;
+                $_SESSION['position'] = $department;
+                $_SESSION['department'] = $position;
                 $_SESSION['role'] = $role;
                 $_SESSION['profile'] = $profile != '' ? $profile : ($gender == 'male' ? '../../styles/images/boy.jpeg' : '../../styles/images/girl.jpeg');
                 // header("Location: ../pages/$role/equipment_list.php");

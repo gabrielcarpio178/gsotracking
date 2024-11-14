@@ -55,6 +55,10 @@ $profile = $row['profile'] ?? $defaultProfile;
                     <a href="storekeep_qr.php">QR CODE SCANNING</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-qrcode"></i>
+                    <a href="print_qr.php">PRINT QR</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear" id="active"></i>
                     <a href="settings.php" id="active">SETTINGS</a>
                 </li>

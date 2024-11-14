@@ -26,10 +26,10 @@ session_start();
 <body>
 <style>
     .btn_print{
-        left: 50%;
-        position: absolute;
-        top: 60%;
         width: 100%;
+        display: grid;
+        place-items: center;
+        padding: 10px 0;
     }
     .btn_print > button{
         width: 20%;
@@ -37,7 +37,22 @@ session_start();
     .container{
         border: none;
     }
- 
+    .qr-btn{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .qr-btn > img{
+        width: 7rem;
+    }
+    .qr-btn > button{
+        cursor: pointer;
+        padding: 5px;
+        background-color: #4ECB71;
+        color: white;
+        border: none;
+        border-radius: 5px/5px;
+    }
     </style>
     <header>
 
@@ -59,6 +74,10 @@ session_start();
                 <li>
                     <i class="fa-solid fa-qrcode"></i>
                     <a href="storekeep_qr.php">QR CODE SCANNING</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-qrcode"></i>
+                    <a href="print_qr.php">PRINT QR</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -96,7 +115,6 @@ session_start();
             </div>
             
         </div>
-
         <main class="containermain" style="border: none; background-color: white;">
             <h1>RESULT</h1>
             <div class="personal_info">
@@ -124,8 +142,10 @@ session_start();
             </div>
             
         </main>
-    </div>  
-    <div class="btn_print"><button class="btn-viem-items" onclick="print()">Print</button></div>
+        <div class="btn_print">
+            <button class="btn-viem-items" onclick="print()">Print</button>
+        </div>
+    </div>
     <script src="../../scripts/jquery.min.js"></script>
     <script>
         $(document).ready(()=>{
@@ -153,7 +173,7 @@ session_start();
                 },
                 cache: false,
                 success: res=>{
-                    
+                    // console.log(JSON.parse(res));
                     displayData(JSON.parse(res))
                 }
             })
