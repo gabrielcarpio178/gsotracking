@@ -12,6 +12,7 @@ session_start();
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../../styles/storekeeper_qr.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- <script src="https://unpkg.com/html5-qrcode"></script> -->
 
@@ -51,7 +52,7 @@ session_start();
                     <a href="equipment_list.php">EQUIPMENT LIST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-qrcode" id="active"></i>
+                    <i class="fa-solid fa-camera" id="active"></i>
                     <a href="storekeep_qr.php" id="active">QR CODE SCANNING</a>
                 </li>
                 <li>
@@ -199,8 +200,10 @@ session_start();
                     $("#loader_div").css("display", "block");
                 },
                 success: function(res) {
-                    if(res!="invalid"){
-                        window.location = `qrcoderesult.php?id=${res}`;
+                    $("#loader_div").css("display", "none");
+                    var result = JSON.parse(res);
+                    if(res.length!==0){
+                        Swal.fire(`Fullname: ${result[0].fullname}<br>Item-name: ${result[0].item_name}<br>Quantity: ${result[0].quantity}<br>Specs: ${result[0].specs}<br>Purchase Date: ${result[0].datetime}<br>Maintinance: ${result[0].maintance}`);
                     }else{
                         $("#loader_div").css("display", "none");
                         resultsDiv.textContent = 'Error fetching data. Please try again.';

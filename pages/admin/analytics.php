@@ -96,7 +96,7 @@ if($_SESSION['role']!=='admin'){
                     <a href="purchase_request.php">PURCHASE REQUEST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <i class="fa-solid fa-wrench"></i>
                     <a href="equipment.php">EQUIPMENT</a>
                 </li>
                 <li>

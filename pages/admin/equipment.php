@@ -69,7 +69,7 @@ session_start();
                     <a href="purchase_request.php">PURCHASE REQUEST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <i class="fa-solid fa-wrench" id="active"></i>
                     <a href="equipment.php"  id="active">EQUIPMENT</a>
                 </li>
                 <li>

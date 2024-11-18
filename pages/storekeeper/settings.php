@@ -51,7 +51,7 @@ $profile = $row['profile'] ?? $defaultProfile;
                     <a href="equipment_list.php">EQUIPMENT LIST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-qrcode"></i>
+                    <i class="fa-solid fa-camera"></i>
                     <a href="storekeep_qr.php">QR CODE SCANNING</a>
                 </li>
                 <li>

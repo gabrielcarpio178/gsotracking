@@ -97,7 +97,7 @@ $data2['it'] = $data22['it']; // No slicing here
                     <a href="equipment_list.php" id="active">EQUIPMENT LIST</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-qrcode"></i>
+                    <i class="fa-solid fa-camera"></i>
                     <a href="storekeep_qr.php">QR CODE SCANNING</a>
                 </li>
                 <li>
