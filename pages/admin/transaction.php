@@ -42,7 +42,7 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">ANALYTICS</a>
+                    <a href="analytics.php">DASHBOARD</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice" id="active"></i>

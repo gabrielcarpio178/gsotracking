@@ -512,7 +512,7 @@ require '../../logic/dbCon.php';
         gap: 10px;
     }
 
-    .ft button:first-child {
+    .ft button:nth-child(1) {
         background-color: #000000;
         color: #ffffff;
         text-align: center;
@@ -522,10 +522,10 @@ require '../../logic/dbCon.php';
         font-size: 10px;
         cursor: pointer;
         transition: all .6s ease-in-out;
-
+        justify-content: center;
     }
 
-    .ft button:last-child {
+    .ft button:nth-child(2) {
         border: 2px solid #000000;
         color: #000000;
         background-color: #ffffff;
@@ -537,12 +537,12 @@ require '../../logic/dbCon.php';
         transition: all .6s ease-in-out;
     }
 
-    .ft button:last-child:hover {
+    .ft button:nth-child(2):hover {
         background-color: #000000;
         color: #ffffff;
     }
 
-    .ft button:first-child:hover {
+    .ft button:nth-child(1):hover{
         background-color: #ffffff;
         color: #000000;
         border: 2px solid #000000;
@@ -621,7 +621,7 @@ require '../../logic/dbCon.php';
         display: flex;
         flex-direction: column;
     }
-    .input-content > input{
+    .input-content > input,  .input-content > select{
         outline: none;
         background-color: #ECECEC;
         height: 48px;
@@ -682,10 +682,19 @@ require '../../logic/dbCon.php';
         -webkit-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
         -moz-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
     }
+
     .btn-content{
+        width: 100%;
         display: flex;
         justify-content: center;
-        width: 100%;
+    }
+
+    .btn-content > button{
+        width: 48%;
+     
+    }
+    .btn-content > button > .count-equiment{
+        font-weight: bolder;
     }
     .message{
         color: red;
@@ -812,6 +821,50 @@ require '../../logic/dbCon.php';
         flex-direction: row;
         justify-content: space-between;
     }
+    .equipment-user-list{
+        display: flex;
+        flex-direction: column;
+        gap: 10px 0;
+    }
+    
+    .equipment-user-list > .equipment, .equipment > div{
+        display: flex;
+        flex-direction: row;
+    }
+    .equipment-user-list > .equipment{
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid black;
+        padding: 0 5px;
+        cursor: pointer;
+        border-radius: 5px/5px;
+    }
+    .equipment > div{
+        width: 100%;
+    }
+    .check-box{
+        display: none;
+    }
+    .check-box:checked+label{
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+
+    .message-purchase{
+        color: red;
+    }
+
+    .swal2-actions{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    .swal2-actions>button{
+        width: 90%;
+    }
+
+
 </style>
 
 <body>
@@ -837,25 +890,35 @@ require '../../logic/dbCon.php';
                 <i class="fa-solid fa-xmark" style="font-size: 2rem" onclick="document.getElementById('form-content').style.display='none'"></i>
             </div>
             <form id="form_submit" class="submit-form">
+                
                 <div class="input-content">
-                    <label for="full_name" class="label-input">Full name</label>
-                    <input type="text" class="input-data" id="full_name">
+                    <label for="from" class="label-input">From</label>
+                    <select name="from" id="from" class="input-data" disabled>
+                        
+                    </select>
                 </div>
+                <div class="input-content">
+                    <label for="to" class="label-input">To</label>
+                    <select name="from" id="to" class="input-data" require>
+
+                    </select>
+                </div>
+                
                 <div class="second-input">
                     <div class="input-content">
                         <label for="birthday" class="label-input">Birthday</label>
-                        <input type="date" class="input-data" id="birthday">
+                        <input type="date" class="input-data" id="birthday" disabled>
                     </div>
                     <div class="input-content">
                         <div class="label-input">Sex</div>
                         <div class="radio-btn">
                             <div class="r-input-content">
                                 <label for="male" class="label-input">Male</label>
-                                <input type="radio" value="male" name="sex" id="male">
+                                <input type="radio" value="male" name="sex" id="male" disabled>
                             </div>
                             <div class="r-input-content">
                                 <label for="female" class="label-input">Female</label>
-                                <input type="radio" value="female" name="sex" id="female">
+                                <input type="radio" value="female" name="sex" id="female" disabled>
                             </div>
                             
                         </div>
@@ -863,12 +926,12 @@ require '../../logic/dbCon.php';
                 </div>
                 <div class="input-content">
                     <label for="email" class="label-input">Email</label>
-                    <input type="email" class="input-data" id="email">
+                    <input type="email" class="input-data" id="email" disabled>
                     <input type="hidden" class="input-data" id="current_email">
                 </div>
                 <div class="input-content">
                     <label for="pnumber" class="label-input">Phone number <span class="message" id="pmessage"></span></label>
-                    <input type="number" class="input-data" id="pnumber">
+                    <input type="number" class="input-data" id="pnumber" disabled>
                 </div>
                 <div class="input-content">
                     <label for="employee_id" class="label-input">Employee ID <span class="message" id="emessage"></span></label>
@@ -876,12 +939,34 @@ require '../../logic/dbCon.php';
                 </div>
                 <div class="input-content">
                     <label for="department" class="label-input">Department</label>
-                    <input type="text" class="input-data" id="department">
+                    
+                    <select name="department" id="department" class="input-data" required disabled>
+                        <option value="BAC">BAC</option>
+                        <option value="ASSESSOR">ASSESSOR'S</option>
+                        <option value="BUDGET">BUDGET</option>
+                        <option value="CDRRMC">CDRRMC</option>
+                        <option value="LEGAL">LEGAL</option>
+                        <option value="CMO-SPORTS">CMO-SPORTS</option>
+                        <option value="CTO-LICENSE">CTO-LICENSE</option>
+                        <option value="VET">VET</option>
+                        <option value="HRMO">HRMO</option>
+                        <option value="LIBRARY">LIBRARY</option>
+                        <option value="LCR">LCR</option>
+                        <option value="NUTRITION">NUTRITION</option>
+                    </select>
                 </div>
+                
                 <div class="input-content">
                     <label for="position" class="label-input">Position</label>
-                    <input type="text" class="input-data" id="position">
+                    <input type="text" class="input-data" id="position" disabled>
                 </div>
+                <div class="input-content">
+                    Purchase Record
+                </div>
+                <div class="input-content equipment-user-list" id="equipment_user_list">
+
+                </div>
+
                 <div class="btn-content">
                     <button type="submit" class="btn-submit">Transfer</button>
                 </div>
@@ -911,6 +996,7 @@ require '../../logic/dbCon.php';
             </table>
         </div>
     </div>
+
     <header>
         <div class="user">
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
@@ -929,7 +1015,7 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">ANALYTICS</a>
+                    <a href="analytics.php">DASHBOARD</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -1004,6 +1090,7 @@ require '../../logic/dbCon.php';
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
      <script src="../../scripts/jquery.min.js"></script>
     <script>
+        
         $(document).ready(function() {
             searchEmployeeId("");
             $('#menu').click(function() {
@@ -1016,6 +1103,30 @@ require '../../logic/dbCon.php';
                 });
             });
         })
+
+        function getAllfullname(name){
+            $.ajax({
+                url: '../../logic/dbgetallfullname.php',
+                type: 'GET',
+                data: {
+                    user: 'admin'
+                },
+                cache: false,
+                success: res=>{
+                    var fullnames = JSON.parse(res);
+                    let from_options = '';
+                    let to_options = '<option value="" selected disabled>To</option>';
+                    fullnames.forEach(data=>{
+                        from_options+=`<option ${data.fullname===name?'selected':''} value="${data.usercode}">${data.fullname}</option>`
+                        if(data.fullname!==name){
+                            to_options+=`<option value="${data.usercode}">${data.fullname}</option>`
+                        }
+                    })
+                    $("#from").html(from_options);
+                    $("#to").html(to_options);
+                }
+            })
+        }
 
         function searchEmployeeId(search) {
             const records = document.querySelector('.records');
@@ -1032,6 +1143,7 @@ require '../../logic/dbCon.php';
 
                     if (Array.isArray(data) && data.length > 0) { // Check if data is an array with at least one record
                         data.forEach((employee) => { // Loop through each employee record
+                           
                             const ri = document.createElement('div');
                             ri.classList.add('ri');
                             ri.innerHTML = `
@@ -1231,6 +1343,8 @@ require '../../logic/dbCon.php';
             pagination.addEventListener('click', handlePageChange);
         
         });
+
+        //view account
         function transferAccount(id){
             
             $.ajax({
@@ -1241,8 +1355,9 @@ require '../../logic/dbCon.php';
                 },
                 cache: false,
                 success: res=>{
-                    var data = JSON.parse(res);
-                    $("#full_name").val(data.fullname);
+                    var data_res = JSON.parse(res);
+                    var {data, equipments_list} = data_res;
+                    getAllfullname(data.fullname);
                     $(`input[name=sex][value='${data.gender}']`).prop("checked",true);
                     $("#birthday").val(data.birthdate);
                     $("#email").val(data.email);
@@ -1252,42 +1367,111 @@ require '../../logic/dbCon.php';
                     $("#department").val(data.department);
                     $("#position").val(data.position);
                     $("#form-content").show();
+                    $("#transfer_equiment").attr('data-id', data.usercode)
+                    
+
+                    let equiment_html = '';
+
+                    if(equipments_list.length!=0){
+                        equipments_list.forEach(equipment=>{
+                            equiment_html+=`
+                                <input type="checkbox" class="check-box equipment_list" value="${equipment.purchase_request_code}" id="${equipment.purchase_request_code}">
+                                <label for="${equipment.purchase_request_code}" class="equipment">
+                                    <div class="equipment-info">
+                                        <div class="equipment-label">Equipment Name: </div>
+                                        <div class="equipment-data">${equipment.item_name}</div>
+                                    </div>
+                                    <div class="equipment-info">
+                                        <div class="equipment-label">Quantity: </div>
+                                        <div class="equipment-data">${equipment.quantity}</div>
+                                    </div>
+                                    <div class="equipment-info">
+                                        <div class="equipment-label">Purchase Data: </div>
+                                        <div class="equipment-data">${equipment.datetime}</div>
+                                    </div>
+                                    
+                                </label>
+                                <div class="equipment-line">  
+                                </div>
+                            `
+                        })
+                        $("#equipment_user_list").html(equiment_html);
+                    }else{
+                        $("#equipment_user_list").html('<div class="message-purchase">No Purchase record</div>');
+                    }
+                    
+
                 }
             })
         }
 
+
         document.getElementById("form_submit").addEventListener('submit', e=>{
             e.preventDefault();
-            var fullname = $("#full_name").val();
+            var from = $("#from").val();
+            var fullname = $("#from>option:selected").text();
+            var to = $("#to").val();
+            var tofullname = $("#to>option:selected").text();
             var sex = $('input[name="sex"]:checked').val();
             var birthday = $("#birthday").val();
             var email = $("#email").val();
             var current_email = $("#current_email").val();
             var pnumber = $("#pnumber").val();
             var employee_id = $("#employee_id").val();
-            var department = $("#department").val();
             var position = $("#position").val();
-            // console.log(fullname, sex, birthday, email, pnumber, employee_id, department, position);
+            var department = $("#department").val();
+            var selected_equiments = document.querySelectorAll('.equipment_list:checked');
+            let data_selected = [];
+            selected_equiments.forEach((element)=>{
+                data_selected.push($(element).val());
+            })
+            
+            if(to===null){
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: "Selected Reciever",
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+                return
+            }
+
+            if(data_selected.length===0){
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    title: "Please Select equipment",
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            }else{
+                Swal.fire({
+                    title: `Do you want to reset the password of ${fullname}`,
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    denyButtonText: "No"
+                }).then((result)=>{
+                    if(data_selected.length!==0){
+                        sendTransfer(from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, result.isConfirmed, data_selected)
+                    }
+                })
+            }
+        })
+        
+        function sendTransfer(from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, isResetPass, selected_equiments){
             $.ajax({
                 url: '../../logic/dbtransferaccount.php',
                 type: 'POST',
                 data: {
-                    fullname, 
-                    sex,
-                    current_email, 
-                    birthday, 
-                    email, 
-                    pnumber, 
-                    employee_id, 
-                    department, 
-                    position
+                    from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, isResetPass, selected_equiments
                 },
                 cache: false,
                 beforeSend: ()=>{
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
-                    // alert(res);
                     $("#loader_div").css('display', 'none');
                     if(res!=='email is already used'){
                         Swal.fire({
@@ -1308,10 +1492,10 @@ require '../../logic/dbCon.php';
                             timer: 1000
                         })
                     }
-                }
+                 }
             })
-        })
-        
+        }
+
     </script>
 
 

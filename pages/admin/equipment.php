@@ -16,6 +16,7 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
     <script src="../../scripts/sweetalert2.all.min.js"></script>
+    <script src="../../scripts/moment-with-locales.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
     <title>Equipment</title>
 </head>
@@ -31,9 +32,107 @@ session_start();
             left: 0;
             display: none;
         }
+        .set-durition-form{
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            left: 0;
+            display: none;
+        }
+
+        .input-content{
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-content-data > input{
+            outline: none;
+            background-color: #ECECEC;
+            height: 48px;
+            border-radius: 3px;
+            box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
+        -webkit-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
+        -moz-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
+            border: none;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .form-duriton{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .durition-content{
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px/10px;
+        }
+        .btn-content{
+            display: flex;
+            justify-content: center;
+        }
+        .btn-content > button{
+            width: 100%;
+        }
+        .input-content-data{
+            display: flex;
+            align-items: center;
+        }
+        .day-text{
+            font-size: 1.5rem;
+        }
+
+        .close-content-form{
+            
+            position: relative;
+            width: 18%;
+        }
+        .close-content-form > div{
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
+    </div>
+
+    <div class="set-durition-form" id="form_durition">
+        
+        <form class="form-duriton">
+            <div class="close-content-form">
+                <div onclick="hideForm()">
+                    &times;
+                </div>
+            </div>
+            <div class="durition-content">
+                <input type="hidden" id="purchase_id">
+                
+                <div class="input-content">
+                    <label for="setDurition" class="label-input">Set Durition</label>
+                    <div class="input-content-data">
+                        <input type="number" class="input-data" id="setDurition" required>
+                        <div class="day-text">
+                            /day
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-content">
+                    <button type="submit" class="btn-submit">Save</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <header>
@@ -54,7 +153,7 @@ session_start();
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php" >ANALYTICS</a>
+                    <a href="analytics.php" >DASHBOARD</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -152,6 +251,7 @@ session_start();
             .qr-btn > img{
                 width: 6rem;
             } 
+        
         </style>
 
         <div class="main-container">
@@ -169,9 +269,10 @@ session_start();
                             <th>ID</th>
                             <th>equipment name</th>
                             <th>Employee</th>
-                            <th>Maintenance</th>
                             <th>Quantity</th>
                             <th>PURCHASE DATE</th>
+                            <th>Maintenance Date</th>
+                            <th>Maintenance Duration</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -191,6 +292,22 @@ session_start();
             getdata("all")
         })
 
+        function getDuration(num_days, doingMaintenance){
+            var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('LL');
+            var today = moment().format('LL');
+            if(maintenance_day>=today){
+                return moment().add(num_days, 'days').format('LL');
+            }else{
+                $("#maintenance_date").css("color", 'red');
+                return '<div style="color: red;">Need Maintenance</div>'
+            }
+        }
+
+        function isMaintenanceNull(duration){
+            return duration!=null;
+        }
+        
+
         function getdata(search){
             $.ajax({
                 url: '../../logic/getEquipment.php',
@@ -208,10 +325,16 @@ session_start();
                                 <td>${data.purchase_request_code}</td>
                                 <td>${data.item_name}</td>
                                 <td>${data.fullname}</td>
-                                <td>${data.maintance}</td>
                                 <td>${data.quantity}</td>
-                                <td>${data.datetime}</td>
-                                <td><button onclick="resetMain(${data.id})">Reset Maintance</button></td>
+                                <td>${moment(data.datetime).format('LL')}</td>
+                                <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
+                                <td>
+                                    <div>
+                                        ${isMaintenanceNull(data.maintance_durition)?data.maintance_durition+" days":"Please Set Duration"}
+                                    </div>
+                                    <button onclick="setDurition(${data.id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
+                                </td>
+                                <td><button onclick="resetMain(${data.id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
                             </tr>
                         `;
                     })
@@ -220,43 +343,94 @@ session_start();
             })
         }
 
-        function resetMain(id){
+        function setDurition(id, duration){
+            $("#form_durition").show();
+            $("#purchase_id").val(id);
+            $("#setDurition").val(duration!==null?duration:"");
+        }
 
-            Swal.fire({
-                title: "Are you sure?",
-                text: `Do want to reset`,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '../../logic/updateMaintance.php',
-                        type: 'post',
-                        data : {
-                            id
-                        },
-                        beforeSend: ()=>{
-                            $("#loader_div").css('display', 'block');
-                        },
-                        success: res=>{
-                            $("#loader_div").css('display', 'none');
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "Reset Success",
-                                showConfirmButton: false,
-                                timer: 1000
-                            }).then(()=>{
-                                getdata("all")
-                            })
-                        }
+        function hideForm(){
+            $("#form_durition").hide();
+        }
+
+        function resetMain(id, isSetDuration){
+            if(!isSetDuration){
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: `Do want to reset`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '../../logic/updateMaintance.php',
+                            type: 'post',
+                            data : {
+                                id
+                            },
+                            beforeSend: ()=>{
+                                $("#loader_div").css('display', 'block');
+                            },
+                            success: res=>{
+                                $("#loader_div").css('display', 'none');
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Reset Success",
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                }).then(()=>{
+                                    getdata("all")
+                                })
+                            }
+                        })
+                    }
+                });
+            }else{
+                Swal.fire({
+                    position: "center",
+                    icon: "error",
+                    title: "Please Set Duration",
+                    showConfirmButton: false,
+                    timer: 1000
+                })
+            }
+            
+        }
+
+        document.querySelector("#form_durition").addEventListener('submit', e=>{
+            e.preventDefault();
+            const duration = $("#setDurition").val();
+            const purchase_id = $("#purchase_id").val();
+            $.ajax({
+                url: '../../logic/setDurationMaintan.php',
+                type: 'post',
+                data : {
+                    duration: duration, 
+                    purchase_id: purchase_id
+                },
+                cache: false,
+                beforeSend: ()=>{
+                    $("#loader_div").css('display', 'block');
+                },
+                success: res=>{
+                    $("#loader_div").css('display', 'none');
+                    hideForm();
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Reset Success",
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(()=>{
+                        getdata("all")
                     })
                 }
-            });
-        }
+            })     
+        })
     </script>
 </body>

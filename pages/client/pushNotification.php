@@ -20,7 +20,7 @@
             // Assuming `request_data` is an array
             let request_data = JSON.parse(parsedData.request_data);
             let request_data_list = JSON.parse(parsedData.request_data_list);
-            console.log(parsedData);
+            
             Swal.fire({
                 title: title,
                 text: message,

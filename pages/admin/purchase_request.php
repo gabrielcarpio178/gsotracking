@@ -180,7 +180,7 @@ $stmt->close();
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">ANALYTICS</a>
+                    <a href="analytics.php">DASHBOARD</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -421,8 +421,8 @@ $stmt->close();
 
                     });
 
-                    function confirmation(request_data_list, request_data, purchase_request_code,action, form){
-                        // console.log(action);
+                    function confirmation(request_data_list, request_data, purchase_request_code, action, form){
+                        //console.log(request_data_list, request_data, purchase_request_code, action, form);
                         $("#status").val(action);
                         $("#request_code").val(purchase_request_code);
                         $("#request_data").val(request_data);
@@ -465,11 +465,11 @@ $stmt->close();
                             success: res=>{
                                 // console.log(res);
                                 var result = JSON.parse(res);
-                                console.log(result);
+                                
                                 let data_html = '';
                                 for(let i in result){
                                     var button = result[i].status == 'pending'
-                            ? `<button type="button" onclick="confirmation('${result[i].request_data_list}','${result[i].request_data}','${result[i].purchase_request_code}','accept', '${result[i].purchase_request_code}')" value="accept">ACCEPT</button><button type="button" onclick="confirmation('${result[i].request_data_list}','${result[i].request_data}','${result[i].purchase_request_code}','reject', '${result[i].purchase_request_code}')" value="reject" class="btn-reject">REJECT</button>`
+                            ? `<button type="button" onclick="confirmation('${result[i].request_data_list}', '${result[i].request_data}', '${result[i].purchase_request_code}', 'accept', '${result[i].purchase_request_code}')" value="accept">ACCEPT</button><button type="button" onclick="confirmation('${result[i].request_data_list}', '${result[i].request_data}', '${result[i].purchase_request_code}', 'reject', '${result[i].purchase_request_code}')" value="reject" class="btn-reject">REJECT</button>`
                             : (result[i].status == 'reject'
                                 ? '<button type="button" disabled>REQUEST REJECTED</button>'
                                 : `<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('${result[i].purchase_request_code}')">PRINT</button>`);

@@ -80,7 +80,7 @@ if($_SESSION['role']!=='admin'){
 
                 <li>
                     <i class="fa-solid fa-chart-simple" id="active"></i>
-                    <a href="analytics.php" id="active">ANALYTICS</a>
+                    <a href="analytics.php" id="active">DASHBOARD</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -140,86 +140,145 @@ if($_SESSION['role']!=='admin'){
         </div>
 
         <div class="header-label">
-            <h2>Equipment Records</h2>
+            <h2>Dashboard</h2>
             <hr>
         </div>
-        <style>
-            .datas-display{
-                display: flex;
-                flex-direction: row;
-                gap: 10px 0;
-                padding: 10px 20px;
-            }
-            .icon{
-                font-size: 8rem;
-            }
-            .datas-numbers{
-                display: flex;
-                flex-direction: column;
-                /* border: 1px solid black; */
-                width: 30%;
-                height: 100vh;
-                gap: 25px 0;
-            }
-            .data-number{
-                height: 22%;
-                border-radius: 10px/10px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 0 10px;
-                padding: 0 20px;
-                box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
--webkit-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
-            }
-            .number-label{
-                font-size: 1.5rem;
-                font-weight: bold;
-                width: 100%;
-                text-align: center;
-                line-height: 25px;
-            }
-            .number{
-                font-size: 2.5rem;
-            }
-        </style>
-        <div class="datas-display">
-            <div class="datas-numbers">
-                <div class="employee_number data-number">
-                    <i class="fa-solid fa-user icon"></i>
-                    <div class="number-label">
-                        <div class="label">Number Of Employees</div>
-                        <div class="number"><?=getnumberemployees($conn) ?></div>
-                    </div>
-                </div>
-                <div class="items_purchase_number data-number">
-                    <i class="fa-solid fa-cart-shopping icon"></i>
-                    <div class="number-label">
-                        <div class="label">Number Of Items Purchase</div>
-                        <div class="number"><?=getnumberitems($conn) ?></div>
-                    </div>
-                </div>
-                <div class="total_cost_number data-number">
-                    <i class="fa-solid fa-money-check-dollar icon"></i>
-                    <div class="number-label">
-                        <div class="label">Total Cost</div>
-                        <div class="number">₱ <?=number_format(getsum_const($conn), 2, '.', '') ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="chartData">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
 
+        <style>
+            
+            .content-display{
+                display:  flex;
+                flex-direction: column;
+                padding: 1rem 2rem;
+            }
+
+            .content-header{
+                display: flex;
+                flex-direction: row;
+                background-color: gray;
+                justify-content: space-between;
+                gap: 0 5px;
+                padding: 15px 10px;
+            }
+
+            .content-btn{
+                padding: 5px;
+                cursor: pointer;
+            }
+
+            .content-btn:hover{
+                background-color: rgba(0,0,0, 0.2);
+            }
+
+            .select-content{
+                position: relative;
+                display: flex;
+                justify-content: center;
+            }
+
+            .label-content{
+                position: absolute;
+                background-color: gray;
+                white-space: nowrap;
+                top: 30px;
+                display: inherit;
+                flex-direction: column;
+                gap: 10px 0;
+            }
+
+            .asset-data{
+                display: none;
+            }
+
+            .selected-filters{
+                margin: 2px 5px;
+                padding: 5px 35px;
+                
+            }
+
+            .selected-filters:hover{
+                background-color: rgba(0,0,0, 0.2);
+            }
+           
+
+        </style>
+
+        <div class="content-display">
+            
+            <div class="content-header">
+
+                <div class="content-btn">Full Description</div>
+                <div class="content-btn select-content">
+                    <div class="label-info" id="asset_move">Asset Movement</div>
+                    <div class="label-content asset-data" id="asset_filter">
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                    </div>
+                </div>
+                <div class="content-btn">Custodian</div>
+                <div class="content-btn">Location</div>
+                <div class="content-btn">Reference Acq Date</div>
+                <div class="content-btn">Sub Record Tag</div>
+                <div class="content-btn select-content">
+
+                    <div class="label-info" id="condition">Condition</div>
+                    <div class="label-content asset-data" id="condition_filter">
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                    </div>
+
+                </div>    
+                <div class="content-btn select-content">
+                    
+                    <div class="label-info" id="new_status">New Status</div>
+                    <div class="label-content asset-data" id="new_status_filter">
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                        <div class="selected-filters">Asset Movement</div>
+                    </div>
+
+                </div>
+                <div class="content-btn">Acquired Cost</div>
+                <div class="content-btn">Depreciate Cost</div>
+                <div class="content-btn">Asset Ago</div>
+                <div class="content-btn">Life Cycle</div>
+
+            </div>
+
+        </div>
     </div>
 
     <script src="../../scripts/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
 
-            $.ajax({
+            /*$.ajax({
                 url: '../../logic/dbanalytics.php',
                 type: 'POST',
                 data: {
@@ -230,6 +289,24 @@ if($_SESSION['role']!=='admin'){
                     var data = JSON.parse(res);
                     displayGraph(data);
                 }
+            })*/
+
+            $('#asset_move').click(()=>{
+                $('#asset_filter').toggle(()=>{
+                    $(this).show();
+                })
+            })
+
+            $('#condition').click(()=>{
+                $('#condition_filter').toggle(()=>{
+                    $(this).show();
+                })
+            })
+            
+            $('#new_status').click(()=>{
+                $('#new_status_filter').toggle(()=>{
+                    $(this).show();
+                })
             })
 
             $('#menu').click(function() {
