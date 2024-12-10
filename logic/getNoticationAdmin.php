@@ -1,26 +1,26 @@
 <?php
 require 'dbCon.php';
 function getNotificationPurchaseRequestData($conn){
-    $stmt = $conn->prepare("SELECT u.fullname, p.purchase_request_code, p.status, p.datetime FROM `users` AS u JOIN `purchase_request` AS p ON u.`usercode` = p.`requester_code`");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data_return = [];
-    while($row = $result->fetch_assoc()){
-        $row['type_noti'] = 'purchase_request';
-        $data_return[] = $row;
+    $return_data = [];
+    $stmt_count = $conn->prepare('SELECT u.fullname ,p.requester_code, p.notification_id, p.purchase_request_code, p.status, p.datetime, n.id, n.admin, n.request_type FROM purchase_request AS p JOIN notification AS n ON p.notification_id = n.id JOIN users AS u ON u.usercode = p.requester_code ORDER BY p.datetime DESC');
+    $stmt_count->execute();
+    $result_count = $stmt_count->get_result();
+    
+    while($row_count = $result_count->fetch_assoc()){
+        $return_data[] = $row_count;
     }
-    return $data_return;
+    return $return_data;
 }
 function getNotificationRequestMaintenanceData($conn){
-    $stmt = $conn->prepare("SELECT u.fullname, rm.purchase_request_list_id, rm.request_datetime AS datetime, rm.request_status, p.item_name FROM request_maintenance AS rm JOIN purchase_request_list AS p ON rm.purchase_request_list_id = p.id JOIN users AS u ON rm.usercode = u.usercode");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data_return = [];
-    while($row = $result->fetch_assoc()){
-        $row['type_noti'] = 'request_maintenance';
-        $data_return[] = $row;
+    $return_data = [];
+    $stmt_count = $conn->prepare('SELECT u.fullname, p.item_name, n.admin, n.request_type, n.id, r.request_datetime AS datetime, r.request_status FROM notification AS n JOIN request_maintenance AS r ON n.id = r.notification_id JOIN purchase_request_list AS p ON r.purchase_request_list_id = p.id JOIN users AS u ON u.usercode = r.usercode ORDER BY r.request_datetime DESC');
+    $stmt_count->execute();
+    $result_count = $stmt_count->get_result();
+    
+    while($row_count = $result_count->fetch_assoc()){
+        $return_data[] = $row_count;
     }
-    return $data_return;
+    return $return_data;
 }
 
 if(isset($_GET['admin'])){

@@ -1,3 +1,4 @@
+<script src="../../scripts/moment-with-locales.js"></script>
 <style>
     .noti_datas_content{
         display: flex;
@@ -98,7 +99,12 @@
             },
             cache: false,
             success: res=>{
-                displayNoti(JSON.parse(res));
+                var notification_datas = JSON.parse(res)
+                notification_datas.sort((a, b)=>{
+                    let da = new Date(a.datetime), db = new Date(b.datetime);
+                    return da - db;
+                }).reverse();
+                displayNoti(notification_datas);
             }
         })
     }
@@ -107,32 +113,60 @@
         
         datas.forEach(data=>{
             let action = '';
-            if(data.status=='accept'){
-                action = '<p>Storekeeper will notify when the equipment is ready to pick up</p>';
-            }else if(data.status=='pending'){
-                action = `<p>Purchase request ${data.status}</p>`;
+            if(data.request_type==="purchase_request"){
+
+                if(data.status=='accept'){
+                    action = '<p>Storekeeper will notify when the equipment is ready to pick up</p>';
+                }else if(data.status=='pending'){
+                    action = `<p>Purchase request ${data.status}</p>`;
+                }
+                data_html += `
+                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client})">
+                        <div class="noti-profile-content">
+                            <div class="img-profile">
+                                <img src="../../profile/boy.jpeg" alt="profile">
+                            </div>
+                            <div class="noti-name-sender">
+                                <div class="noti-name-label">Admin</div>
+                                <div class="noti-time-label">${moment(data.datetime).fromNow()}</div>
+                            </div>
+                        </div>
+                        <div class="message-content-noti">
+                            <div class="message-header">
+                                <p>Your purchase request has been ${data.status} by the Admin</p>
+                            </div>
+                            <div class="message-body">
+                                ${action}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            }else{
+
+                data_html += `
+                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client})">
+                        <div class="noti-profile-content">
+                            <div class="img-profile">
+                                <img src="../../profile/boy.jpeg" alt="profile">
+                            </div>
+                            <div class="noti-name-sender">
+                                <div class="noti-name-label">Admin</div>
+                                <div class="noti-time-label">${moment(data.datetime).fromNow()}</div>
+                            </div>
+                        </div>
+                        <div class="message-content-noti">
+                            <div class="message-body">
+                                <div class="message-header">
+                                    <p>Your Request Maintenance is ${data.request_status===0?"Waiting for accept":"Accepted"}</p>
+                                </div>
+                                <p>Equiment name: ${data.item_name}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
             }
-            data_html += `
-                <div class="noti-message ${(data.isSeen!=0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.isSeen})">
-                    <div class="noti-profile-content">
-                        <div class="img-profile">
-                            <img src="../../profile/boy.jpeg" alt="profile">
-                        </div>
-                        <div class="noti-name-sender">
-                            <div class="noti-name-label">Admin</div>
-                            <div class="noti-time-label">${data.timeAgo}</div>
-                        </div>
-                    </div>
-                    <div class="message-content-noti">
-                        <div class="message-header">
-                            <p>Your purchase request has been ${data.status} by the Admin</p>
-                        </div>
-                        <div class="message-body">
-                            ${action}
-                        </div>
-                    </div>
-                </div>
-            `;
         });
         $("#data_display").html(data_html);
     }

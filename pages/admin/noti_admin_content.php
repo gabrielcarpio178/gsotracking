@@ -37,6 +37,25 @@
     .noti-fullname{
         text-transform: capitalize;
     }
+
+    .noti_bell{
+        position: relative;
+    }
+    .noti_count{
+        position: absolute;
+        width: 75%;
+        height: 35%;
+        right: -5px;
+        background-color: red;
+        border-radius: 50%;
+        text-align: center;
+        color: white;
+        font-weight: 900;
+        font-size: 1rem;
+    }
+    .isSeen{
+        background-color: rgba(0, 0, 0, 0.2);
+    }
     
 </style>
 
@@ -61,6 +80,7 @@
 <script>
     $(document).ready(()=>{
         getNotificationData();
+        getCountNoti();
     })
 
     function openNotification(){
@@ -86,13 +106,13 @@
                     let da = new Date(a.datetime), db = new Date(b.datetime);
                     return da - db;
                 }).reverse();
-                
+                console.log(notification_datas);
                 let content_noti = '';
                 if(notification_datas.length!=0){
                     notification_datas.forEach(notification_data=>{
-                        if(notification_data.type_noti==="purchase_request"){
+                        if(notification_data.request_type==="purchase_request"){
                             content_noti += `
-                                <div class="noti-message-content" onclick="gotoPurchase_request()">
+                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin})">
                                     <div class="noti-fullname">
                                         <h2>${notification_data.fullname}</h2>
                                     </div>
@@ -112,7 +132,7 @@
                             `
                         }else{
                             content_noti += `
-                                <div class="noti-message-content" onclick="gotoMaintenance()">
+                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin})">
                                     <div class="noti-fullname">
                                         <h2>${notification_data.fullname}</h2>
                                     </div>
@@ -152,5 +172,40 @@
     }
     function gotoMaintenance(){
         window.location='equipment.php'
+    }
+
+
+
+    function getCountNoti(){
+        $.ajax({
+            url: '../../logic/dbcountisSeenAdmin.php',
+            type: 'get',
+            data: {
+                id : "admin" 
+            },
+            cache: false,
+            success: res=>{
+                $("#noti_count").text(res);
+            }
+        })
+        
+    }
+
+    function updateIsSeen(id, isSeen){
+        $.ajax({
+            url: '../../logic/dbisSeenUpdateAdmin.php',
+            type: 'POST',
+            data: {
+                id : id,
+                isSeen : isSeen
+            },
+            cache: false,
+            success: res=>{
+                if(res=='success'){
+                    getNotificationData();
+                    getCountNoti()
+                }
+            }
+        })
     }
 </script>

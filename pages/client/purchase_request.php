@@ -23,6 +23,7 @@ date_default_timezone_set("Asia/Manila");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <style>
         .noti_bell{
             position: relative;
@@ -360,7 +361,6 @@ date_default_timezone_set("Asia/Manila");
         </section>
         
     </div>
-    <script src="../../scripts/jquery.min.js"></script>
     <script>
     const add_request_list = document.querySelector("#add_request_list");
     var item = document.querySelector("#item");

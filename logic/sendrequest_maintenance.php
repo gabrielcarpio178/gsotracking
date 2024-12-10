@@ -3,9 +3,9 @@ require 'dbCon.php';
 session_start();
 sleep(1);
 
-function insertRequest($usercode, $request_code, $conn){
-    $stmt = $conn->prepare("INSERT INTO `request_maintenance`( `usercode`, `purchase_request_list_id`) VALUES (?, ?)");
-    $stmt->bind_param('ss', $usercode, $request_code);
+function insertRequest($usercode, $notification_id, $request_code, $conn){
+    $stmt = $conn->prepare("INSERT INTO `request_maintenance`( `usercode`, notification_id, `purchase_request_list_id`) VALUES (?, ?, ?)");
+    $stmt->bind_param('sss', $usercode, $notification_id, $request_code);
     return $stmt->execute();
 }
 
@@ -15,14 +15,32 @@ function updateRequest($request_code, $conn){
     return $stmt->execute();
 }
 
+function getNotification_id($conn){
+    $stmt = $conn->prepare("SELECT `id` FROM `notification` ORDER BY `id` DESC LIMIT 1;");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0){
+        return $result->fetch_assoc()['id']+1;
+    }else{
+        return 1;
+    }
+    
+}
+
+function insertNotification($conn){
+    $stmt = $conn->prepare("INSERT INTO `notification`(`request_type`) VALUES ('request_maintenance')");
+    if ($stmt->execute()) {
+        return "success";
+    }
+}
 
 if(isset($_POST['purchase_request_code'])){
     $usercode = $_SESSION['usercode'];
     $request_code = $_POST['purchase_request_code'];
-
-    if(insertRequest($usercode, $request_code, $conn)){
+    $notification_id = getNotification_id($conn);
+    if(insertRequest($usercode, $notification_id, $request_code, $conn)){
         if(updateRequest($request_code, $conn)){
-            echo "success";
+            echo insertNotification($conn);
         }
     }
     

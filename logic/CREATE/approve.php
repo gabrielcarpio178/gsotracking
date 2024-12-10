@@ -59,7 +59,7 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
     function generateCodePerItem($items_list, $conn){
         foreach($items_list as $item){
             $random = generateCode($conn);
-            $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `status`= ?, maintance = NOW() WHERE id = ?");
+            $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `status`= ?, doingMaintenance = NOW() WHERE id = ?");
             $stmt->bind_param("ss", $random, $item['id']);
             if($stmt->execute()){
                 $path = "../../qrcode_img/";
@@ -73,8 +73,8 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
 
     generateCodePerItem($items_list, $conn);
 
-    $stmt = $conn->prepare("UPDATE purchase_request SET status = ?, isSeen = ? WHERE purchase_request_code = ?");
-    $stmt->bind_param("sss", $status, $isSeen, $request_code);
+    $stmt = $conn->prepare("UPDATE purchase_request SET status = ? WHERE purchase_request_code = ?");
+    $stmt->bind_param("ss", $status, $request_code);
 
     if ($stmt->execute()) {
         $data = [

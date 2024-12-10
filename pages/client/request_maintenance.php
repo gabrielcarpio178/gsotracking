@@ -18,6 +18,7 @@ session_start();
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <script src="../../scripts/moment-with-locales.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <title>Equipment</title>
 </head>
 <body>
@@ -101,10 +102,42 @@ session_start();
             cursor: pointer;
         }
 
+        .noti_bell{
+            position: relative;
+            cursor: pointer;
+        }
+        .noti_count{
+            position: absolute;
+            width: 75%;
+            height: 100%;
+            right: 0;
+            background-color: red;
+            border-radius: 50%;
+            text-align: center;
+            color: white;
+            font-weight: 900;
+        }
+        .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+            /* overflow: scroll; */
+        }
+
 
     </style>
+    <?php include 'pushNotification.php';?>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
+    </div>
+
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_content.php' ?>
     </div>
 
 
@@ -161,10 +194,13 @@ session_start();
                 <div class="content2">
                     <div class="notpic">
                         <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                            <a hre="" class="noti_bell" id="open_noti">
+                                <div class="noti_count" id="noti_count"></div>
+                                <i class="fa-solid fa-bell"></i>
+                            </a>
                         </div>
                         <div class="profile">
-                            <img src="../../styles/images/logo1.png" alt="">
+                            <img src="<?php echo $_SESSION['profile'] ?>" alt="">
                         </div>
                     </div>
                 </div>
@@ -248,10 +284,13 @@ session_start();
         </div>
     </div>
 
-    <script src="../../scripts/jquery.min.js"></script>
+    
     <script>
         $(document).ready(()=>{
             getdata("all")
+            $("#open_noti").on('click',()=>{
+                $("#noti_content").show();
+            })
         })
 
         function getDuration(num_days, doingMaintenance){

@@ -226,8 +226,9 @@ session_start();
             <div class="div2">
                 <div class="content2">
                     <div class="notpic">
-                        <div class="notification" onclick="openNotification()">
-                            <i class="fa-solid fa-bell"></i>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -347,6 +348,7 @@ session_start();
                 },
                 cache: false,
                 success: res=>{
+                    
                     var datas = JSON.parse(res);
                     let table_body = '';
                     datas.forEach(data=>{
@@ -364,9 +366,9 @@ session_start();
                                         <div>
                                             ${isMaintenanceNull(data.maintance_durition)?data.maintance_durition+" days":"Please Set Duration"}
                                         </div>
-                                        <button onclick="setDurition(${data.id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
+                                        <button onclick="setDurition(${data.purchase_request_id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
                                     </td>
-                                    <td><button onclick="resetMain(${data.id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
+                                    <td><button onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
                                 </tr>
                             `;
                            

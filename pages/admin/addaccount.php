@@ -50,6 +50,7 @@ require '../../logic/dbCon.php';
             color: white;
             
         }
+        
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
@@ -128,8 +129,9 @@ require '../../logic/dbCon.php';
             <div class="div2">
                 <div class="content2">
                     <div class="notpic">
-                        <div class="notification" onclick="openNotification()">
-                            <i class="fa-solid fa-bell"></i>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">

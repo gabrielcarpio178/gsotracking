@@ -8,32 +8,11 @@ sleep(1);
 session_start();
 $usercode = $_SESSION['usercode'];
 
-if (isset($_POST['send_data'])) {
-    $send_data = json_decode($_POST['send_data'], true);
+function sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn){
 
-    // Generate request code
-    $request_code = generateItemCode($conn);
-    // $specs = $_POST['specs'];
+    $stmt = $conn->prepare("INSERT INTO purchase_request (requester_code, notification_id, purchase_request_code, datetime, status) VALUES (?, ?, ?, NOW(), ?)");
 
-    // Retrieve form data
-    $request_date = date('Y-m-d H:i:s');
-    $date = date('Y-m-d H:i:s', strtotime($request_date));
-    $status = 'pending';
-
-    // File upload handling
-    // $file_name = $_FILES['file']['name'];
-    // $file_tmp = $_FILES['file']['tmp_name'];
-    // $file_destination = '../../uploads/' . $file_name;
-
-    // Move uploaded file to destination
-
-    // move_uploaded_file($file_tmp, $file_destination);
-
-
-    // Prepare SQL statement for each item
-    $stmt = $conn->prepare("INSERT INTO purchase_request (requester_code, purchase_request_code, datetime, status) VALUES (?, ?, NOW(), ?)");
-
-    $stmt->bind_param('sss', $usercode, $request_code, $status);
+    $stmt->bind_param('ssss', $usercode, $notification_id, $request_code, $status);
 
     if ($stmt->execute()) {
         $stmt->close();
@@ -44,8 +23,37 @@ if (isset($_POST['send_data'])) {
             $stmt->execute();
             $stmt->close();
         }
-        echo "success";
-        $conn->close();
-        exit();
+        return "success";
     }
+}
+
+function insertNotification($conn){
+    $stmt = $conn->prepare("INSERT INTO `notification`(`request_type`) VALUES ('purchase_request')");
+    if ($stmt->execute()) {
+        return "success";
+    }
+}
+
+function getNotification_id($conn){
+    $stmt = $conn->prepare("SELECT `id` FROM `notification` ORDER BY `id` DESC LIMIT 1;");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0){
+        return $result->fetch_assoc()['id']+1;
+    }else{
+        return 1;
+    }
+    
+}
+
+if (isset($_POST['send_data'])) {
+    $send_data = json_decode($_POST['send_data'], true);
+    $request_code = generateItemCode($conn);
+    $status = 'pending';
+
+    $notification_id = getNotification_id($conn);
+    if(sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn)=='success'){
+        echo insertNotification($conn);
+    }
+
 }

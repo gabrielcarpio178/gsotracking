@@ -256,8 +256,9 @@ $stmt->close();
                         <i class="fa-solid fa-calendar-days" id="toggleDatepicker" style="cursor: pointer;"></i>
                     </div>
                     <div class="notpic">
-                        <div class="notification" onclick="openNotification()">
-                            <i class="fa-solid fa-bell"></i>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="<?php echo $profile = $row['profile']; ?>" alt="">

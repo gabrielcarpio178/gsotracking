@@ -121,9 +121,10 @@ require '../../logic/dbCon.php';
                         <input type="search" id="searchInput" placeholder="Search">
                     </div>
                     <div class="notpic">
-                        <div class="notification" onclick="openNotification()">
-                            <i class="fa-solid fa-bell"></i>
-                        </div>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
+                        </div>  
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
                         </div>
