@@ -27,10 +27,9 @@ body::before{
     
 }
 .section-container{
-    padding: 2% 0;
+    padding: 4% 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100vh;
 }
 .header-content{
@@ -52,44 +51,24 @@ body::before{
 .img-content{
     display: grid;
     place-items: center;
-    height: 25vh;
-    width: 25%;
+    height: 17vh;
+    width: 17%;
 }
 
 .img-content > img{
     width: 60%;
 }
-.form-content-sumbit{
-    padding: 0 15%;
-    margin: 0 5%;
-}
 
-.login-content{
-    background-color: white;
+
+.inputs-tag{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px/10px;
-    padding: 10px 50px;
-    height: 50vh;
-}
-
-.login-label{
-    font-size: 2rem;
-}
-form{
+    flex-direction: row;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px 0;
-}
-.inputs{
-    display: flex;
-    flex-direction: column;
+    gap: 0 10px;
+    justify-content: center;
 }
 
-.inputs > input{
+.inputs-tag > input{
     outline: none;
     background-color: #ECECEC;
     height: 48px;
@@ -98,10 +77,12 @@ form{
 -webkit-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
 -moz-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
     border: none;
-    margin: 10px 0;
-    padding: 10px;
-    width: 100%;
+    font-size: 1rem;
+    width: 18%;
+    text-align: center;
+    font-weight: bolder;
 }
+
 
 button{
     width: 50%;
@@ -122,19 +103,24 @@ button:hover {
     -webkit-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
     -moz-box-shadow: 73px 71px 15px -69px rgba(0,0,0,0.25) inset;
 }
-
-.text-info{
-    text-align: center;
-    padding: 2% 0;
-    font-weight: 600;
+.verify-content-sumbit{
+    padding: 0 22%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: inherit;
+}
+.verify-content{
+    background-color: white;
+    padding: 5%;
+    border-radius: 10px/10px;
+    width: 70%;
 }
 
-.message{
-    text-align: center;
-    width: 100%;
-    color:  red;
+.btn-verify-content{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-h2{
-    text-transform: uppercase;
-}

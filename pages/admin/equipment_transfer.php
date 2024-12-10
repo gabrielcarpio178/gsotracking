@@ -22,6 +22,7 @@ require '../../logic/dbCon.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <title>Equipment Transfer</title>
 </head>
 
@@ -325,7 +326,7 @@ require '../../logic/dbCon.php';
         /* border: 2px solid #fffefe; */
     }
 
-    .notpic .ahehe a i {
+    .notpic .ahehe div i {
         font-size: 2.5rem;
         text-decoration: none;
         color: #F8F8F8;
@@ -864,6 +865,10 @@ require '../../logic/dbCon.php';
         width: 90%;
     }
 
+    .notification{
+        cursor: pointer;
+    }
+
 
 </style>
 
@@ -879,9 +884,22 @@ require '../../logic/dbCon.php';
         left: 0;
         display: none;
     }
+    .noti-content{
+        border-left: 2px solid rgba(0, 0, 0, 0.3);
+        height: 100vh;
+        width: 30%;
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        background-color: white;
+        display: none;
+    }
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
+    </div>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_admin_content.php' ?>
     </div>
     <div id="form-content">
         <div id="form-modal">
@@ -904,62 +922,6 @@ require '../../logic/dbCon.php';
                     </select>
                 </div>
                 
-                <div class="second-input">
-                    <div class="input-content">
-                        <label for="birthday" class="label-input">Birthday</label>
-                        <input type="date" class="input-data" id="birthday" disabled>
-                    </div>
-                    <div class="input-content">
-                        <div class="label-input">Sex</div>
-                        <div class="radio-btn">
-                            <div class="r-input-content">
-                                <label for="male" class="label-input">Male</label>
-                                <input type="radio" value="male" name="sex" id="male" disabled>
-                            </div>
-                            <div class="r-input-content">
-                                <label for="female" class="label-input">Female</label>
-                                <input type="radio" value="female" name="sex" id="female" disabled>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="input-content">
-                    <label for="email" class="label-input">Email</label>
-                    <input type="email" class="input-data" id="email" disabled>
-                    <input type="hidden" class="input-data" id="current_email">
-                </div>
-                <div class="input-content">
-                    <label for="pnumber" class="label-input">Phone number <span class="message" id="pmessage"></span></label>
-                    <input type="number" class="input-data" id="pnumber" disabled>
-                </div>
-                <div class="input-content">
-                    <label for="employee_id" class="label-input">Employee ID <span class="message" id="emessage"></span></label>
-                    <input type="number" class="input-data" id="employee_id" disabled>
-                </div>
-                <div class="input-content">
-                    <label for="department" class="label-input">Department</label>
-                    
-                    <select name="department" id="department" class="input-data" required disabled>
-                        <option value="BAC">BAC</option>
-                        <option value="ASSESSOR">ASSESSOR'S</option>
-                        <option value="BUDGET">BUDGET</option>
-                        <option value="CDRRMC">CDRRMC</option>
-                        <option value="LEGAL">LEGAL</option>
-                        <option value="CMO-SPORTS">CMO-SPORTS</option>
-                        <option value="CTO-LICENSE">CTO-LICENSE</option>
-                        <option value="VET">VET</option>
-                        <option value="HRMO">HRMO</option>
-                        <option value="LIBRARY">LIBRARY</option>
-                        <option value="LCR">LCR</option>
-                        <option value="NUTRITION">NUTRITION</option>
-                    </select>
-                </div>
-                
-                <div class="input-content">
-                    <label for="position" class="label-input">Position</label>
-                    <input type="text" class="input-data" id="position" disabled>
-                </div>
                 <div class="input-content">
                     Purchase Record
                 </div>
@@ -1005,7 +967,6 @@ require '../../logic/dbCon.php';
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
             </div>
         </div>
-        <span class="menutext">menu</span>
         <nav class="navbar">
             <ul>
                 <li>
@@ -1015,7 +976,11 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">DASHBOARD</a>
+                    <a href="analytics.php">Analytics</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    <a href="report.php">Report</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -1032,7 +997,7 @@ require '../../logic/dbCon.php';
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">EQUIPMENT</a>
+                    <a href="equipment.php">Maintenance</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -1064,8 +1029,8 @@ require '../../logic/dbCon.php';
             <div class="div2">
                 <div class="content2">
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification" onclick="openNotification()">
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -1088,7 +1053,7 @@ require '../../logic/dbCon.php';
         </div>
     </div>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-     <script src="../../scripts/jquery.min.js"></script>
+    
     <script>
         
         $(document).ready(function() {
@@ -1409,23 +1374,12 @@ require '../../logic/dbCon.php';
         document.getElementById("form_submit").addEventListener('submit', e=>{
             e.preventDefault();
             var from = $("#from").val();
-            var fullname = $("#from>option:selected").text();
             var to = $("#to").val();
-            var tofullname = $("#to>option:selected").text();
-            var sex = $('input[name="sex"]:checked').val();
-            var birthday = $("#birthday").val();
-            var email = $("#email").val();
-            var current_email = $("#current_email").val();
-            var pnumber = $("#pnumber").val();
-            var employee_id = $("#employee_id").val();
-            var position = $("#position").val();
-            var department = $("#department").val();
             var selected_equiments = document.querySelectorAll('.equipment_list:checked');
             let data_selected = [];
             selected_equiments.forEach((element)=>{
                 data_selected.push($(element).val());
             })
-            
             if(to===null){
                 Swal.fire({
                     position: "center",
@@ -1436,7 +1390,6 @@ require '../../logic/dbCon.php';
                 })
                 return
             }
-
             if(data_selected.length===0){
                 Swal.fire({
                     position: "center",
@@ -1446,55 +1399,47 @@ require '../../logic/dbCon.php';
                     timer: 1000
                 })
             }else{
-                Swal.fire({
-                    title: `Do you want to reset the password of ${fullname}`,
-                    showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: "Yes",
-                    denyButtonText: "No"
-                }).then((result)=>{
-                    if(data_selected.length!==0){
-                        sendTransfer(from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, result.isConfirmed, data_selected)
-                    }
-                })
+                sendTransfer(from, to, data_selected);
             }
         })
         
-        function sendTransfer(from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, isResetPass, selected_equiments){
+        function sendTransfer(from, to, selected_equiments){
             $.ajax({
                 url: '../../logic/dbtransferaccount.php',
                 type: 'POST',
                 data: {
-                    from, to, tofullname, sex, current_email, birthday, email, pnumber, employee_id, department, position, isResetPass, selected_equiments
+                    from, to, selected_equiments
                 },
                 cache: false,
                 beforeSend: ()=>{
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
+                    
                     $("#loader_div").css('display', 'none');
-                    if(res!=='email is already used'){
+                    if(res==='error occur'){
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: "Something went wrong",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }else{
                         Swal.fire({
                             position: "center",
                             icon: "success",
-                            title: "Transfer Account success",
+                            title: "Transfer Success",
                             showConfirmButton: false,
                             timer: 1000
                         }).then(()=>{
                             window.location.reload();
                         });
-                    }else{
-                        Swal.fire({
-                            position: "center",
-                            icon: "error",
-                            title: "Email is already used",
-                            showConfirmButton: false,
-                            timer: 1000
-                        })
                     }
                  }
             })
         }
+
 
     </script>
 

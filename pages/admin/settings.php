@@ -20,7 +20,7 @@ $profile = $row['profile'] ?? $defaultProfile;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="stylesheet" href="../../styles/admin_settings.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
+    <script src="../../scripts/jquery.min.js"></script>
     <style>
 
 
@@ -268,8 +268,30 @@ header .navbar ul li:last-child{
         ?>
     </script>
 </head>
-
+<style>
+    .noti-content{
+        border-left: 2px solid rgba(0, 0, 0, 0.3);
+        height: 100vh;
+        width: 30%;
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        background-color: white;
+        display: none;
+    }
+    .notification{
+        font-size: 3rem;
+        cursor: pointer;
+    }
+    .notification > i{
+        color: white;
+        
+    }
+</style>
 <body>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_admin_content.php' ?>
+    </div>
     <header>
         <div class="user">
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
@@ -278,7 +300,6 @@ header .navbar ul li:last-child{
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
             </div>
         </div>
-        <span class="menutext">menu</span>
         <nav class="navbar">
         <ul>
                 <li>
@@ -288,7 +309,11 @@ header .navbar ul li:last-child{
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">DASHBOARD</a>
+                    <a href="analytics.php">Analytics</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    <a href="report.php">Report</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -305,7 +330,7 @@ header .navbar ul li:last-child{
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">EQUIPMENT</a>
+                    <a href="equipment.php">Maintenance</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear" id="active"></i>
@@ -342,8 +367,8 @@ header .navbar ul li:last-child{
                         <input type="search" placeholder="Search" class="search-input" />
                     </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification" onclick="openNotification()">
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="" />

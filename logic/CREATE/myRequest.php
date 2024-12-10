@@ -31,9 +31,9 @@ if (isset($_POST['send_data'])) {
 
 
     // Prepare SQL statement for each item
-    $stmt = $conn->prepare("INSERT INTO purchase_request (requester_code, purchase_request_code, datetime, status) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO purchase_request (requester_code, purchase_request_code, datetime, status) VALUES (?, ?, NOW(), ?)");
 
-    $stmt->bind_param('ssss', $usercode, $request_code, $date, $status);
+    $stmt->bind_param('sss', $usercode, $request_code, $status);
 
     if ($stmt->execute()) {
         $stmt->close();

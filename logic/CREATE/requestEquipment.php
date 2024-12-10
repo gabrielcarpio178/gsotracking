@@ -14,8 +14,8 @@ $usercode = $_SESSION['usercode'];
 // echo "Received datetime: " . $datetime . "<br/>";
 // echo $category.'<br/>'.$quantity.'<br/>'.$notes.'<br/>'.$equipment.'<br/>'.$datetime;
 
-$stmt = $conn->prepare("INSERT INTO request_equipment (requester_id, item_requested, equipment_id, category, datetime, notes, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param('isisssi',$usercode, $equipment, $equipment_id, $category, $datetime, $notes, $quantity);
+$stmt = $conn->prepare("INSERT INTO request_equipment (requester_id, item_requested, equipment_id, category, datetime, notes, quantity) VALUES (?, ?, ?, ?, NOW(), ?, ?)");
+$stmt->bind_param('ssssss',$usercode, $equipment, $equipment_id, $category, $notes, $quantity);
 $stmt->execute();
 $stmt->close();
 $conn->close();

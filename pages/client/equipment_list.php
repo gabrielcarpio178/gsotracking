@@ -63,6 +63,10 @@ $profile = $row['profile'] ?? $defaultProfile;
                     <a href="accountability.php" id="active">ACCOUNTABILITY</a>
                 </li>
                 <li>
+                    <i class="fa-solid fa-wrench"></i>
+                    <a href="request_maintenance.php">MAINTENANCE</a>
+                </li>
+                <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>

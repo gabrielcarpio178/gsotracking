@@ -17,6 +17,7 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <script src="../../scripts/moment-with-locales.js"></script>
+    <script src="../../scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
     <title>Equipment</title>
 </head>
@@ -101,10 +102,34 @@ session_start();
             cursor: pointer;
         }
 
+        .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+
+        
 
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
+    </div>
+
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_admin_content.php' ?>
     </div>
 
     <div class="set-durition-form" id="form_durition">
@@ -143,7 +168,6 @@ session_start();
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
             </div>
         </div>
-        <span class="menutext">menu</span>
         <nav class="navbar">
             <ul>
                 <li>
@@ -153,7 +177,11 @@ session_start();
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php" >DASHBOARD</a>
+                    <a href="analytics.php">Analytics</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    <a href="report.php">Report</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -169,15 +197,13 @@ session_start();
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench" id="active"></i>
-                    <a href="equipment.php"  id="active">EQUIPMENT</a>
+                    <a href="equipment.php"  id="active">Maintenance</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
                     <a href="settings.php">SETTINGS</a>
                 </li>
-                <div class="div">
-                    <span></span>
-                </div>
+               
                 <li>
                     <i class="fa-solid fa-door-open"></i>
                     <a href="../../logic/logout.php">LOG OUT</a>
@@ -200,8 +226,8 @@ session_start();
             <div class="div2">
                 <div class="content2">
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification" onclick="openNotification()">
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -251,7 +277,9 @@ session_start();
             .qr-btn > img{
                 width: 6rem;
             } 
-        
+            .request-maintenance{
+                color: red;
+            }
         </style>
 
         <div class="main-container">
@@ -271,6 +299,7 @@ session_start();
                             <th>Employee</th>
                             <th>Quantity</th>
                             <th>PURCHASE DATE</th>
+                            <th>REQUEST maintenance</th>
                             <th>Maintenance Date</th>
                             <th>Maintenance Duration</th>
                             <th>Action</th>
@@ -286,17 +315,18 @@ session_start();
         </div>
     </div>
 
-    <script src="../../scripts/jquery.min.js"></script>
+    
     <script>
         $(document).ready(()=>{
             getdata("all")
         })
 
         function getDuration(num_days, doingMaintenance){
-            var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('LL');
-            var today = moment().format('LL');
+            
+            var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('YYMMDD');
+            var today = moment().format('YYMMDD');
             if(maintenance_day>=today){
-                return moment().add(num_days, 'days').format('LL');
+                return moment(doingMaintenance).add(num_days, 'days').format('LL');
             }else{
                 $("#maintenance_date").css("color", 'red');
                 return '<div style="color: red;">Need Maintenance</div>'
@@ -320,23 +350,44 @@ session_start();
                     var datas = JSON.parse(res);
                     let table_body = '';
                     datas.forEach(data=>{
-                        table_body += `
-                            <tr>
-                                <td>${data.purchase_request_code}</td>
-                                <td>${data.item_name}</td>
-                                <td>${data.fullname}</td>
-                                <td>${data.quantity}</td>
-                                <td>${moment(data.datetime).format('LL')}</td>
-                                <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
-                                <td>
-                                    <div>
-                                        ${isMaintenanceNull(data.maintance_durition)?data.maintance_durition+" days":"Please Set Duration"}
-                                    </div>
-                                    <button onclick="setDurition(${data.id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
-                                </td>
-                                <td><button onclick="resetMain(${data.id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
-                            </tr>
-                        `;
+                        if(data.request_maintenance==null){
+                            table_body += `
+                                <tr>
+                                    <td>${data.purchase_request_code}</td>
+                                    <td>${data.item_name}</td>
+                                    <td>${data.fullname}</td>
+                                    <td>${data.quantity}</td>
+                                    <td>${moment(data.datetime).format('LL')}</td>
+                                    <td>--</td>
+                                    <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
+                                    <td>
+                                        <div>
+                                            ${isMaintenanceNull(data.maintance_durition)?data.maintance_durition+" days":"Please Set Duration"}
+                                        </div>
+                                        <button onclick="setDurition(${data.id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
+                                    </td>
+                                    <td><button onclick="resetMain(${data.id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
+                                </tr>
+                            `;
+                           
+                        }else{
+                            table_body += `
+                                <tr class="request-maintenance">
+                                    <td>${data.purchase_request_code}</td>
+                                    <td>${data.item_name}</td>
+                                    <td>${data.fullname}</td>
+                                    <td>${data.quantity}</td>
+                                    <td>${moment(data.datetime).format('LL')}</td>
+                                    <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
+                                    <td>${moment(data.request_maintenance).format('MMM D, YYYY hh:mm a')}</td>
+                                    <td>
+                                        --
+                                    </td>
+                                    <td><button onclick="acceptRequest(${data.usercode}, ${data.purchase_request_id})"}>Accepted</button></td>
+                                </tr>
+                            `;
+                        }
+                        
                     })
                     $("#tableBody").html(table_body)
                 }
@@ -432,5 +483,46 @@ session_start();
                 }
             })     
         })
+        function acceptRequest(usercode, purchase_request_code){
+            Swal.fire({
+                    title: "Are you sure?",
+                    text: `Do Want to Accepted`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '../../logic/acceptrequest_maintenance.php',
+                            type: 'POST',
+                            data: {
+                                usercode, purchase_request_code
+                            },
+                            cache: false,
+                            beforeSend: ()=>{
+                                $("#loader_div").css('display', 'block');
+                            },
+                            success: res=>{
+                                
+                                $("#loader_div").css('display', 'none');
+                                hideForm();
+                                Swal.fire({
+                                    position: "center",
+                                    icon: "success",
+                                    title: "Success",
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                }).then(()=>{
+                                    getdata("all")
+                                })
+                            }
+                        })
+                    }
+                })
+            
+        }
     </script>
 </body>

@@ -9,6 +9,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $defaultProfile = $row['gender'] == 'male' ? '../../styles/images/boy.jpeg' : '../../styles/images/girl.jpeg';
 $profile = $row['profile'] ?? $defaultProfile;
+date_default_timezone_set("Asia/Manila"); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +94,10 @@ $profile = $row['profile'] ?? $defaultProfile;
                 <li>
                     <i class="fa-solid fa-chalkboard-user"></i>
                     <a href="accountability.php">ACCOUNTABILITY</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-wrench"></i>
+                    <a href="request_maintenance.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>

@@ -154,12 +154,33 @@ $stmt->close();
         left: 0;
         display: none;
     }
+    .noti-content{
+        border-left: 2px solid rgba(0, 0, 0, 0.3);
+        height: 100vh;
+        width: 30%;
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        background-color: white;
+        display: none;
+    }
+    .notification{
+        font-size: 3rem;
+        cursor: pointer;
+    }
+    .notification > i{
+        color: white;
+        
+    }
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
     </div>
     <div class="request-content" id="req_content">
         <?php include "print_request.php"; ?>
+    </div>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_admin_content.php' ?>
     </div>
     <header>
         <div class="user">
@@ -169,7 +190,6 @@ $stmt->close();
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
             </div>
         </div>
-        <span class="menutext">menu</span>
 
         <nav class="navbar">
             <ul>
@@ -180,7 +200,11 @@ $stmt->close();
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">DASHBOARD</a>
+                    <a href="analytics.php">Analytics</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    <a href="report.php">Report</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -197,7 +221,7 @@ $stmt->close();
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">EQUIPMENT</a>
+                    <a href="equipment.php">Maintenance</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -232,8 +256,8 @@ $stmt->close();
                         <i class="fa-solid fa-calendar-days" id="toggleDatepicker" style="cursor: pointer;"></i>
                     </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification" onclick="openNotification()">
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                         <div class="profile">
                             <img src="<?php echo $profile = $row['profile']; ?>" alt="">

@@ -12,10 +12,11 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/gif" href="styles/images/logo2.png">
-    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/forgotPassword.css">
     <script src="scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="styles/sweetalert2.min.css">
-    <title>Login</title>
+    <script src="scripts/moment-with-locales.js"></script>
+    <title>Forgot Password</title>
 </head>
 <body>
 <style>
@@ -29,7 +30,7 @@ session_start();
         left: 0;
         display: none;
     }
-    </style>
+</style>
     <div class="loader-content" id="loader_div">
         <?php include 'pages/client/loader.php' ?>
     </div>
@@ -49,26 +50,18 @@ session_start();
                 </div>
             </div>
             <div class="form-content-sumbit">
-                <div class="login-content">
-                    <h2 class="login-label">Log in</h2>
-                    <form id="form_content" class="content-info">
-                        <div class="inputs">
-                            <label for="username">Email</label>
-                            <input type="text" name="username" id="username" class="input-content" required>
-                        </div>
-                        <div class="inputs">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="password" class="input-content" required>
-                        </div>
-                        <button type="submit" class="btn-submit">Log in</button>
+                <div class="forgot-content">
+                    <h1>Forgot password</h1>
+                    <form class="forgot-password-form inputs" id="forgot_password">
+                        <label for="email">Enter Email</label>
+                        <input type="email" name="email" id="input_email" placeholder="Email" class="input-content">
+                        <button>Send</button>
                     </form>
-                    <a href="forgotPassword.php">Forgot Password</a>
                 </div>
-                <p class="text-info">Qr Code Scanning with Informed Mechanism Driven & Equipment Tracking System</p>
             </div>
         </section>
     </main>
     <script src="scripts/jquery.min.js"></script>
-    <script src="scripts/login.js"></script>
+    <script src="scripts/forgotpassword.js"></script>
 </body>
 </html>

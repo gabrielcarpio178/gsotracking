@@ -20,10 +20,34 @@ require '../../logic/dbCon.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="stylesheet" href="../../styles/admin_transaction.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
+    <style>
+        .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+    </style>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_admin_content.php' ?>
+    </div>
     <header>
         <div class="user">
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
@@ -32,7 +56,6 @@ require '../../logic/dbCon.php';
                 <h5 style="letter-spacing: 2px;"><?php echo $_SESSION['role'] ?></h5>
             </div>
         </div>
-        <span class="menutext">menu</span>
         <nav class="navbar">
         <ul>
                 <li>
@@ -42,7 +65,11 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">DASHBOARD</a>
+                    <a href="analytics.php">Analytics</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-file"></i>
+                    <a href="report.php">Report</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice" id="active"></i>
@@ -59,7 +86,7 @@ require '../../logic/dbCon.php';
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">EQUIPMENT</a>
+                    <a href="equipment.php">Maintenance</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -94,8 +121,8 @@ require '../../logic/dbCon.php';
                         <input type="search" id="searchInput" placeholder="Search">
                     </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification" onclick="openNotification()">
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -105,54 +132,10 @@ require '../../logic/dbCon.php';
             </div>
         </div>
         <main>
-            <div class="table-container">
-                <table id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>equipment name</th>
-                            <th>equipment ID</th>
-                            <th>time aquired</th>
-                            <th>date</th>
-                            <th>transaction type</th>
-                            <th>location</th>
-                            <th>end user</th>
-                          
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <?php
-                        $stmt = $conn->prepare("
-                        SELECT *
-                        FROM transaction_log
-                        JOIN users ON users.usercode = transaction_log.usercode
-                        ORDER BY transaction_log.id DESC
-                        ");
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-                        $i = 1;
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($i++) . "</td>";
-                            echo "<td>" . $row['equipment'] . "</td>";
-                            echo "<td>" . $row['equipment_id'] . "</td>";
-                            echo "<td>" . date('h:i A', strtotime($row['time'])) . "</td>";
-                            echo "<td>" . $row['date'] . "</td>";
-                            echo "<td>" . $row['type'] . "</td>";
-                            echo "<td>" . $row['location'] . "</td>";
-                            echo "<td>" . $row['role'] . "</td>";
-                            echo "</tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-                <div class="pagination" id="pagination">
-                    <!-- Pagination buttons will be generated here -->
-                </div>
-            </div>
+            
         </main>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <script>
         // THIS IS THE BURGER BUTTON 
         $(document).ready(function() {

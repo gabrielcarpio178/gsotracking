@@ -88,6 +88,10 @@ $profile = $row['profile'] ?? $defaultProfile;
                 </li>
                 <li>
                     <i class="fa-solid fa-gear" id="active"></i>
+                    <a href="request_maintenance.php" id="active">MAINTENANCE</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-gear" id="active"></i>
                     <a href="settings.php" id="active">SETTINGS</a>
                 </li>
                 <div class="div">
