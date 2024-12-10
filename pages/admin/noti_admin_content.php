@@ -1,4 +1,5 @@
 <script src="../../scripts/moment-with-locales.js"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <style>
     .noti_datas_content{
         display: flex;
@@ -81,6 +82,7 @@
     $(document).ready(()=>{
         getNotificationData();
         getCountNoti();
+        notificationPopUp();
     })
 
     function openNotification(){
@@ -206,6 +208,56 @@
                     getCountNoti()
                 }
             }
+        })
+    }
+    function notificationPopUp(){
+        var pusher = new Pusher('65b69d50985fd3578ab3', {
+            cluster: 'ap1'
+        });
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            try {
+                var parsedData = JSON.parse(data);
+                if(parsedData.noti_type==='request_maintenance'){
+                    Swal.fire({
+                        html: `
+                            <div style="line-height: 80%;">
+                                <div style="text-align: left;"><b>Name:</b> ${parsedData.fullname}</div><br/>
+                                <div style="text-align: left;"><b>Purchase Code:</b> ${parsedData.request_code}</div> <br/>
+                                <div style="text-align: left;"><b>Equipment Name:</b> ${parsedData.item_name}</div> <br/>
+                                <p style="text-align: left;">Request Equipment Maintenance</p>
+                            </div>
+                        `
+                    }).then(()=>{
+                        location.reload();
+                    });
+                }else if(parsedData.noti_type=="purchase_request_admin"){
+                    var items = parsedData.items_name;
+                    let items_html = '';
+                    items.forEach(item=>{
+                        items_html+=`
+                            <div>Name: ${item.item_name}</div>
+                            <div>Quantity: ${item.quantity}</div>
+                            <div>Specs: ${item.specs}</div>
+                        `
+                    })
+                    Swal.fire({
+                        html: `
+                            <strong>Request Equipment</strong>
+                            <strong>Name: </strong> ${parsedData.fullname}<br/>
+                            <strong>Purchase Code:</strong> ${parsedData.request_code}<br/>
+                            <strong style="text-align: left;">Items:</strong><br/>
+                            <div>
+                                ${items_html}
+                            </div>
+                        `
+                    }).then(()=>{
+                        location.reload();
+                    });
+                }
+            }catch(error){
+                console.error("Failed to handle incoming data", error);
+            }    
         })
     }
 </script>

@@ -1,5 +1,6 @@
 <?php
 require 'dbCon.php';
+include 'pusherNoti.php';
 session_start();
 sleep(1);
 
@@ -34,12 +35,22 @@ function insertNotification($conn){
     }
 }
 
-if(isset($_POST['purchase_request_code'])){
+if(isset($_POST['purchase_request_code'])&&isset($_POST['item_name'])&&isset($_POST['fullname'])){
     $usercode = $_SESSION['usercode'];
     $request_code = $_POST['purchase_request_code'];
+    $item_name = $_POST['item_name'];
+    $fullname = $_POST['fullname'];
     $notification_id = getNotification_id($conn);
     if(insertRequest($usercode, $notification_id, $request_code, $conn)){
         if(updateRequest($request_code, $conn)){
+            $data = [
+                "item_name"=>$item_name,
+                "message"=>"Request Maintenance",
+                "request_code"=>$request_code,
+                "fullname"=>$fullname,
+                'noti_type'=>'request_maintenance'
+            ];
+            $pusher->trigger('my-channel', 'my-event', json_encode($data));
             echo insertNotification($conn);
         }
     }

@@ -19,7 +19,7 @@ session_start();
     <script src="../../scripts/moment-with-locales.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
     <script src="../../scripts/jquery.min.js"></script>
-    <title>Equipment</title>
+    <title>Maintenance</title>
 </head>
 <body>
     <style>
@@ -267,7 +267,6 @@ session_start();
                         <tr>
                             <th>ID</th>
                             <th>equipment name</th>
-                            <th>Employee</th>
                             <th>Quantity</th>
                             <th>PURCHASE DATE</th>
                             <th>Maintenance Date</th>
@@ -327,11 +326,10 @@ session_start();
                                     <tr>
                                         <td>${data.purchase_request_code}</td>
                                         <td>${data.item_name}</td>
-                                        <td>${data.fullname}</td>
                                         <td>${data.quantity}</td>
                                         <td>${moment(data.datetime).format('LL')}</td>
                                         <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
-                                        <td><button onclick="request_maintenance(${data.purchase_request_id})"}>Request Maintenance</button></td>
+                                        <td><button onclick="request_maintenance(${data.purchase_request_id},'${data.item_name}', '${data.fullname}')"}>Request Maintenance</button></td>
                                     </tr>
                                 `;
                             }else{
@@ -339,7 +337,6 @@ session_start();
                                     <tr class="request_maintenance">
                                         <td>${data.purchase_request_code}</td>
                                         <td>${data.item_name}</td>
-                                        <td>${data.fullname}</td>
                                         <td>${data.quantity}</td>
                                         <td>${moment(data.datetime).format('LL')}</td>
                                         <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
@@ -358,7 +355,7 @@ session_start();
             })
         }
 
-        function request_maintenance(purchase_request_code){
+        function request_maintenance(purchase_request_code, item_name, fullname){
             Swal.fire({
                 title: "Are you sure?",
                 text: `Do want to send request`,
@@ -374,13 +371,14 @@ session_start();
                         url: '../../logic/sendrequest_maintenance.php',
                         type: 'POST',
                         data: {
-                            purchase_request_code
+                            purchase_request_code, item_name, fullname
                         },
                         cache: false,
                         beforeSend: ()=>{
                             $("#loader_div").css('display', 'block');
                         },
                         success: res=>{
+                            console.log(res);
                             $("#loader_div").css('display', 'none');
                             Swal.fire({
                                 position: "center",

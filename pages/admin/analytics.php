@@ -43,6 +43,7 @@ if($_SESSION['role']!=='admin'){
     <link rel="stylesheet" href="../../styles/accountability.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="../../scripts/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
     <style>
         .header-label{

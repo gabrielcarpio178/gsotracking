@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2024 at 01:57 PM
+-- Generation Time: Dec 10, 2024 at 05:18 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -137,11 +137,34 @@ INSERT INTO `messages` (`id`, `sender`, `receiver`, `message`, `status`, `dateti
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notification`
+--
+
+CREATE TABLE `notification` (
+  `id` int(11) NOT NULL,
+  `request_type` varchar(200) NOT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT 0,
+  `client` tinyint(1) NOT NULL DEFAULT 0,
+  `storekeeper` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`id`, `request_type`, `admin`, `client`, `storekeeper`) VALUES
+(1, 'purchase_request', 0, 0, 0),
+(2, 'purchase_request', 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `purchase_request`
 --
 
 CREATE TABLE `purchase_request` (
   `id` int(11) NOT NULL,
+  `notification_id` int(11) NOT NULL,
   `requester_code` int(11) NOT NULL,
   `purchase_request_code` int(11) NOT NULL,
   `datetime` datetime NOT NULL,
@@ -153,15 +176,9 @@ CREATE TABLE `purchase_request` (
 -- Dumping data for table `purchase_request`
 --
 
-INSERT INTO `purchase_request` (`id`, `requester_code`, `purchase_request_code`, `datetime`, `isSeen`, `status`) VALUES
-(13, 202400018, 2024, '2024-10-04 10:09:08', 0, 'pending'),
-(14, 202400018, 2024001, '2024-10-04 10:10:12', 0, 'reject'),
-(15, 202400018, 2024002, '2024-10-05 11:44:56', 0, 'accept'),
-(16, 202400018, 2024003, '2024-10-06 03:46:15', 0, 'pending'),
-(17, 202400018, 2024004, '2024-10-07 02:57:38', 1, 'pending'),
-(18, 202400018, 2024005, '2024-10-10 05:55:07', 1, 'accept'),
-(19, 202400018, 2024006, '2024-10-31 06:09:03', 1, 'accept'),
-(20, 202400018, 2024007, '2024-11-14 13:55:30', 1, 'accept');
+INSERT INTO `purchase_request` (`id`, `notification_id`, `requester_code`, `purchase_request_code`, `datetime`, `isSeen`, `status`) VALUES
+(1, 1, 202400018, 2024, '2024-12-11 00:06:32', 1, 'pending'),
+(2, 2, 202400018, 2024001, '2024-12-11 00:10:15', 1, 'accept');
 
 -- --------------------------------------------------------
 
@@ -176,7 +193,9 @@ CREATE TABLE `purchase_request_list` (
   `quantity` int(11) NOT NULL,
   `price` double(11,2) NOT NULL,
   `specs` varchar(255) NOT NULL,
-  `maintance` datetime DEFAULT NULL,
+  `maintance` int(11) DEFAULT 62,
+  `doingMaintenance` datetime DEFAULT current_timestamp(),
+  `request_maintenance` datetime DEFAULT NULL,
   `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -184,44 +203,24 @@ CREATE TABLE `purchase_request_list` (
 -- Dumping data for table `purchase_request_list`
 --
 
-INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `item_name`, `quantity`, `price`, `specs`, `maintance`, `status`) VALUES
-(23, 2024, 'LAPTOP', 123, 1231.00, ' 31234234', NULL, 'pending'),
-(24, 2024, 'PC', 4234, 12312.00, 'ahahahah', NULL, 'pending'),
-(25, 2024, 'PRINTER', 12312, 4234.00, '234234', NULL, 'pending'),
-(26, 2024001, 'HHAHA', 12412312, 123123.00, ' hahahah', NULL, 'pending'),
-(27, 2024001, 'HEGE', 123123, 13412.00, '12aegarr', NULL, 'pending'),
-(28, 2024001, 'awdxwadxawd', 123123123, 999999999.99, 'dwaxdawexwae', NULL, 'pending'),
-(29, 2024002, 'Keyboard', 2, 200.00, 'Ga siga2 tas puti', '2024-11-14 20:54:04', '2952017637'),
-(30, 2024003, 'mouse', 4, 300.00, 'maski ani basta a4tech', NULL, 'pending'),
-(31, 2024004, 'aircon', 2, 20000.00, 'dd', NULL, 'pending'),
-(32, 2024005, 'Laptop', 1, 2000.00, 'Window 11\r\nI5\r\n16rom\r\n1tb internal storage', '2024-11-14 20:54:04', '1666423311'),
-(33, 2024006, 'laptop', 2, 25000.00, '5i acer', '2024-11-14 20:54:04', '6368639713'),
-(34, 2024007, 'tv', 2, 50000.00, 'smart tv', '2024-11-14 20:56:30', '7853513836');
+INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `item_name`, `quantity`, `price`, `specs`, `maintance`, `doingMaintenance`, `request_maintenance`, `status`) VALUES
+(1, 2024, 'printer', 1, 20000.00, 'any brand', 62, '2024-12-11 00:06:32', NULL, 'pending'),
+(2, 2024001, 'laptop', 1, 20000.00, 'any brand', 62, '2024-12-11 00:11:19', NULL, '4995212847');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `request_equipment`
+-- Table structure for table `request_maintenance`
 --
 
-CREATE TABLE `request_equipment` (
+CREATE TABLE `request_maintenance` (
   `id` int(11) NOT NULL,
-  `requester_id` int(11) NOT NULL,
-  `item_requested` varchar(11) NOT NULL,
-  `equipment_id` varchar(11) NOT NULL,
-  `category` varchar(50) NOT NULL,
-  `datetime` datetime NOT NULL,
-  `notes` varchar(255) NOT NULL,
-  `quantity` int(100) NOT NULL
+  `usercode` varchar(100) NOT NULL,
+  `notification_id` int(11) NOT NULL,
+  `purchase_request_list_id` int(11) NOT NULL,
+  `request_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `request_status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `request_equipment`
---
-
-INSERT INTO `request_equipment` (`id`, `requester_id`, `item_requested`, `equipment_id`, `category`, `datetime`, `notes`, `quantity`) VALUES
-(1, 202400013, 'Photocopier', '', 'office', '2024-09-09 12:13:43', 'ahahh', 1),
-(2, 202400013, 'Laptop', '', 'office', '2024-09-09 12:15:59', 'PLEASE!!', 1);
 
 -- --------------------------------------------------------
 
@@ -296,7 +295,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `usercode`, `email`, `password`, `phone_number`, `fullname`, `birthdate`, `gender`, `role`, `department`, `position`, `profile`, `status`) VALUES
 (3, 202400001, 'romerojanssen052501@gmail.com', 'oLVGkbXwC50Bc7xAoriiEW5vWXR3Q3Nzay8vY05jY0huay9QSXc9PQ==', '09928513133', 'janssen rey romero', '2001-05-25', 'male', 'admin', '', '', '../../profile/current.png', 'active'),
-(4, 202400002, 'sig@gmail.com', 'kb5AfxA7xkCC37fnPmH0HFpRcVJGNURPM1JvV0lEZzBtZ24yU2c9PQ==', '09928513133', 'Sigfredo Fernandez', '2024-07-10', 'male', 'client', '', '', NULL, 'active'),
+(4, 202400017, 'sig@gmail.com', 'rodmgm0BTLYcnbSVWvH0gE9CWXdIS25ZWVZzSTJodGtsLzVGZHc9PQ==', '09928513133', 'Sigfredo Fernandez', '2024-07-10', 'male', 'client', '', '', NULL, 'active'),
 (26, 202400003, 'admin1@example.com', 'Bh8Ea7UXJH8sk2lLEsMAxVh3ekM5ZU9MVlhtYUNLRVo1NFQyRmc9PQ==', '01234567890', 'Admin User One', '1980-01-15', 'male', 'storekeeper', '', '', NULL, 'active'),
 (27, 202400004, 'admin2@example.com', 'hFnu3147KkylLe9S2vfRyDRTbFlMTWNaRTFwSWxwTDl6bzRYRFE9PQ==', '02345678901', 'Admin User Two', '1982-03-20', 'female', 'staff', '', '', NULL, 'active'),
 (28, 202400005, 'admin3@example.com', '6qFAI9nZ1V+3f5VXPjyxTGVHWlA1bERSZ3FWNVRpMW8xamFJTnc9PQ==', '03456789012', 'Hawk Tuah', '1984-05-25', 'male', 'client', '', '', NULL, 'active'),
@@ -310,13 +309,10 @@ INSERT INTO `users` (`id`, `usercode`, `email`, `password`, `phone_number`, `ful
 (36, 202400013, 'japitanachrisfel@gmail.com', 'YEeIo9rujZuyNGUC5lhgGWovUVRQUjNJQzVIYUY3ZndOWXFPTFE9PQ==', '12423423421', 'Chrisfel Japitana', '2002-06-03', 'female', 'client', '', '', '../../profile/fellyci.jpg', 'active'),
 (37, 202400014, 'mayannmaco@gmail.com', 'mP+YNwgndb/ZrK9tx+63HmRnTm5Eb21jbjJvM2hmN2RmL3puK1E9PQ==', '12356745787', 'mayann maco', '2002-07-16', 'female', 'staff', '', '', NULL, 'active'),
 (38, 202400015, 'jesryl@gmail.com', 'Wo4CnqpueKr3o8mOatwqOVE4c3pZUURvOXZYbjBrZGFjbSthaVE9PQ==', '21312313131', 'jesryl palmes', '2001-08-14', 'male', 'storekeeper', '', '', '../../profile/jesryl.jpg', 'active'),
-(39, 202400016, 'mayannmaco2020@gmail.com', 'rMeIhHNw3+e9m6OKJSzUujBxcmNXQ0NadFE4dVRCVUYvRHFSN0E9PQ==', '09563666571', 'ming maco', '2000-01-12', 'female', 'department head', '', '', NULL, 'active'),
-(40, 202400017, 'adamluis@gmail.com', 'cuwK1DjPG7F2nG/usROR7WZBa2UxYThzbE4wL1RMV3pYb0QzYkE9PQ==', '09556648219', 'adam luis delos santos', '2001-10-12', 'male', 'client', '', '', NULL, 'active'),
-(41, 202400018, 'sigfred@gmail.com', 'oYcDqV9/fApjBWFBFaYgcUNsdCtCNjFveE1RU1JjNi8vQmVDWVE9PQ==', '12121212121', 'Sigfredo Fernandez', '2002-08-19', 'male', 'client', '', '', NULL, 'active'),
-(42, 202400019, 'cheazzyy090@gmail.com', 'jSWyQRedRpn6JmVT/KkGyDRheFlKc0ljdjRMZ1hUcFVyYWpsVHc9PQ==', '09105005202', 'John Michael Emilia', '2001-12-10', 'male', 'client', '', '', NULL, 'active'),
-(43, 202400020, 'cheazzyy090@gmail.com', 'n6cnakl8TtRwwYz3xvHW+E4rWTNLdVpOYktTOHRIMkJrM0VJdkE9PQ==', '09105005202', 'John Michael Emilia', '2001-12-10', 'male', 'client', '', '', NULL, 'active'),
-(44, 202400021, 'sha@gmail.com', 'bxzZfXLf7/fecH+SlCDKdkZUa0ZQNmV3WkJnTUZmNGcxRDZ5bXc9PQ==', '09105005202', 'sha', '2001-12-10', 'male', 'client', '', '', NULL, 'active'),
-(45, 202400022, 'michael@gmail.com', 'c7BNBLfIIUeylZKNePRGT25qOFN3NEdmYVJFTFJWdkZGQXBtMkE9PQ==', '09105005202', 'mike', '0001-12-10', 'male', 'client', '', '', NULL, 'active');
+(39, 202400016, 'mayannmaco2020@gmail.com', '6TAt/Ezs3N7arqok40KLi0w4TjRzeCtHVTBRN0EyalRkU2MxTHc9PQ==', '09563666571', 'ming maco', '2000-01-12', 'female', 'department head', 'BUDGET', 'department head', NULL, 'active'),
+(41, 202400018, 'sigfred@gmail.com', 'oYcDqV9/fApjBWFBFaYgcUNsdCtCNjFveE1RU1JjNi8vQmVDWVE9PQ==', '12121212121', 'Sigfredo Fernandez', '2002-08-19', 'male', 'client', 'ASSESSOR', 'sample', NULL, 'active'),
+(42, 202400019, 'cheazzyy090@gmail.com', 'jSWyQRedRpn6JmVT/KkGyDRheFlKc0ljdjRMZ1hUcFVyYWpsVHc9PQ==', '09105005202', 'John Michael Emilia', '2001-12-10', 'male', 'client', 'BUDGET', 'sample', NULL, 'active'),
+(48, 202400002, 'gabrielcarpio178@gmail.com', 'IoFtOJgkH9DFiBJ4UQPOAXRGa2JmZk5XY3p2MXFnME9SakdWNHc9PQ==', '09123456789', 'gabriel carpio', '2000-05-01', 'male', 'client', 'LIBRARY', 'department head', NULL, 'active');
 
 --
 -- Indexes for dumped tables
@@ -347,6 +343,12 @@ ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
@@ -359,9 +361,9 @@ ALTER TABLE `purchase_request_list`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `request_equipment`
+-- Indexes for table `request_maintenance`
 --
-ALTER TABLE `request_equipment`
+ALTER TABLE `request_maintenance`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -405,22 +407,28 @@ ALTER TABLE `messages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `purchase_request_list`
 --
 ALTER TABLE `purchase_request_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `request_equipment`
+-- AUTO_INCREMENT for table `request_maintenance`
 --
-ALTER TABLE `request_equipment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `request_maintenance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transaction_log`
@@ -432,7 +440,7 @@ ALTER TABLE `transaction_log`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

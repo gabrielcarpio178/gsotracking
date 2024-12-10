@@ -1,16 +1,8 @@
 <?php
-// print_r($_POST);
 require '../dbCon.php';
 session_start();
-
-require __DIR__ . '/../../vendor/autoload.php';
 require_once "../../phpqrcode/qrlib.php";
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
+require __DIR__ . '/../../vendor/autoload.php';
 $options = array(
     'cluster' => 'ap1',
     'useTLS' => true
@@ -22,6 +14,10 @@ $pusher = new Pusher\Pusher(
     '1768766',
     $options
 );
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
 if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request_data'])&&isset($_POST['request_data_list'])){
     $status =  $_POST['status'];
     $request_code =  $_POST['request_code'];
@@ -81,7 +77,8 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
             'message' => $status == 'accept'? 'your request was accepted by admin' : 'your request was rejected by admin',
             'status' => $status,
             'request_data' => $request_data,
-            'request_data_list' => $request_data_list
+            'request_data_list' => $request_data_list,
+            'noti_type'=>'purchase_request'
         ];
         $pusher->trigger('my-channel', 'my-event', json_encode($data));
 

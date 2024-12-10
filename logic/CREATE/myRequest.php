@@ -4,9 +4,20 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 sleep(1);
-
 session_start();
-$usercode = $_SESSION['usercode'];
+
+require __DIR__ . '/../../vendor/autoload.php';
+$options = array(
+    'cluster' => 'ap1',
+    'useTLS' => true
+);
+
+$pusher = new Pusher\Pusher(
+    '65b69d50985fd3578ab3',
+    '5162ecfa7669af493dbf',
+    '1768766',
+    $options
+);
 
 function sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn){
 
@@ -49,10 +60,19 @@ function getNotification_id($conn){
 if (isset($_POST['send_data'])) {
     $send_data = json_decode($_POST['send_data'], true);
     $request_code = generateItemCode($conn);
+    $usercode = $_SESSION['usercode'];
     $status = 'pending';
+
 
     $notification_id = getNotification_id($conn);
     if(sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn)=='success'){
+        $data = [
+            'request_code'=>$request_code,
+            'fullname'=>$_SESSION['fullname'],
+            'items_name'=>$send_data,
+            'noti_type'=>'purchase_request_admin'
+        ];
+        $pusher->trigger('my-channel', 'my-event', json_encode($data));
         echo insertNotification($conn);
     }
 

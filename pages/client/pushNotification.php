@@ -13,30 +13,33 @@
     channel.bind('my-event', function(data) {
         try {
             let parsedData = JSON.parse(data);
+            if(parsedData.noti_type==='purchase_request'){
+                let title = parsedData.status === 'accept' ? "Request Accepted!" : "Request Rejected!";
+                let message = parsedData.message;
 
-            let title = parsedData.status === 'accept' ? "Request Accepted!" : "Request Rejected!";
-            let message = parsedData.message;
-
-            // Assuming `request_data` is an array
-            let request_data = JSON.parse(parsedData.request_data);
-            let request_data_list = JSON.parse(parsedData.request_data_list);
-            
-            Swal.fire({
-                title: title,
-                text: message,
-                icon: parsedData.status === 'accept' ? "success" : "error",
-                html: `
-                    <strong>Request Code:</strong> ${request_data.purchase_request_code}<br/>
-                    <strong>Items:</strong> ${request_data_list.map((item, index) => `
-                        <div>
-                        ${index+1}. Item: ${item.item_name}<br/>
-                        Quantity: ${item.quantity}<br/>
-                        Price: ${item.price}<br/>
-                        specs: ${item.specs}</div><br/>
-                    `).join('')}
-                    <br/><br/>
-                `
-            });
+                // Assuming `request_data` is an array
+                let request_data = JSON.parse(parsedData.request_data);
+                let request_data_list = JSON.parse(parsedData.request_data_list);
+                
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: parsedData.status === 'accept' ? "success" : "error",
+                    html: `
+                        <strong>Request Code:</strong> ${request_data.purchase_request_code}<br/>
+                        <strong  style="text-align: left;">Items:</strong> ${request_data_list.map((item, index) => `
+                            <div  style="text-align: left;">
+                            ${index+1}. Item: ${item.item_name}<br/>
+                            Quantity: ${item.quantity}<br/>
+                            Price: ${item.price}<br/>
+                            specs: ${item.specs}</div><br/>
+                        `).join('')}
+                        <br/><br/>
+                    `
+                }).then(()=>{
+                    location.reload();
+                });
+            }
             getnotiCount(<?=$_SESSION['usercode'] ?>);
         } catch (error) {
             console.error("Failed to handle incoming data", error);
