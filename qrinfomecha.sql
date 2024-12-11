@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2024 at 05:18 PM
+-- Generation Time: Dec 11, 2024 at 06:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -110,6 +110,26 @@ INSERT INTO `equipment` (`id`, `eq_unicode`, `equipment`, `quantity`, `price`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `maintenance`
+--
+
+CREATE TABLE `maintenance` (
+  `id` int(11) NOT NULL,
+  `purchase_request_list_id` int(11) NOT NULL,
+  `maintenance_datetime` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `maintenance`
+--
+
+INSERT INTO `maintenance` (`id`, `purchase_request_list_id`, `maintenance_datetime`) VALUES
+(1, 18, '2024-12-12 01:02:55'),
+(2, 11, '2024-12-12 01:03:14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
@@ -153,8 +173,31 @@ CREATE TABLE `notification` (
 --
 
 INSERT INTO `notification` (`id`, `request_type`, `admin`, `client`, `storekeeper`) VALUES
-(1, 'purchase_request', 0, 0, 0),
-(2, 'purchase_request', 0, 0, 0);
+(1, 'request_maintenance', 1, 0, 0),
+(2, 'request_maintenance', 1, 0, 0),
+(3, 'purchase_request', 1, 0, 0),
+(4, 'request_maintenance', 1, 0, 0),
+(5, 'purchase_request', 1, 0, 0),
+(6, 'request_maintenance', 1, 0, 0),
+(7, 'purchase_request', 1, 0, 0),
+(8, 'request_maintenance', 1, 0, 0),
+(9, 'purchase_request', 1, 0, 0),
+(10, 'purchase_request', 1, 0, 0),
+(11, 'purchase_request', 1, 0, 0),
+(12, 'request_maintenance', 1, 0, 0),
+(13, 'request_maintenance', 1, 1, 0),
+(14, 'request_maintenance', 1, 1, 0),
+(15, 'request_maintenance', 1, 1, 0),
+(16, 'request_maintenance', 1, 0, 0),
+(17, 'request_maintenance\r\n', 1, 0, 0),
+(18, 'request_maintenance', 1, 0, 0),
+(19, 'request_maintenance', 1, 0, 0),
+(20, 'purchase_request', 1, 1, 0),
+(21, 'purchase_request', 1, 1, 0),
+(22, 'purchase_request', 1, 1, 0),
+(23, 'request_maintenance', 1, 1, 0),
+(24, 'request_maintenance', 1, 1, 0),
+(25, 'purchase_request', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -165,7 +208,6 @@ INSERT INTO `notification` (`id`, `request_type`, `admin`, `client`, `storekeepe
 CREATE TABLE `purchase_request` (
   `id` int(11) NOT NULL,
   `notification_id` int(11) NOT NULL,
-  `requester_code` int(11) NOT NULL,
   `purchase_request_code` int(11) NOT NULL,
   `datetime` datetime NOT NULL,
   `isSeen` tinyint(1) NOT NULL DEFAULT 1,
@@ -176,9 +218,19 @@ CREATE TABLE `purchase_request` (
 -- Dumping data for table `purchase_request`
 --
 
-INSERT INTO `purchase_request` (`id`, `notification_id`, `requester_code`, `purchase_request_code`, `datetime`, `isSeen`, `status`) VALUES
-(1, 1, 202400018, 2024, '2024-12-11 00:06:32', 1, 'pending'),
-(2, 2, 202400018, 2024001, '2024-12-11 00:10:15', 1, 'accept');
+INSERT INTO `purchase_request` (`id`, `notification_id`, `purchase_request_code`, `datetime`, `isSeen`, `status`) VALUES
+(1, 1, 2024, '2024-12-01 00:06:32', 1, 'accept'),
+(2, 2, 2024001, '2024-12-11 00:10:15', 1, 'accept'),
+(3, 3, 2024002, '2024-12-11 01:12:36', 1, 'accept'),
+(4, 5, 2024003, '2024-12-11 01:15:34', 1, 'accept'),
+(5, 7, 2024004, '2024-12-11 01:19:29', 1, 'accept'),
+(6, 9, 2024005, '2024-12-11 01:29:18', 1, 'reject'),
+(7, 10, 2024006, '2024-12-11 01:39:19', 1, 'accept'),
+(8, 11, 2024007, '2024-12-11 01:42:08', 1, 'accept'),
+(9, 20, 2024008, '2024-12-11 13:59:20', 1, 'pending'),
+(10, 21, 2024009, '2024-12-11 14:01:29', 1, 'pending'),
+(11, 22, 2024010, '2024-12-11 14:04:55', 1, 'accept'),
+(12, 25, 2024011, '2024-12-11 16:16:54', 1, 'accept');
 
 -- --------------------------------------------------------
 
@@ -189,6 +241,7 @@ INSERT INTO `purchase_request` (`id`, `notification_id`, `requester_code`, `purc
 CREATE TABLE `purchase_request_list` (
   `id` int(11) NOT NULL,
   `purchase_request_code` int(11) NOT NULL,
+  `requester_code` int(11) NOT NULL,
   `item_name` varchar(50) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` double(11,2) NOT NULL,
@@ -203,9 +256,25 @@ CREATE TABLE `purchase_request_list` (
 -- Dumping data for table `purchase_request_list`
 --
 
-INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `item_name`, `quantity`, `price`, `specs`, `maintance`, `doingMaintenance`, `request_maintenance`, `status`) VALUES
-(1, 2024, 'printer', 1, 20000.00, 'any brand', 62, '2024-12-11 00:06:32', NULL, 'pending'),
-(2, 2024001, 'laptop', 1, 20000.00, 'any brand', 62, '2024-12-11 00:11:19', NULL, '4995212847');
+INSERT INTO `purchase_request_list` (`id`, `purchase_request_code`, `requester_code`, `item_name`, `quantity`, `price`, `specs`, `maintance`, `doingMaintenance`, `request_maintenance`, `status`) VALUES
+(1, 2024, 202400002, 'printer', 1, 20000.00, 'any brand', 62, '2024-12-11 23:58:26', NULL, '8194933792'),
+(2, 2024001, 202400002, 'laptop', 1, 20000.00, 'any brand', 62, '2024-12-11 00:11:19', '2024-12-11 00:59:36', '4995212847'),
+(3, 2024002, 202400018, 'amplay', 1, 2000.00, 'any', 62, '2024-12-11 01:13:16', '2024-12-11 01:14:43', '8377575674'),
+(4, 2024003, 202400018, 'speaker', 1, 5000.00, 'any brand', 62, '2024-12-11 01:15:42', '2024-12-11 01:15:56', '6307825292'),
+(5, 2024004, 202400018, 'flashlight', 2, 500.00, 'any brand', 62, '2024-12-11 01:19:39', '2024-12-11 01:19:52', '4085768391'),
+(6, 2024005, 202400018, 'tv', 1, 50000.00, 'smart tb samsung 12inc', 62, '2024-12-11 23:37:46', NULL, '6612020470'),
+(7, 2024005, 202400018, 'microphone', 2, 1500.00, 'wireless', 62, '2024-12-11 23:37:46', NULL, '3710365481'),
+(8, 2024006, 202400018, 'stand fun', 5, 500.00, 'camel', 62, '2024-12-11 01:44:45', '2024-12-11 16:16:16', '6276543966'),
+(9, 2024006, 202400018, 'aircon', 2, 25000.00, 'any brand', 62, '2024-12-11 01:44:45', NULL, '7388724260'),
+(10, 2024007, 202400002, 'table', 5, 15000.00, '5', 62, '2024-12-11 01:43:46', NULL, '5421535317'),
+(11, 2024007, 202400018, 'chear', 10, 100.00, 'any brand', 62, '2024-12-12 01:03:14', NULL, '1908001359'),
+(12, 2024008, 202400018, 'mouse', 2, 150.00, 'any brand', 62, '2024-12-11 13:59:20', NULL, 'pending'),
+(13, 2024008, 202400018, 'keyboard', 2, 250.00, 'any brand', 62, '2024-12-11 13:59:20', NULL, 'pending'),
+(14, 2024009, 202400018, 'keyboard', 2, 150.00, 'any', 62, '2024-12-11 14:01:29', NULL, 'pending'),
+(15, 2024009, 202400018, 'mouse', 2, 150.00, 'any brand', 62, '2024-12-11 14:01:29', NULL, 'pending'),
+(16, 2024010, 202400018, 'keyboard', 2, 100.00, 'any', 62, '2024-12-12 01:25:39', NULL, '3034761251'),
+(17, 2024010, 202400018, 'mouse', 2, 100.00, 'any', 62, '2024-12-12 01:25:39', NULL, '9984425148'),
+(18, 2024011, 202400018, 'flashlight', 1, 1000.00, 'any', 62, '2024-12-12 01:02:55', NULL, '7519687644');
 
 -- --------------------------------------------------------
 
@@ -221,6 +290,29 @@ CREATE TABLE `request_maintenance` (
   `request_datetime` datetime NOT NULL DEFAULT current_timestamp(),
   `request_status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `request_maintenance`
+--
+
+INSERT INTO `request_maintenance` (`id`, `usercode`, `notification_id`, `purchase_request_list_id`, `request_datetime`, `request_status`) VALUES
+(1, '202400018', 16, 2, '2024-12-11 00:40:08', 0),
+(2, '202400018', 17, 2, '2024-12-11 00:42:10', 0),
+(3, '202400018', 3, 2, '2024-12-11 00:46:23', 0),
+(4, '202400018', 6, 1, '2024-12-11 00:51:32', 0),
+(5, '202400018', 1, 2, '2024-12-11 00:53:46', 0),
+(6, '202400018', 2, 1, '2024-12-11 00:58:23', 0),
+(7, '202400018', 18, 2, '2024-12-11 00:59:36', 0),
+(8, '202400018', 19, 1, '2024-12-11 00:59:48', 0),
+(9, '202400018', 4, 3, '2024-12-11 01:14:43', 0),
+(10, '202400018', 6, 4, '2024-12-11 01:15:56', 0),
+(11, '202400018', 8, 5, '2024-12-11 01:19:52', 0),
+(12, '202400018', 12, 8, '2024-12-11 01:45:03', 1),
+(13, '202400018', 13, 9, '2024-12-11 01:46:26', 1),
+(14, '202400018', 14, 11, '2024-12-11 01:47:18', 1),
+(15, '202400018', 15, 10, '2024-12-11 01:50:21', 1),
+(17, '202400018', 23, 8, '2024-12-11 16:15:11', 1),
+(18, '202400018', 24, 8, '2024-12-11 16:16:16', 0);
 
 -- --------------------------------------------------------
 
@@ -312,7 +404,7 @@ INSERT INTO `users` (`id`, `usercode`, `email`, `password`, `phone_number`, `ful
 (39, 202400016, 'mayannmaco2020@gmail.com', '6TAt/Ezs3N7arqok40KLi0w4TjRzeCtHVTBRN0EyalRkU2MxTHc9PQ==', '09563666571', 'ming maco', '2000-01-12', 'female', 'department head', 'BUDGET', 'department head', NULL, 'active'),
 (41, 202400018, 'sigfred@gmail.com', 'oYcDqV9/fApjBWFBFaYgcUNsdCtCNjFveE1RU1JjNi8vQmVDWVE9PQ==', '12121212121', 'Sigfredo Fernandez', '2002-08-19', 'male', 'client', 'ASSESSOR', 'sample', NULL, 'active'),
 (42, 202400019, 'cheazzyy090@gmail.com', 'jSWyQRedRpn6JmVT/KkGyDRheFlKc0ljdjRMZ1hUcFVyYWpsVHc9PQ==', '09105005202', 'John Michael Emilia', '2001-12-10', 'male', 'client', 'BUDGET', 'sample', NULL, 'active'),
-(48, 202400002, 'gabrielcarpio178@gmail.com', 'IoFtOJgkH9DFiBJ4UQPOAXRGa2JmZk5XY3p2MXFnME9SakdWNHc9PQ==', '09123456789', 'gabriel carpio', '2000-05-01', 'male', 'client', 'LIBRARY', 'department head', NULL, 'active');
+(48, 202400002, 'gabrielcarpio178@gmail.com', 'H1p9ZU9wC9H1MyP/Sbq/bi9OQjdQL2NtbTFTNkNVNlhQbExjMWc9PQ==', '09123456789', 'gabriel carpio', '2000-05-01', 'male', 'client', 'LIBRARY', 'department head', NULL, 'active');
 
 --
 -- Indexes for dumped tables
@@ -334,6 +426,12 @@ ALTER TABLE `change_password_attemp`
 -- Indexes for table `equipment`
 --
 ALTER TABLE `equipment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `maintenance`
+--
+ALTER TABLE `maintenance`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -401,6 +499,12 @@ ALTER TABLE `equipment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- AUTO_INCREMENT for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
@@ -410,25 +514,25 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `purchase_request`
 --
 ALTER TABLE `purchase_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `purchase_request_list`
 --
 ALTER TABLE `purchase_request_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `request_maintenance`
 --
 ALTER TABLE `request_maintenance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `transaction_log`
