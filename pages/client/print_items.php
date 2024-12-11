@@ -35,10 +35,6 @@
 <div class="print-content">
     <div class="cancel" id="btn_cancel" onclick="remove_content()"><i class="fas fa-times"></i></div>
     <div class="qr-contents" id="print_canvas">
-        <div class="qr-img">
-            <img src="" alt="qr code" id="img_qr">
-        </div>
-
         <div class="qr-body">
             <div class="qr-fname">Full name: <span id="qr_name"></span></div>
             <div class="qr-item-no">Item No.: <span id="qr_item"></span></div>

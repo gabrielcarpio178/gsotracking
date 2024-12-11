@@ -2,7 +2,7 @@
 require 'dbCon.php';
 if(isset($_POST['search'])){
     $seach = '%'.$_POST['search'].'%';
-    $stmt = $conn->prepare("SELECT u.usercode ,u.fullname, u.department, u.position, p.purchase_request_code, p.datetime, p.status FROM purchase_request AS p JOIN users AS u ON p.requester_code = u.usercode WHERE p.purchase_request_code LIKE ? ORDER BY p.id DESC;");
+    $stmt = $conn->prepare("SELECT u.usercode ,u.fullname, u.department, u.position, p.purchase_request_code, p.datetime, p.status FROM purchase_request AS p JOIN purchase_request_list AS l ON l.purchase_request_code = p.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode WHERE p.purchase_request_code LIKE ? ORDER BY p.id DESC;");
     $stmt->bind_param('s', $seach);
     $stmt->execute();
     $result = $stmt->get_result();

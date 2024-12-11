@@ -82,8 +82,6 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
         ];
         $pusher->trigger('my-channel', 'my-event', json_encode($data));
 
-
-        
         $path = "../../qrcode_img/";
         $qrkey = $request_code;
         $qr = $path.$qrkey.".png";

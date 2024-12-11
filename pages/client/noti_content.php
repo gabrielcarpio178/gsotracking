@@ -99,7 +99,8 @@
             },
             cache: false,
             success: res=>{
-                var notification_datas = JSON.parse(res)
+                var notification_datas = JSON.parse(res);
+                
                 notification_datas.sort((a, b)=>{
                     let da = new Date(a.datetime), db = new Date(b.datetime);
                     return da - db;

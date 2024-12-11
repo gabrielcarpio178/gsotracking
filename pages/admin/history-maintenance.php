@@ -42,23 +42,9 @@ if($_SESSION['role']!=='admin'){
     <link rel="stylesheet" href="../../styles/admin_analytics.css">
     <link rel="stylesheet" href="../../styles/accountability.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="../../scripts/jquery.min.js"></script>
-    <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+    <script src="../../scripts/jquery.min.js"></script>
     <style>
-        .header-label{
-            padding: 1% 2%;
-            width: 100%;
-        }
-        .chartData{
-            padding: 5% 3%;
-            display: grid;
-            place-items: center;
-        }
-        .chartData > canvas{
-            width: 80%;
-            height: 85%;
-        }
         .noti-content{
             border-left: 2px solid rgba(0, 0, 0, 0.3);
             height: 100vh;
@@ -81,6 +67,7 @@ if($_SESSION['role']!=='admin'){
 </head>
 
 <body>
+
     <div class="noti-content" id="noti_content">
         <?php include 'noti_admin_content.php' ?>
     </div>
@@ -102,10 +89,9 @@ if($_SESSION['role']!=='admin'){
                 </li>
 
                 <li>
-                    <i class="fa-solid fa-chart-simple" id="active"></i>
-                    <a href="analytics.php" id="active">ANALYTICS</a>
+                    <i class="fa-solid fa-chart-simple" ></i>
+                    <a href="analytics.php" >ANALYTICS</a>
                 </li>
-                
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
                     <a href="transaction.php">TRANSACTION LOG</a>
@@ -124,8 +110,8 @@ if($_SESSION['role']!=='admin'){
                     <a href="equipment.php">Maintenance</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-history"></i>
-                    <a href="history-maintenance.php">HISTORY MAINTENANCE</a>
+                    <i class="fa-solid fa-history" id="active"></i>
+                    <a href="history-maintenance.php" id="active">HISTORY MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -167,140 +153,125 @@ if($_SESSION['role']!=='admin'){
                 </div>
             </div>
         </div>
-
-        <div class="header-label">
-            <h2>Equipment Records</h2>
-            <hr>
-        </div>
         <style>
-            .datas-display{
+            .main-container{
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 gap: 10px 0;
                 padding: 10px 20px;
             }
-            .icon{
-                font-size: 8rem;
+            table{
+                margin-top: 10px;
             }
-            .datas-numbers{
+            .filter-btn input {
+                background-color: #E7E7E7;
+                outline: none;
+                padding: 7px;
+                width: 220px;
+                padding-left: 35px;
+                border-radius: 4.23px;
+            }
+
+            .table-content{
+                height: 70vh;
+                overflow-y: scroll;
+            }
+            button{
+                cursor: pointer;
+                padding: 5px;
+                background-color: #4ECB71;
+                color: white;
+                border: none;
+                border-radius: 5px/5px;
+            }
+            
+            .qr-btn{
                 display: flex;
                 flex-direction: column;
-                /* border: 1px solid black; */
-                width: 30%;
-                height: 100vh;
-                gap: 25px 0;
-            }
-            .data-number{
-                height: 22%;
-                border-radius: 10px/10px;
-                display: flex;
-                flex-direction: row;
                 align-items: center;
-                gap: 0 10px;
-                padding: 0 20px;
-                box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
--webkit-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
--moz-box-shadow: 1px 1px 6px 1px rgba(0,0,0,0.75);
             }
-            .number-label{
-                font-size: 1.5rem;
-                font-weight: bold;
-                width: 100%;
-                text-align: center;
-                line-height: 25px;
-            }
-            .number{
-                font-size: 2.5rem;
+            .qr-btn > img{
+                width: 6rem;
+            } 
+            .request-maintenance{
+                color: red;
             }
         </style>
-        <div class="datas-display">
-            <div class="datas-numbers">
-                <div class="employee_number data-number">
-                    <i class="fa-solid fa-user icon"></i>
-                    <div class="number-label">
-                        <div class="label">Number Of Employees</div>
-                        <div class="number"><?=getnumberemployees($conn) ?></div>
-                    </div>
-                </div>
-                <div class="items_purchase_number data-number">
-                    <i class="fa-solid fa-cart-shopping icon"></i>
-                    <div class="number-label">
-                        <div class="label">Number Of Items Purchase</div>
-                        <div class="number"><?=getnumberitems($conn) ?></div>
-                    </div>
-                </div>
-                <div class="total_cost_number data-number">
-                    <i class="fa-solid fa-money-check-dollar icon"></i>
-                    <div class="number-label">
-                        <div class="label">Total Cost</div>
-                        <div class="number">₱ <?=number_format(getsum_const($conn), 2, '.', '') ?></div>
-                    </div>
-                </div>
-            </div>
-            <div class="chartData">
-                <canvas id="myChart"></canvas>
-            </div>
-        </div>
 
+        <div class="main-container">
+            <div class="header-label">
+                <h2>History Maintenance</h2>
+                <hr>
+            </div>
+            <div class="filter-btn">
+                <input type="number" id="search_id" placeholder="Search by ID" oninput="searchId(this.value)">
+                <input type="date" id="search_date" oninput="searchDate(this.value)">
+            </div>
+            <div class="table-content">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Equipment ID</th>
+                            <th>Employee</th>
+                            <th>equipment name</th>
+                            <th>Quantity</th>
+                            <th>PURCHASE DATE</th>
+                            <th>Maintenance Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+
+                    </tbody>    
+                </table>
+            </div>
+            
+            
+        </div>
     </div>
 
     
     <script>
+        let search_id = 'all';
+        let search_date = 'all'
         $(document).ready(function() {
+            getContentMaintenanceHistory('all','all');
+        })
 
+        function searchId(id){
+            search_id = id;
+            getContentMaintenanceHistory(search_date, search_id);
+        }
+        function searchDate(dateTime){
+            search_date = dateTime;
+            getContentMaintenanceHistory(search_date, search_id);
+        }
+
+        function getContentMaintenanceHistory(dateSearch, purchase_request_code){
             $.ajax({
-                url: '../../logic/dbanalytics.php',
+                url: '../../logic/getContentMaintenanceHistory.php',
                 type: 'POST',
                 data: {
-                    role: "admin"
+                    dateSearch, purchase_request_code
                 },
                 cache: false,
                 success: res=>{
-                    var data = JSON.parse(res);
-                    displayGraph(data);
+                    var datas = JSON.parse(res);
+                    let table_body = '';
+                    datas.forEach(data=>{
+                        table_body += `
+                        <tr>
+                            <td>${data.purchase_request_code}</td>
+                            <td>${data.fullname}</td>
+                            <td>${data.item_name}</td>
+                            <td>${data.quantity}</td>
+                            <td>${moment(data.datetime).format('MMMM DD YYYY')}</td>
+                            <td>${moment(data.maintenance_datetime).format('MMMM DD YYYY hh:mm a')}</td>
+                        </tr>
+                        `
+                    })
+                    $("#tableBody").html(table_body);
                 }
             })
-
-            $('#menu').click(function() {
-                $(this).toggleClass('fa-times');
-                $('header').toggleClass('toggle');
-                $(window).on('scroll load', function() {
-                    $('#menu').removeClass('fa-times');
-                    $('header').removeClass('toggle');
-                });
-            });
-        });
-
-        function displayGraph(datas){
-            var month_label = []; 
-            var count_label = []; 
-            datas.forEach(data=>{
-                month_label.push(data.month_label);
-                count_label.push(data.count_label);
-            })
-            graph(month_label, count_label);
-        }
-
-        function graph(month, count){
-            const ctx = document.getElementById('myChart');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: month,
-                    datasets: [{
-                    label: 'Total count of purchase request per month',
-                    data:  count,
-                    borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                    }
-                }
-            });
         }
     </script>
 </body>

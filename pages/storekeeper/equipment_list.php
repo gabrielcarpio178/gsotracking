@@ -152,11 +152,11 @@ $data2['it'] = $data22['it']; // No slicing here
                 <table id="dataTable">
                     <thead>
                         <tr>
+                            <th>ITEMS NO.</th>
                             <th>USER ID</th>
                             <th>FULLNAME</th>
                             <th>DEPARTMENT</th>
                             <th>POSITION</th>
-                            <th>ITEMS NO.</th>
                             <th>DATE REQUESTED</th>
                             <th>STATUS</th>
                             <th>View</th>
@@ -165,12 +165,14 @@ $data2['it'] = $data22['it']; // No slicing here
                     </thead>
                     <tbody id="tableBody">
                         <?php
-                        $stmt = $conn->prepare("SELECT u.usercode ,u.fullname, u.department, u.position, p.purchase_request_code, p.datetime, p.status FROM purchase_request AS p JOIN users AS u ON p.requester_code = u.usercode ORDER BY p.id DESC;");
+                        $stmt = $conn->prepare("SELECT u.usercode ,u.fullname, u.department, u.position, p.purchase_request_code, p.datetime, p.status FROM purchase_request AS p JOIN purchase_request_list AS l ON l.purchase_request_code = p.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode ORDER BY p.id DESC;");
                         $stmt->execute();
                         $result = $stmt->get_result();
                         while ($row = $result->fetch_assoc()) {
                             echo '
                                 <tr>
+                                    <td>'. htmlspecialchars($row['purchase_request_code']). 
+                                    '</td>
                                     <td>'. htmlspecialchars($row['usercode']). 
                                     '</td>
                                     <td>'. htmlspecialchars($row['fullname']). 
@@ -178,8 +180,6 @@ $data2['it'] = $data22['it']; // No slicing here
                                     <td>'. htmlspecialchars($row['department']). 
                                     '</td>
                                     <td>'. htmlspecialchars($row['position']). 
-                                    '</td>
-                                    <td>'. htmlspecialchars($row['purchase_request_code']). 
                                     '</td>
                                     <td>'. htmlspecialchars($row['status']). 
                                     '</td>
@@ -218,11 +218,11 @@ $data2['it'] = $data22['it']; // No slicing here
             datas.forEach(data=>{
                 data_content += `
                     <tr>
+                        <td>${data.purchase_request_code}</td>
                         <td>${data.usercode}</td>
                         <td>${data.fullname}</td>
                         <td>${data.department}</td>
                         <td>${data.position}</td>
-                        <td>${data.purchase_request_code}</td>
                         <td>${data.status}</td>
                         <td>${data.datetime}</td>
                         <td><button class="btn-viem-items" onclick="viewitems(${data.purchase_request_code})">View Items</button></td>

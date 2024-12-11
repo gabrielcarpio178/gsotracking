@@ -3,11 +3,10 @@ require 'dbCon.php';
 
 function updateEquipment($conn, $to, $equipment_id){
 
-    $stmt = $conn->prepare("UPDATE `purchase_request` SET `requester_code` = ? WHERE `purchase_request_code` = ?");
+    $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `requester_code` = ? WHERE `id` = ?");
     $stmt->bind_param('ss', $to, $equipment_id);
     return $stmt->execute();
     
-
 }
 
 function transfersEquipment($conn, $to, $selected_equipments){

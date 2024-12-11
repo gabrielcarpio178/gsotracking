@@ -108,7 +108,6 @@
                     let da = new Date(a.datetime), db = new Date(b.datetime);
                     return da - db;
                 }).reverse();
-                console.log(notification_datas);
                 let content_noti = '';
                 if(notification_datas.length!=0){
                     notification_datas.forEach(notification_data=>{

@@ -312,10 +312,6 @@ header .navbar ul li:last-child{
                     <a href="analytics.php">Analytics</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-file"></i>
-                    <a href="report.php">Report</a>
-                </li>
-                <li>
                     <i class="fa-solid fa-file-invoice"></i>
                     <a href="transaction.php">TRANSACTION LOG</a>
                 </li>
@@ -331,6 +327,10 @@ header .navbar ul li:last-child{
                 <li>
                     <i class="fa-solid fa-wrench"></i>
                     <a href="equipment.php">Maintenance</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-history"></i>
+                    <a href="history-maintenance.php">HISTORY MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear" id="active"></i>

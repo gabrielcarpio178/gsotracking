@@ -19,7 +19,7 @@ session_start();
     <script src="../../scripts/moment-with-locales.js"></script>
     <script src="../../scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
-    <title>Equipment</title>
+    <title>Maintenance</title>
 </head>
 <body>
     <style>
@@ -180,10 +180,6 @@ session_start();
                     <a href="analytics.php">Analytics</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-file"></i>
-                    <a href="report.php">Report</a>
-                </li>
-                <li>
                     <i class="fa-solid fa-file-invoice"></i>
                     <a href="transaction.php">TRANSACTION LOG</a>
                 </li>
@@ -198,6 +194,10 @@ session_start();
                 <li>
                     <i class="fa-solid fa-wrench" id="active"></i>
                     <a href="equipment.php"  id="active">Maintenance</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-history"></i>
+                    <a href="history-maintenance.php">HISTORY MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -368,7 +368,7 @@ session_start();
                                         </div>
                                         <button onclick="setDurition(${data.purchase_request_id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
                                     </td>
-                                    <td><button onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Reset Maintance</button></td>
+                                    <td><button onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Maintenance</button></td>
                                 </tr>
                             `;
                            

@@ -21,16 +21,16 @@ $pusher = new Pusher\Pusher(
 
 function sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn){
 
-    $stmt = $conn->prepare("INSERT INTO purchase_request (requester_code, notification_id, purchase_request_code, datetime, status) VALUES (?, ?, ?, NOW(), ?)");
+    $stmt = $conn->prepare("INSERT INTO purchase_request (notification_id, purchase_request_code, datetime, status) VALUES (?, ?, NOW(), ?)");
 
-    $stmt->bind_param('ssss', $usercode, $notification_id, $request_code, $status);
+    $stmt->bind_param('sss', $notification_id, $request_code, $status);
 
     if ($stmt->execute()) {
         $stmt->close();
         //insert request database
         foreach($send_data as $data){
-            $stmt = $conn->prepare("INSERT INTO purchase_request_list (purchase_request_code, item_name, quantity, price, specs, status) VALUES (?,?,?,?,?,?)");
-            $stmt->bind_param('ssssss', $request_code, $data['item-name'], $data['quantity'], $data['budget'], $data['specs'], $status);
+            $stmt = $conn->prepare("INSERT INTO purchase_request_list (requester_code,purchase_request_code, item_name, quantity, price, specs, status) VALUES (?,?,?,?,?,?,?)");
+            $stmt->bind_param('sssssss', $usercode, $request_code, $data['item-name'], $data['quantity'], $data['budget'], $data['specs'], $status);
             $stmt->execute();
             $stmt->close();
         }
@@ -60,11 +60,9 @@ function getNotification_id($conn){
 if (isset($_POST['send_data'])) {
     $send_data = json_decode($_POST['send_data'], true);
     $request_code = generateItemCode($conn);
+    $notification_id = getNotification_id($conn);
     $usercode = $_SESSION['usercode'];
     $status = 'pending';
-
-
-    $notification_id = getNotification_id($conn);
     if(sendRequest($usercode, $request_code, $status, $notification_id,$send_data, $conn)=='success'){
         $data = [
             'request_code'=>$request_code,

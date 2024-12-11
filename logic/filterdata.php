@@ -23,7 +23,7 @@ if(isset($_POST['search'])&&isset($_POST['status'])&&isset($_POST['date_data']))
     $date_date_sql = "";
     // SELECT * FROM purchase_request WHERE `requester_code` LIKE ? AND `status` = ? AND CAST(`datetime` AS DATE) = ? ORDER BY id DESC;
     if($_POST['search']!=""){
-        $search_sql = "WHERE `requester_code` LIKE '$search' ";
+        $search_sql = "WHERE pl.`requester_code` LIKE '$search' ";
     }
     if($search_sql!=""&&$status!=""){
         $filter_sql = "AND p.`status` LIKE '$status' ";
@@ -41,7 +41,7 @@ if(isset($_POST['search'])&&isset($_POST['status'])&&isset($_POST['date_data']))
     //get all data to this display
     $data_res = [];
     try {
-        $sql = mysqli_query($conn, "SELECT p.requester_code, p.purchase_request_code,p.datetime, u.fullname, u.`position`, u.`department`, u.`usercode`, p.`status` FROM `purchase_request` AS p JOIN `users` AS u ON p.`requester_code` = u.`usercode` ".$search_sql.$filter_sql.$date_date_sql." ORDER BY p.id DESC");
+        $sql = mysqli_query($conn, "SELECT pl.requester_code, p.purchase_request_code,p.datetime, u.fullname, u.`position`, u.`department`, u.`usercode`, p.`status` FROM `purchase_request` AS p JOIN `purchase_request_list` AS pl ON p.`purchase_request_code` = pl.`purchase_request_code` JOIN `users` AS u ON pl.`requester_code` = u.`usercode` ".$search_sql.$filter_sql.$date_date_sql." ORDER BY p.id DESC");
         while($row=mysqli_fetch_assoc($sql)){
             $data_res[] = ['purchase_request_code'=>$row['purchase_request_code'], 'status'=>$row['status'],'usercode'=>$row['usercode'],'position'=>$row['position'], 'department'=>$row['department'], 'fullname'=>$row['fullname'], 'timeago'=>timeAgo($row['datetime']), 'date'=>date('M-d-Y H:i a', strtotime($row['datetime'])),'purchase_list'=>getpurchasereq($row['purchase_request_code'], $conn), "request_data"=>htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8'), "request_data_list"=>htmlspecialchars(json_encode(getpurchasereq($row['purchase_request_code'], $conn)), ENT_QUOTES, 'UTF-8')];
         }

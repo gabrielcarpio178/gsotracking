@@ -25,6 +25,7 @@ $profile = $row['profile'] ?? $defaultProfile;
     <link rel="stylesheet" href="../../styles/accountability.css?v=1.1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../../scripts/moment-with-locales.js"></script>
     <?php include 'pushNotification.php'; ?>
     <style>
         .request-content{
@@ -164,49 +165,57 @@ $profile = $row['profile'] ?? $defaultProfile;
                     </thead>
                     <tbody id="tableBody">
                         <?php
-                        $stmt = $conn->prepare("SELECT * FROM purchase_request WHERE purchase_request.requester_code = ? ORDER BY id DESC");
-                        $stmt->bind_param('s', $usercode);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
+                        // $stmt = $conn->prepare("SELECT l.*, p.purchase_request_code FROM purchase_request_list AS l JOIN users AS u ON l.requester_code = u.usercode JOIN purchase_request AS p ON l.purchase_request_code = p.purchase_request_code WHERE u.usercode = ? ORDER BY l.id DESC");
+                        // $stmt->bind_param('s', $usercode);
+                        // $stmt->execute();
+                        // $result = $stmt->get_result();
+                        // $group_data = [];
+                        // while ($row = $result->fetch_assoc()) {
+                        //     $group_data[$row['purchase_request_code']][] = $row;
+                        // }
+                        // // print_r($group_data);
+                        
+                        // foreach($group_data as $data){
+                        //     print_r($data['purchase_request_code']);
+                        // }
+                            
+                            // $data = [];
+                            // $stmt2 = $conn->prepare("SELECT * FROM purchase_request_list WHERE purchase_request_code = ?");
+                            // $stmt2->bind_param('s', $row['purchase_request_code']);
+                            // $stmt2->execute();
+                            // $result2 = $stmt2->get_result();
+                            // while ($row2 = $result2->fetch_assoc()) {
+                            //     $data[] = $row2;
+                            // }
+                            // $stmt2->close(); // Move the close statement here
 
-                        while ($row = $result->fetch_assoc()) {
-                            $data = [];
-                            $stmt2 = $conn->prepare("SELECT * FROM purchase_request_list WHERE purchase_request_code = ?");
-                            $stmt2->bind_param('s', $row['purchase_request_code']);
-                            $stmt2->execute();
-                            $result2 = $stmt2->get_result();
-                            while ($row2 = $result2->fetch_assoc()) {
-                                $data[] = $row2;
-                            }
-                            $stmt2->close(); // Move the close statement here
+                            // echo "<tr>";
+                            // echo "<td>" . htmlspecialchars($row['purchase_request_code']) . "</td>";
 
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['purchase_request_code']) . "</td>";
+                            // // Loop through $data for item details
+                            // echo '<td class="quantities">';
+                            // foreach ($data as $index => $data2) {
+                            //     echo htmlspecialchars($data2['item_name']) . "<br/>";
+                            // }
 
-                            // Loop through $data for item details
-                            echo '<td class="quantities">';
-                            foreach ($data as $index => $data2) {
-                                echo htmlspecialchars($data2['item_name']) . "<br/>";
-                            }
+                            // echo '<td class="quantities">';
+                            // foreach ($data as $index => $data2) {
+                            //     echo htmlspecialchars($data2['quantity']) . "<br/>";
+                            // }
+                            // echo '</td>';
 
-                            echo '<td class="quantities">';
-                            foreach ($data as $index => $data2) {
-                                echo htmlspecialchars($data2['quantity']) . "<br/>";
-                            }
-                            echo '</td>';
+                            // echo '<td class="prices">';
+                            // foreach ($data as $index => $data2) {
+                            //     echo htmlspecialchars($data2['price']) . "<br/>";
+                            // }
+                            // echo '</td>';
 
-                            echo '<td class="prices">';
-                            foreach ($data as $index => $data2) {
-                                echo htmlspecialchars($data2['price']) . "<br/>";
-                            }
-                            echo '</td>';
+                            // echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+                            // echo "<td>" . htmlspecialchars(date('Y-m-d H:i a', strtotime($row['datetime']))) . "</td>";
+                            // echo "<td><button class='btn-viem-items' onclick='viewitems(".$row['purchase_request_code'].")'>View Items</button></td>";
 
-                            echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                            echo "<td>" . htmlspecialchars(date('Y-m-d H:i a', strtotime($row['datetime']))) . "</td>";
-                            echo "<td><button class='btn-viem-items' onclick='viewitems(".$row['purchase_request_code'].")'>View Items</button></td>";
-
-                            echo "</tr>";
-                        }
+                            // echo "</tr>";
+                        
                         ?>
                     </tbody>
                 </table>
@@ -235,6 +244,48 @@ $profile = $row['profile'] ?? $defaultProfile;
         const maxPageButtons = 3; // Number of page buttons to show at a time
 
         let data = []; // To hold the original table data
+
+        function fetchcontent(){
+            displatData();
+            fetchTableData();
+        }
+
+        function displatData(){
+            $.ajax({
+                url: '../../logic/usersAccountable.php',
+                type: 'GET',
+                data: {
+                    userData:'user_data'
+                },
+                cache: false,
+                success: res=>{
+                    var results = Object.values(JSON.parse(res));
+                    let tableContent = '';              
+                    results.forEach(result => {
+                        let equipment_name = '';
+                        let quantity = '';
+                        let price = '';
+                        result.forEach(data=>{
+                            equipment_name += `${data.item_name}<br>`
+                            quantity += `${data.quantity}<br>`
+                            price += `${data.price}<br>`
+                        })
+                        tableContent += `
+                            <tr>
+                                <td>${result[0].purchase_request_code}</td>
+                                <td>${equipment_name}</td>
+                                <td>${quantity}</td>
+                                <td>${price}</td>
+                                <td>${result[0].status!='pending'?'accepted':'pending'}</td>
+                                <td>${moment(result[0].datetime).format('LL')}</td>
+                                <td><button class='btn-viem-items' onclick='viewitems(${result[0].purchase_request_code})'>View Items</button></td>
+                            </tr>
+                        `
+                    });
+                    $("#tableBody").html(tableContent);
+                }
+            })
+        }
 
         function fetchTableData() {
             data = Array.from(tableBody.rows).map(row => Array.from(row.cells).map(cell => cell.textContent));
@@ -378,7 +429,8 @@ $profile = $row['profile'] ?? $defaultProfile;
                     id : purchase_id
                 },
                 success: res=>{
-                    displayData(JSON.parse(res))
+                    // console.log(Object.values(JSON.parse(res)));
+                    displayData(Object.values(JSON.parse(res))[0]);
                 }
             });
         }
@@ -388,30 +440,28 @@ $profile = $row['profile'] ?? $defaultProfile;
         }
 
         function displayData(data){
-            var img = (data.status == 'accept')?data.item_no:'default_image';
-            $("#btn_print_content").attr("disabled", (data.status != 'accept'))
-            $("#btn_print_content").attr("style", `${(data.status != 'accept')?"display: none":"display: block"}`);
-            $("#qr_name").text(data.fname);
-            $("#qr_status").text(data.status);
-            $("#qr_item").text(data.item_no);
-            $("#img_qr").attr("src",`../../qrcode_img/${img}.png`);
+            $("#btn_print_content").attr("disabled", (data[0].status == 'pending'))
+            $("#btn_print_content").attr("style", `${(data[0].status == 'pending')?"display: none":"display: block"}`);
+            $("#qr_name").text(data[0].fullname);
+            $("#qr_status").text(`${data[0].status!=='pending'?'accepted':'pending'}`);
+            $("#qr_item").text(data[0].purchase_request_code);
             let body_table = '';
             let total_price = 0;
             let total_qty = 0;
-            for(let i in data.item){
-                total_price += data.item[i].price;
-                total_qty += data.item[i].quantity;
+            for(let i in data){
+                total_price += data[i].price;
+                total_qty += data[i].quantity;
                 body_table +=  `
                     <tr>
-                        <td>${data.item[i].item_name}</td>
-                        <td>${data.item[i].quantity}</td>
-                        <td>${data.item[i].price}</td>
-                        <td>${data.item[i].specs}</td>
+                        <td>${data[i].item_name}</td>
+                        <td>${data[i].quantity}</td>
+                        <td>${data[i].price}</td>
+                        <td>${data[i].specs}</td>
                     </tr>
                 `;
             }
             $("#table_body").html(body_table);
-            canvasData(`${data.fname}-${data.item_no}`);
+            canvasData(`${data[0].fullname}-${data[0].purchase_request_code}`);
             
         }
 
@@ -434,7 +484,7 @@ $profile = $row['profile'] ?? $defaultProfile;
         open_noti.addEventListener('click',()=>{
             noti_content.style.display = "block";
         })
-        fetchTableData();
+        window.onload = fetchcontent;
     </script>
 </body>
 

@@ -22,6 +22,7 @@ require '../../logic/dbCon.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="../../scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="../../styles/sweetalert2.min.css">
+    <script href="../../scripts/moment-with-locales.js"></script>
     <script src="../../scripts/jquery.min.js"></script>
     <title>Equipment Transfer</title>
 </head>
@@ -1005,10 +1006,6 @@ require '../../logic/dbCon.php';
                     <a href="analytics.php">Analytics</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-file"></i>
-                    <a href="report.php">Report</a>
-                </li>
-                <li>
                     <i class="fa-solid fa-file-invoice"></i>
                     <a href="transaction.php">TRANSACTION LOG</a>
                 </li>
@@ -1024,6 +1021,10 @@ require '../../logic/dbCon.php';
                 <li>
                     <i class="fa-solid fa-wrench"></i>
                     <a href="equipment.php">Maintenance</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-history"></i>
+                    <a href="history-maintenance.php">HISTORY MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear"></i>
@@ -1367,8 +1368,8 @@ require '../../logic/dbCon.php';
                     if(equipments_list.length!=0){
                         equipments_list.forEach(equipment=>{
                             equiment_html+=`
-                                <input type="checkbox" class="check-box equipment_list" value="${equipment.purchase_request_code}" id="${equipment.purchase_request_code}">
-                                <label for="${equipment.purchase_request_code}" class="equipment">
+                                <input type="checkbox" class="check-box equipment_list" value="${equipment.id}" id="${equipment.id}">
+                                <label for="${equipment.id}" class="equipment">
                                     <div class="equipment-info">
                                         <div class="equipment-label">Equipment Name: </div>
                                         <div class="equipment-data">${equipment.item_name}</div>
@@ -1379,7 +1380,7 @@ require '../../logic/dbCon.php';
                                     </div>
                                     <div class="equipment-info">
                                         <div class="equipment-label">Purchase Data: </div>
-                                        <div class="equipment-data">${equipment.datetime}</div>
+                                        <div class="equipment-data">${moment(equipment.datetime).format("LL")}</div>
                                     </div>
                                     
                                 </label>
@@ -1442,7 +1443,6 @@ require '../../logic/dbCon.php';
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
-                    
                     $("#loader_div").css('display', 'none');
                     if(res==='error occur'){
                         Swal.fire({

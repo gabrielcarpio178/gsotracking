@@ -478,6 +478,7 @@ date_default_timezone_set("Asia/Manila");
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
+                    console.log(res);
                     if(res=='success'){
                         $("#loader_div").css('display', 'none');
                         Swal.fire({

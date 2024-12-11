@@ -12,7 +12,7 @@ function getuserpersonalData($id, $conn){
 }
 
 function getAllProduct($id, $conn){
-    $stmt = $conn->prepare("SELECT prl.item_name, prl.quantity, prl.price, pr.datetime, pr.purchase_request_code FROM users AS u INNER JOIN purchase_request AS pr ON u.usercode = pr.requester_code INNER JOIN purchase_request_list AS prl ON pr.purchase_request_code = prl.purchase_request_code WHERE u.usercode = ? AND pr.status = 'accept';");
+    $stmt = $conn->prepare("SELECT u.usercode, pr.purchase_request_code, prl.id, prl.item_name, prl.quantity, pr.datetime FROM purchase_request_list AS prl JOIN users AS u ON prl.requester_code = u.usercode JOIN purchase_request AS pr ON prl.purchase_request_code = pr.purchase_request_code WHERE u.usercode = ? AND pr.status = 'accept';");
     $stmt->bind_param('s', $id);
     $stmt->execute();
     $result = $stmt->get_result();
