@@ -15,12 +15,14 @@ $profile = $row['profile'] ?? $defaultProfile;
 
 <head>
     <meta charset="UTF-8">
-    <title>SETTINGS</title><link rel="icon" type="image/gif" href="../../styles/images/logo2.png">
+    <title>SETTINGS</title>
+    <link rel="icon" type="image/gif" href="../../styles/images/logo2.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="stylesheet" href="../../styles/admin_settings.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="../../scripts/jquery.min.js"></script>
+
     <style>
 
 
@@ -32,7 +34,7 @@ $profile = $row['profile'] ?? $defaultProfile;
     padding:0;
     box-sizing:border-box;
     text-decoration:none;
-    outline:none;
+    /* outline:none; */
     border:none;
     /* text-transform:capitalize; */
     transition:all .2s linear;
@@ -362,10 +364,6 @@ header .navbar ul li:last-child{
             </div>
             <div class="div2">
                 <div class="content2">
-                    <div class="search">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="search" placeholder="Search" class="search-input" />
-                    </div>
                     <div class="notpic">
                         <div class="notification noti_bell" onclick="openNotification()">
                             <div class="noti_count" id="noti_count"></div>

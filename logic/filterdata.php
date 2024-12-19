@@ -23,7 +23,7 @@ if(isset($_POST['search'])&&isset($_POST['status'])&&isset($_POST['date_data']))
     $date_date_sql = "";
     // SELECT * FROM purchase_request WHERE `requester_code` LIKE ? AND `status` = ? AND CAST(`datetime` AS DATE) = ? ORDER BY id DESC;
     if($_POST['search']!=""){
-        $search_sql = "WHERE pl.`requester_code` LIKE '$search' ";
+        $search_sql = "WHERE u.`fullname` LIKE '$search' ";
     }
     if($search_sql!=""&&$status!=""){
         $filter_sql = "AND p.`status` LIKE '$status' ";

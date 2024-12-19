@@ -8,7 +8,7 @@ if(isset($_GET['search'])){
     if($search==="all"){
         $sql = "SELECT * FROM `users` ORDER BY `id` DESC;";
     }else{
-        $sql = "SELECT * FROM `users` WHERE `usercode` LIKE '%$search%' ORDER BY `id` DESC;";
+        $sql = "SELECT * FROM `users` WHERE `fullname` LIKE '%$search%' ORDER BY `id` DESC;";
     }
 
     try {

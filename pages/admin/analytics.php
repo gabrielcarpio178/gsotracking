@@ -121,7 +121,7 @@ if($_SESSION['role']!=='admin'){
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">Maintenance</a>
+                    <a href="equipment.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-history"></i>
@@ -218,7 +218,7 @@ if($_SESSION['role']!=='admin'){
                 <div class="employee_number data-number">
                     <i class="fa-solid fa-user icon"></i>
                     <div class="number-label">
-                        <div class="label">Number Of Employees</div>
+                        <div class="label">Number Of Clients</div>
                         <div class="number"><?=getnumberemployees($conn) ?></div>
                     </div>
                 </div>
@@ -288,7 +288,7 @@ if($_SESSION['role']!=='admin'){
                 data: {
                     labels: month,
                     datasets: [{
-                    label: 'Total count of purchase request per month',
+                    label: 'Total count of purchase request per months',
                     data:  count,
                     borderWidth: 1
                     }]

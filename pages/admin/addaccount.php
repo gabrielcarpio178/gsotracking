@@ -78,7 +78,7 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">Analytics</a>
+                    <a href="analytics.php">ANALYTICS</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -94,7 +94,7 @@ require '../../logic/dbCon.php';
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">Maintenance</a>
+                    <a href="equipment.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-history"></i>
@@ -266,7 +266,7 @@ require '../../logic/dbCon.php';
                 <div class="form-container" id="form_content_data">
                     <div class="form-content">
                         <div class="close-container" onclick="close_form()">&times;</div>
-                        <form id="form_submit_add" class="submit-form">
+                        <form id="form_submit_adddata" class="submit-form">
                             <div class="input-content-btn input-content">
                                 <label for="full_name" class="label-input">Full name</label>
                                 <input type="text" class="input-data" id="full_name">
@@ -295,11 +295,11 @@ require '../../logic/dbCon.php';
                                 <input type="email" class="input-data" id="email">
                             </div>
                             <div class="input-content-btn input-content">
-                                <label for="pnumber" class="label-input">Phone number <span class="message" id="pmessage_edit"></span></label>
+                                <label for="pnumber" class="label-input">Phone number <span class="message" id="pmessage_add"></span></label>
                                 <input type="number" class="input-data" id="pnumber">
                             </div>
                             <div class="input-content-btn input-content">
-                                <label for="employee_id" class="label-input">Employee ID <span class="message" id="emessage_edit"></span></label>
+                                <label for="employee_id" class="label-input">Employee ID <span class="message" id="emessage_add"></span></label>
                                 <input type="number" class="input-data" id="employee_id">
                             </div>
                             <div class="input-content-btn input-content">
@@ -418,10 +418,10 @@ require '../../logic/dbCon.php';
             departments.forEach(department=>{
                 options += `<option value="${department}">${department}</option>`
             })
-
+        
             $("#department").html(options);
-
-            $("#form_content_data").on('submit',e=>{
+        
+            $("#form_submit_adddata").on('submit',e=>{
                 e.preventDefault();
                 var full_name = $("#full_name").val();
                 var birthday = $("#birthday").val();
@@ -431,14 +431,15 @@ require '../../logic/dbCon.php';
                 var employee_id = $("#employee_id").val();
                 var department = $("#department").val();
                 var position = $("#position").val();
-
+                
                 if(pnumber.length!==11){
-                    $("#pmessage").text("-phone number digit must be 11");
+                    $("#pmessage_add").text("-phone number digit must be 11");
                 }else if(employee_id.length!==9){
-                    $("#emessage").text("-employee ID digit must be 9")
+                    $("#emessage_add").text("-employee ID digit must be 9")
                 }
 
                 else{
+               
                     $.ajax({
                         url: '../../logic/dbaddaccount.php',
                         type: 'post',
@@ -458,8 +459,9 @@ require '../../logic/dbCon.php';
                             close_form();
                         },
                         success: res=>{
+                        
                             $("#loader_div").css('display', 'none');
-                            // console.log(res);
+                            console.log(res);
                             if(res!=='email or employee ID is already used'){
                                 Swal.fire({
                                     position: "center",

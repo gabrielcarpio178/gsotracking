@@ -210,7 +210,7 @@
     <section id="print_content">
         <div class="header-print">
             <div class="logo-print">
-                <img src="../../styles/images/logo2.png" alt="logo gso">
+                <img src="../../styles/images/logo1.png" alt="logo gso">
             </div>
             <div class="watermark-print">
                 <div class="watermark-print1">

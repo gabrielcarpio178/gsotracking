@@ -59,9 +59,11 @@ $data2['it'] = $data22['it']; // No slicing here
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="../../styles/accountability.css?v=1.1">
+    <script src="../../scripts/jquery.min.js"></script>  
 </head>
 
 <body>
+    
     <style>
         .request-content{
             position: absolute;
@@ -74,7 +76,32 @@ $data2['it'] = $data22['it']; // No slicing here
             overflow: scroll;
             display: none;
         }
+
+
+        .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+
+
     </style>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_storekeeper_content.php' ?>
+    </div>
     <!-- <div class="request-content" id="req_content">
         <?php
         //  include "../client/print_items.php";
@@ -136,8 +163,9 @@ $data2['it'] = $data22['it']; // No slicing here
                         <input type="number" placeholder="Item no." class="search-input" id="searchInput" oninput="getsearch(this.value)">
                     </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -196,8 +224,7 @@ $data2['it'] = $data22['it']; // No slicing here
                 </table>
             </div>
         </main>    
-    </div>
-    <script src="../../scripts/jquery.min.js"></script>                    
+    </div>                  
     <script>
         function getsearch(search){
             $.ajax({

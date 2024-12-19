@@ -200,7 +200,7 @@ $stmt->close();
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">Analytics</a>
+                    <a href="analytics.php">ANALYTICS</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -217,7 +217,7 @@ $stmt->close();
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">Maintenance</a>
+                    <a href="equipment.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-history"></i>
@@ -552,7 +552,6 @@ $stmt->close();
                             },
                             cache: false,
                             success: res=>{
-                                // console.log(res);
                                 var data = JSON.parse(res);
                                 displaydata(data);
                             }

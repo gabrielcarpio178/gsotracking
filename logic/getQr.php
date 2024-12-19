@@ -7,7 +7,7 @@ function getData($sql, $conn){
     $result = $stmt->get_result();
     $data = [];
     while($row = $result->fetch_assoc()){
-        $row['status_img'] = "item_".$row['status'].".png";
+        $row['status_img'] = "item_".$row['purchase_request_code'].".png";
         $row['datetime'] =date('M-d-Y', strtotime($row['datetime']));
         $data[] = $row;
     }
@@ -18,9 +18,9 @@ if(isset($_POST['search'])){
     $search = $_POST['search'];
     $sql = '';
     if($search === 'all'){
-        $sql = "SELECT l.`id`, l.`purchase_request_code`, l.`item_name`, l.`quantity`, l.`specs`, l.`status`, p.`datetime`, u.`fullname` FROM `users` AS u JOIN `purchase_request_list` AS l ON u.`usercode` = l.`requester_code` JOIN `purchase_request` AS p ON p.`purchase_request_code` = l.`purchase_request_code` WHERE l.`status` != 'pending';";
+        $sql = "SELECT l.`id`, l.`purchase_request_code`, l.`item_name`, l.`quantity`, l.`specs`, l.`status`, p.`datetime`, u.`fullname` FROM `users` AS u JOIN `purchase_request_list` AS l ON u.`usercode` = l.`requester_code` JOIN `purchase_request` AS p ON p.`purchase_request_code` = l.`purchase_request_code` WHERE l.`status` != 'pending' ORDER BY l.`id` DESC;";
     }else{
-        $sql = "SELECT l.`id`, l.`purchase_request_code`, l.`item_name`, l.`quantity`, l.`specs`, l.`status`, p.`datetime`, u.`fullname` FROM `users` AS u JOIN `purchase_request_list` AS l ON u.`usercode` = l.`requester_code` JOIN `purchase_request` AS p ON p.`purchase_request_code` = l.`purchase_request_code` WHERE l.`status` != 'pending' AND l.`purchase_request_code` LIKE '%$search%';";
+        $sql = "SELECT l.`id`, l.`purchase_request_code`, l.`item_name`, l.`quantity`, l.`specs`, l.`status`, p.`datetime`, u.`fullname` FROM `users` AS u JOIN `purchase_request_list` AS l ON u.`usercode` = l.`requester_code` JOIN `purchase_request` AS p ON p.`purchase_request_code` = l.`purchase_request_code` WHERE l.`status` != 'pending' AND l.`purchase_request_code` LIKE '%$search%' ORDER BY l.`id` DESC;";
     }
     $res = getData($sql, $conn);
     print_r(json_encode($res));

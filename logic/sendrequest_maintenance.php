@@ -21,7 +21,7 @@ function getNotification_id($conn){
     $stmt->execute();
     $result = $stmt->get_result();
     if($result->num_rows > 0){
-        return $result->fetch_assoc()['id']+1;
+        return $result->fetch_assoc()['id'];
     }else{
         return 1;
     }
@@ -40,7 +40,7 @@ if(isset($_POST['purchase_request_code'])&&isset($_POST['item_name'])&&isset($_P
     $request_code = $_POST['purchase_request_code'];
     $item_name = $_POST['item_name'];
     $fullname = $_POST['fullname'];
-    $notification_id = getNotification_id($conn);
+    $notification_id = getNotification_id($conn)+1;
     if(insertRequest($usercode, $notification_id, $request_code, $conn)){
         if(updateRequest($request_code, $conn)){
             $data = [
@@ -51,8 +51,8 @@ if(isset($_POST['purchase_request_code'])&&isset($_POST['item_name'])&&isset($_P
                 'noti_type'=>'request_maintenance'
             ];
             $pusher->trigger('my-channel', 'my-event', json_encode($data));
-            echo insertNotification($conn);
         }
+        insertNotification($conn);
     }
     
 }

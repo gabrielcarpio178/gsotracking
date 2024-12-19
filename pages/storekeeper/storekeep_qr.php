@@ -14,6 +14,8 @@ session_start();
     <link rel="stylesheet" href="../../styles/storekeeper_qr.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="../../scripts/moment-with-locales.js"></script>
+    <script src="../../scripts/jquery.min.js"></script>  
     <!-- <script src="https://unpkg.com/html5-qrcode"></script> -->
 
 </head>
@@ -30,9 +32,34 @@ session_start();
         left: 0;
         display: none;
     }
+
+    
+    .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+
+
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
+    </div>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_storekeeper_content.php' ?>
     </div>
     <header>
 
@@ -86,13 +113,10 @@ session_start();
             </div>
             <div class="div2">
                 <div class="content2">
-                    <div class="search">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="search" placeholder="Search" class="search-input">
-                    </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -106,12 +130,6 @@ session_start();
                 <video class="sq" id="qr-reader"></video>
                 <div id="results" style="margin-top: 20px; text-align: center; font-size: 18px;"></div>
                 <div class="ft">
-                    <div class="l">
-                        <div class="pic">
-                            <img src="../../styles/images/qr.png" alt="">
-                        </div>
-                        <div class="text">Generate Qr code</div>
-                    </div>
                     <div class="r">
                         <div class="pic" onclick="document.getElementById('qr-input-file').click()">
                             <img src="../../styles/images/qrup.png" alt="">
@@ -127,7 +145,7 @@ session_start();
         <div class="modal-data">
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> -->
     <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script>
@@ -153,7 +171,10 @@ session_start();
             scanner.addListener('scan', function(content) {
                 // resultsDiv.textContent = 'Scanned: ' + content;
                 fetchInformation(content);
+                // console.log(content);
             });
+
+            
 
             // Start scanning automatically when the page loads
             startScanning();
@@ -177,6 +198,7 @@ session_start();
 
                             if (code) {
                                 // resultsDiv.textContent = 'Scanned from file: ' + code.data;
+                                // console.log(code.data);
                                 fetchInformation(code.data);
                             } else {
                                 resultsDiv.textContent = 'No QR code found in the image.';
@@ -189,30 +211,58 @@ session_start();
             });
         });
 
+        function getDuration(num_days, doingMaintenance){
+            
+            var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('YYMMDD');
+            var today = moment().format('YYMMDD');
+            if(maintenance_day>=today){
+                return moment(doingMaintenance).add(num_days, 'days').format('LL');
+            }else{
+                $("#maintenance_date").css("color", 'red');
+                return '<div style="color: red;">Need Maintenance</div>'
+            }
+        }
+
         function fetchInformation(code) {
-            $.ajax({
-                url: '../../logic/READ/fetchEmployeeData.php',
-                method: 'POST',
-                data: {
-                    code: code
-                },
-                beforeSend: ()=>{
-                    $("#loader_div").css("display", "block");
-                },
-                success: function(res) {
-                    $("#loader_div").css("display", "none");
-                    var result = JSON.parse(res);
-                    if(res.length!==0){
-                        Swal.fire(`Fullname: ${result[0].fullname}<br>Item-name: ${result[0].item_name}<br>Quantity: ${result[0].quantity}<br>Specs: ${result[0].specs}<br>Purchase Date: ${result[0].datetime}<br>Maintinance: ${result[0].maintance}`);
-                    }else{
-                        $("#loader_div").css("display", "none");
-                        resultsDiv.textContent = 'Error fetching data. Please try again.';
-                    }   
-                },
-                error: function() {
-                    resultsDiv.textContent = 'Error fetching data. Please try again.';
-                }
-            });
+            Swal.fire({
+                html: `
+                    ${code}
+                `
+            })
+
+            // $.ajax({
+            //     url: '../../logic/READ/fetchEmployeeData.php',
+            //     method: 'POST',
+            //     data: {
+            //         code: code
+            //     },
+            //     beforeSend: ()=>{
+            //         $("#loader_div").css("display", "block");
+            //     },
+            //     success: function(res) {
+            //         $("#loader_div").css("display", "none");
+            //         var result = JSON.parse(res);
+            //         if(res.length!==0){
+            //             Swal.fire({
+            //                 html: `
+            //                     <strong style="text-align: left;">Request Equipment</strong>
+            //                     <strong style="text-align: left;">Name: </strong> ${result[0].fullname}<br/>
+            //                     <strong style="text-align: left;">Item-name: </strong> ${result[0].item_name}<br/>
+            //                     <strong style="text-align: left;">Quantity:</strong> ${result[0].quantity}<br/>
+            //                     <strong style="text-align: left;">Purchase Date:</strong> ${result[0].datetime}<br/>
+            //                     <strong style="text-align: left;">Maintenance:</strong> ${getDuration(result[0].maintenance, result[0].maintance.doingMaintenance)}<br/>
+                                
+            //                 `
+            //             })
+            //         }else{
+            //             $("#loader_div").css("display", "none");
+            //             resultsDiv.textContent = 'Error fetching data. Please try again.';
+            //         }   
+            //     },
+            //     error: function() {
+            //         resultsDiv.textContent = 'Error fetching data. Please try again.';
+            //     }
+            // });
         }
     </script>
 </body>

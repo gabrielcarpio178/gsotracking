@@ -7,7 +7,7 @@ function getuserpersonalData($id, $conn){
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
-    $row['birthday'] = date('Y-m-d H:i a', strtotime($row['birthdate']));
+    $row['birthday'] = date('Y-m-d H:i', strtotime($row['birthdate']));
     return $row;
 }
 
@@ -19,7 +19,7 @@ function getAllProduct($id, $conn){
     if ($result->num_rows > 0) {
     $userData = [];
     while ($row = $result->fetch_assoc()) {
-        $row['datetime'] = date('Y-m-d H:i a', strtotime($row['datetime']));
+        $row['datetime'] = date('Y-m-d H:i', strtotime($row['datetime']));
         $userData[] = $row;
     }
         return $userData;

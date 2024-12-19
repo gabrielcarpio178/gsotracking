@@ -12,6 +12,9 @@ $conn = mysqli_connect($dbHost, $dbUsername, $dbPassword, $dbName);
 if (!$conn) {
     die('Error connecting to the database: ' . mysqli_connect_error());
 }
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 
 // Functions
 

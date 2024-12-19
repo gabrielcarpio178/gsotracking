@@ -87,8 +87,8 @@ $profile = $row['profile'] ?? $defaultProfile;
                     <a href="accountability.php">ACCOUNTABILITY</a>
                 </li>
                 <li>
-                    <i class="fa-solid fa-gear" id="active"></i>
-                    <a href="request_maintenance.php" id="active">MAINTENANCE</a>
+                    <i class="fa-solid fa-gear"></i>
+                    <a href="request_maintenance.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-gear" id="active"></i>

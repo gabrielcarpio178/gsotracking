@@ -28,9 +28,19 @@ function userData($conn, $to, $selected_equiments){
     }
 }
 
+
+function insertNotification($conn){
+    $stmt = $conn->prepare("INSERT INTO `notification`(`request_type`) VALUES ('transfer_account')");
+    if ($stmt->execute()) {
+        return "success";
+    }
+}
+
 if(isset($_POST['from'])&&isset($_POST['to'])&&isset($_POST['selected_equiments'])){
     $from = $_POST['from'];
     $to = $_POST['to'];
     $selected_equiments = $_POST['selected_equiments'];
-    userData($conn, $to, $selected_equiments);
+    if(insertNotification($conn)=="success"){
+        echo userData($conn, $to, $selected_equiments);
+    }
 }

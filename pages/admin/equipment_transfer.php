@@ -1003,7 +1003,7 @@ require '../../logic/dbCon.php';
 
                 <li>
                     <i class="fa-solid fa-chart-simple"></i>
-                    <a href="analytics.php">Analytics</a>
+                    <a href="analytics.php">ANALYTICS</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-file-invoice"></i>
@@ -1020,7 +1020,7 @@ require '../../logic/dbCon.php';
                 </li>
                 <li>
                     <i class="fa-solid fa-wrench"></i>
-                    <a href="equipment.php">Maintenance</a>
+                    <a href="equipment.php">MAINTENANCE</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-history"></i>
@@ -1366,6 +1366,7 @@ require '../../logic/dbCon.php';
                     let equiment_html = '';
 
                     if(equipments_list.length!=0){
+                        
                         equipments_list.forEach(equipment=>{
                             equiment_html+=`
                                 <input type="checkbox" class="check-box equipment_list" value="${equipment.id}" id="${equipment.id}">
@@ -1459,7 +1460,8 @@ require '../../logic/dbCon.php';
                             title: "Transfer Success",
                             showConfirmButton: false,
                             timer: 1000
-                        }).then(()=>{
+                        })
+                        .then(()=>{
                             window.location.reload();
                         });
                     }

@@ -21,6 +21,7 @@ require '../../logic/dbCon.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
     <link rel="stylesheet" href="../../styles/admin_transaction.css">
     <script src="../../scripts/jquery.min.js"></script>
+    <script src="../../scripts/moment-with-locales.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
@@ -43,6 +44,9 @@ require '../../logic/dbCon.php';
         .notification > i{
             color: white;
             
+        }
+        tr>td{
+            text-transform: uppercase;
         }
     </style>
     <div class="noti-content" id="noti_content">
@@ -118,7 +122,7 @@ require '../../logic/dbCon.php';
                 <div class="content2">
                     <div class="search">
                         <i class="fa-solid fa-search"></i>
-                        <input type="search" id="searchInput" placeholder="Search">
+                        <input type="search" id="searchInput" placeholder="Search" oninput="searchData(this.value)">
                     </div>
                     <div class="notpic">
                         <div class="notification noti_bell" onclick="openNotification()">
@@ -133,6 +137,22 @@ require '../../logic/dbCon.php';
             </div>
         </div>
         <main>
+
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Equipment ID</th>
+                        <th>Equipment Name</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    
+                </tbody>
+            </table>
             
         </main>
     </div>
@@ -150,6 +170,7 @@ require '../../logic/dbCon.php';
                     $('header').removeClass('toggle');
                 });
             });
+            getAllData('all');
         });
 
         // THIS IS THE TABLE FUNCTION PAGINATION
@@ -314,6 +335,42 @@ require '../../logic/dbCon.php';
         document.getElementById('searchInput').addEventListener('input', searchTable);
 
         displayTable(currentPage);
+        function searchData(search){
+            getAllData(search);
+        }
+
+        function getAllData(search){
+            $.ajax({
+                url: '../../logic/getAllTransaction.php',
+                type: 'POST',
+                data: {
+                    search
+                },
+                cache: false,
+                success: res=>{
+                    var datas =JSON.parse(res);
+                    // console.log(datas);
+                    displatTable(datas);
+                }
+            })
+        }
+        function displatTable(datas){
+            let table_html = '';
+            for(let i in datas){
+                var {datetime, fullname, item_name, purchase_request_code, status, usercode} = datas[i];
+                table_html += `
+                    <tr>
+                        <td>${fullname}</td>
+                        <td>${usercode}</td>
+                        <td>${purchase_request_code}</td>
+                        <td>${item_name}</td>
+                        <td>${moment(datetime).format('hh:mm a')}</td>
+                        <td>${moment(datetime).format('MMMM DD YYYY')}</td>
+                    </tr>
+                `
+            }
+            $("#tableBody").html(table_html);
+        }
     </script>
 </body>
 

@@ -4,7 +4,7 @@ if(isset($_POST['purchase_code'])){
     $data = [];
     $purchase_code = $_POST['purchase_code'];
     //get purchase request code
-    $stmt_rq = $conn->prepare("SELECT `requester_code`, `purchase_request_code`,`datetime` FROM `purchase_request` WHERE `purchase_request_code` = ?");
+    $stmt_rq = $conn->prepare("SELECT l.`requester_code`, p.`purchase_request_code`,p.`datetime` FROM `purchase_request` AS p JOIN purchase_request_list AS l ON l.purchase_request_code = p.purchase_request_code WHERE l.`purchase_request_code` = ?");
     $stmt_rq->bind_param("s", $purchase_code);
     $stmt_rq->execute();
     $result_rq = $stmt_rq->get_result();

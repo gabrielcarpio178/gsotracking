@@ -54,7 +54,6 @@ function getNotification_id($conn){
     }else{
         return 1;
     }
-    
 }
 
 if (isset($_POST['send_data'])) {

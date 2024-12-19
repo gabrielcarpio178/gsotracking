@@ -32,10 +32,36 @@ session_start();
         left: 0;
         display: none;
     }
+
+    .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+
+
     </style>
     <div class="loader-content" id="loader_div">
         <?php include '../client/loader.php' ?>
     </div>
+
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_storekeeper_content.php' ?>
+    </div>
+
     <header>
 
         <div class="user">
@@ -88,13 +114,10 @@ session_start();
             </div>
             <div class="div2">
                 <div class="content2">
-                    <div class="search">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="search" placeholder="Search" class="search-input">
-                    </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="">
@@ -303,6 +326,7 @@ session_start();
                     },
                     cache: false,
                     success: res=>{
+                        // console.log(res);
                         var datas = JSON.parse(res);
                         if(datas.length!==0){
                            displayQr(datas) 
@@ -382,7 +406,8 @@ session_start();
                 // var data_print = JSON.parse();
                 let data_html = ''
                 selected_data.forEach(data=>{
-                    var data_content = JSON.parse(data)
+                    var data_content = JSON.parse(data);
+                    
                     data_html += `
                         <section class="qr-contents" onclick=selectedCheck(this) id=${data_content.id}>
                             <div class="qr-data_content-content">

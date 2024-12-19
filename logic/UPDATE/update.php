@@ -1,5 +1,5 @@
 <?php
-require '../logic/dbCon.php';
+require '../dbCon.php';
 session_start();
 $usercode = $_SESSION['usercode'];
 $fullname = $_POST['fullname'] ?? ''; // Use null coalescing to provide a default value
@@ -19,7 +19,7 @@ $row = $result->fetch_assoc();
 $oldPath = $row['profile']; // Store the old image path
 if ($currentPassword != decrypt($row['password'], secretKey())) {
     $_SESSION['error'] = 'old password is incorrect';
-    header('Location: ../pages/settings.php');
+    header("Location: ../../pages/".$_SESSION['role']."/settings.php");
     exit();
 }
 $stmt->close();
@@ -52,6 +52,9 @@ if (isset($image) && $image['error'] === UPLOAD_ERR_OK) { // Check for upload er
 $stmt = $conn->prepare('UPDATE users SET fullname=?, email=?, birthdate=?, gender=?, phone_number=?, profile=?, password=? WHERE usercode = ?');
 $stmt->bind_param('sssssssi', $fullname, $email, $birthdate, $gender, $phone_number, $target_file, $newPassword, $usercode); // Ensure correct number of parameters
 if ($stmt->execute()) {
+    $_SESSION['profile'] = isset($image) && $image['error'] === UPLOAD_ERR_OK?$target_file:$_SESSION['profile'];
+    $_SESSION['fullname'] = $fullname;
+    $_SESSION['email'] = $email;
     $_SESSION['successUps'] = 'update successful';
     header("Location: ../../pages/".$_SESSION['role']."/settings.php");
     exit();

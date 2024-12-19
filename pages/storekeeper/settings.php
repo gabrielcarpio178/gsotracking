@@ -16,10 +16,11 @@ $profile = $row['profile'] ?? $defaultProfile;
 <head>
     <meta charset="UTF-8">
     <title>SETTINGS</title>
-    <link rel="icon" type="image/gif" href="imgOP/gif001.gif">
+    <link rel="icon" type="image/gif" href="../../styles/images/logo2.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" /> -->
-    <link rel="stylesheet" href="../../styles/admin_settings.css?v=1.1">
+    <link rel="stylesheet" href="../../styles/admin_settings.css">
+    <script src="../../scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script>
         <?php
@@ -35,6 +36,29 @@ $profile = $row['profile'] ?? $defaultProfile;
 </head>
 
 <body>
+    <style>
+        .noti-content{
+            border-left: 2px solid rgba(0, 0, 0, 0.3);
+            height: 100vh;
+            width: 30%;
+            position: absolute;
+            z-index: 1;
+            right: 0;
+            background-color: white;
+            display: none;
+        }
+        .notification{
+            font-size: 3rem;
+            cursor: pointer;
+        }
+        .notification > i{
+            color: white;
+            
+        }
+    </style>
+    <div class="noti-content" id="noti_content">
+        <?php include 'noti_storekeeper_content.php' ?>
+    </div>
     <header>
         <div class="user">
             <img src="<?php echo $_SESSION['profile'] ?>" alt="">
@@ -88,13 +112,10 @@ $profile = $row['profile'] ?? $defaultProfile;
             </div>
             <div class="div2">
                 <div class="content2">
-                    <div class="search">
-                        <i class="fa-solid fa-search"></i>
-                        <input type="search" placeholder="Search" class="search-input" />
-                    </div>
                     <div class="notpic">
-                        <div class="ahehe">
-                            <a href=""><i class="fa-solid fa-bell"></i></a>
+                        <div class="notification noti_bell" onclick="openNotification()">
+                            <div class="noti_count" id="noti_count"></div>
+                            <i class="fa-solid fa-bell "></i>
                         </div>
                         <div class="profile">
                             <img src="../../styles/images/logo1.png" alt="" />
