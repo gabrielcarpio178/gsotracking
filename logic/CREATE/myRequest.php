@@ -29,8 +29,8 @@ function sendRequest($usercode, $request_code, $status, $notification_id,$send_d
         $stmt->close();
         //insert request database
         foreach($send_data as $data){
-            $stmt = $conn->prepare("INSERT INTO purchase_request_list (requester_code,purchase_request_code, item_name, quantity, price, specs, status) VALUES (?,?,?,?,?,?,?)");
-            $stmt->bind_param('sssssss', $usercode, $request_code, $data['item-name'], $data['quantity'], $data['budget'], $data['specs'], $status);
+            $stmt = $conn->prepare("INSERT INTO purchase_request_list (usercode, requester_code,purchase_request_code, item_name, quantity, price, specs, status) VALUES (?,?,?,?,?,?,?,?)");
+            $stmt->bind_param('ssssssss', $usercode, $usercode, $request_code, $data['item-name'], $data['quantity'], $data['budget'], $data['specs'], $status);
             $stmt->execute();
             $stmt->close();
         }

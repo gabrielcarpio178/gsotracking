@@ -1,5 +1,6 @@
 <?php
 require 'dbCon.php';
+include 'generateQrHistory.php';
 sleep(1);
 function updateMain($id, $conn){
     try {
@@ -18,10 +19,12 @@ function insertMaintenance($purchase_request_code, $conn){
         return $th;
     }
 }
-if(isset($_POST['id'])){
+print_r($_POST);
+if(isset($_POST['id'])&&isset($_POST['usercode'])){
     $id = $_POST['id'];
-    $purchase_request_code = $_POST['purchase_request_code'];
+    $usercode = $_POST['usercode'];
     if(updateMain($id, $conn)=="success"){
+        insertEquipmentHistory($conn, $usercode, $id, "Maintenance");
         echo insertMaintenance($id, $conn);
     }
 }    

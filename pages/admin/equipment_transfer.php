@@ -1444,6 +1444,7 @@ require '../../logic/dbCon.php';
                     $("#loader_div").css('display', 'block');
                 },
                 success: res=>{
+                    console.log(res);
                     $("#loader_div").css('display', 'none');
                     if(res==='error occur'){
                         Swal.fire({

@@ -4,7 +4,7 @@ if(isset($_POST['purchase_code'])){
     $data = [];
     $purchase_code = $_POST['purchase_code'];
     //get purchase request code
-    $stmt_rq = $conn->prepare("SELECT l.`requester_code`, p.`purchase_request_code`,p.`datetime` FROM `purchase_request` AS p JOIN purchase_request_list AS l ON l.purchase_request_code = p.purchase_request_code WHERE l.`purchase_request_code` = ?");
+    $stmt_rq = $conn->prepare("SELECT l.`usercode`, l.`requester_code`, p.`purchase_request_code`,p.`datetime` FROM `purchase_request` AS p JOIN purchase_request_list AS l ON l.purchase_request_code = p.purchase_request_code WHERE l.`purchase_request_code` = ?");
     $stmt_rq->bind_param("s", $purchase_code);
     $stmt_rq->execute();
     $result_rq = $stmt_rq->get_result();
@@ -25,7 +25,7 @@ if(isset($_POST['purchase_code'])){
 
     //get full name
     $stmt_fn = $conn->prepare("SELECT `fullname`, `position` FROM `users` WHERE `usercode` =  ?");
-    $stmt_fn->bind_param("s", $row_rq['requester_code']);
+    $stmt_fn->bind_param("s", $row_rq['usercode']);
     $stmt_fn->execute();
     $result_fn = $stmt_fn->get_result();
     $row_fn = $result_fn->fetch_assoc();

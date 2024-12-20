@@ -303,7 +303,7 @@ session_start();
                             <th>REQUEST maintenance</th>
                             <th>Maintenance Date</th>
                             <th>Maintenance Duration</th>
-                            <th>Action</th>
+                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -364,11 +364,14 @@ session_start();
                                     <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
                                     <td>
                                         <div>
-                                            ${isMaintenanceNull(data.maintance_durition)?data.maintance_durition+" days":"Please Set Duration"}
+                                            ${isMaintenanceNull(data.maintance_durition)?"":"Please Set Duration"}
                                         </div>
                                         <button onclick="setDurition(${data.purchase_request_id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
                                     </td>
-                                    <td><button onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)})"}>Maintenance</button></td>
+                                    <td style="white-space: nowrap">
+                                        <button ${data.isDisabled==1?"style='display: none;'":""} onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)}, ${data.usercode})"}>Maintenance</button>
+                                        <button onclick="disableddata(${data.purchase_request_id}, ${data.isDisabled})"}>${data.isDisabled==0?"Disabled":"Fixed"}</button>
+                                    </td>
                                 </tr>
                             `;
                            
@@ -385,7 +388,10 @@ session_start();
                                     <td>
                                         --
                                     </td>
-                                    <td><button onclick="acceptRequest(${data.usercode}, ${data.purchase_request_id})"}>Accepted</button></td>
+                                    <td style="white-space: nowrap">
+                                        <button ${data.isDisabled==1?"style='display: none;'":""} onclick="acceptRequest(${data.usercode}, ${data.purchase_request_id})"}>Accepted</button>
+                                        <button onclick="disableddata(${data.purchase_request_id}, ${data.isDisabled})"}>${data.isDisabled==0?"Disabled":"Fixed"}</button>
+                                    </td>
                                 </tr>
                             `;
                         }
@@ -406,7 +412,23 @@ session_start();
             $("#form_durition").hide();
         }
 
-        function resetMain(id, isSetDuration){
+        function disableddata(id, isDisabled){
+            
+            $.ajax({
+                url: '../../logic/disabledEquipment.php',
+                type: 'POST',
+                data:{
+                    id, isDisabled
+                },
+                cache: false,
+                success: res=>{
+                    console.log(res);
+                }
+            })
+
+        }
+
+        function resetMain(id, isSetDuration, usercode){
             if(!isSetDuration){
                 Swal.fire({
                     title: "Are you sure?",
@@ -423,12 +445,14 @@ session_start();
                             url: '../../logic/updateMaintance.php',
                             type: 'post',
                             data : {
-                                id
+                                id,
+                                usercode
                             },
                             beforeSend: ()=>{
                                 $("#loader_div").css('display', 'block');
                             },
                             success: res=>{
+                                console.log(res);
                                 $("#loader_div").css('display', 'none');
                                 Swal.fire({
                                     position: "center",

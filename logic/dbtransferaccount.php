@@ -1,5 +1,6 @@
 <?php
 require 'dbCon.php';
+include 'generateQrHistory.php';
 
 function updateEquipment($conn, $to, $equipment_id){
 
@@ -12,9 +13,11 @@ function updateEquipment($conn, $to, $equipment_id){
 function transfersEquipment($conn, $to, $selected_equipments){
     $result = false;
     foreach ($selected_equipments as $equipment) {
+        insertEquipmentHistory($conn, $to, $equipment, 'Transfer Equipment');
         if(!updateEquipment($conn, $to, $equipment)){
             $result = true; 
         }
+        
     }
     return $result;
 }

@@ -68,21 +68,33 @@ function getAllItems($conn, $id){
     $maintance =  "Maintenance: ". $row['maintance']."\n";
     $equiment_code =  "Equiment Code: ". $row['purchase_request_code']."\n";
     $department =  "Department: ". $row['department']."\n";
-    $insertData = $fullname." ".$item_name." ".$quantity." ".$datetime." ".$equiment_code." ".$department." ".$maintance;
+    $insertData = $fullname.$item_name.$quantity.$datetime.$equiment_code.$department.$maintance;
     return generateQrCode($insertData, $row['purchase_request_code']);
+}
+
+
+function generateQrcodeHistory($itemId){
+    $path = "../../qrcode_img/";
+    $qrkey = "https://gsotracking.bccbsis.com/qrcodeupsss/equipment-tracking.php?id=".$itemId;
+    $qr = $path."item_history_".$itemId.".png";
+    QRcode :: png($qrkey, $qr, 'H', 4, 4);
+    return "success";
 }
 
 function insertEquipmentHistory($conn, $request_data, $request_data_list, $action){
     $item_data = json_decode($request_data_list, true);
     $request = json_decode($request_data, true);
     $usercode = $request['usercode'];
+    $dataReturn = false;
     foreach ($item_data as $ids) {
         $id= $ids['id'];
         $stmt = $conn->prepare("INSERT INTO `equipment_history`(`equiment_id`, `usercode`, `action`) VALUES (?,?,?)");
         $stmt->bind_param("sss", $id, $usercode, $action);
-        $stmt->execute();
+        if($stmt->execute()){
+            $dataReturn = generateQrcodeHistory($id)==="success";
+        }
     }
-    return 1;
+    return $dataReturn;
 }
 
 
@@ -99,6 +111,7 @@ function generateCodePerItem($items_list, $conn){
 
 
 
+
 if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request_data'])&&isset($_POST['request_data_list'])){
     $status =  $_POST['status'];
     $request_code =  $_POST['request_code'];
@@ -109,7 +122,7 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
 
     
     if(generateCodePerItem($items_list, $conn)){
-        if(insertEquipmentHistory($conn, $request_data, $request_data_list, 'borrowed')){
+        if(insertEquipmentHistory($conn, $request_data, $request_data_list, 'Purchase Equipment')){
 
             $stmt = $conn->prepare("UPDATE purchase_request SET status = ? WHERE purchase_request_code = ?");
             $stmt->bind_param("ss", $status, $request_code);
