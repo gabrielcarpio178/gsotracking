@@ -25,6 +25,7 @@ $profile = $row['profile'] ?? $defaultProfile;
     <link rel="stylesheet" href="../../styles/accountability.css?v=1.1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../scripts/moment-with-locales.js"></script>
     <?php include 'pushNotification.php'; ?>
     <style>
@@ -65,6 +66,27 @@ $profile = $row['profile'] ?? $defaultProfile;
             display: none;
             /* overflow: scroll; */
         }
+        tbody tr{
+            border-bottom: 2px solid #ddd;
+        }
+        tr>td{
+            border: none;
+        }
+        #print_content{
+            height: 100vh;
+            width: 100%;
+            position: absolute;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            /* padding: 1rem; */
+            display: none;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* border: 1px solid black; */
+            border-radius: 0;
+            padding-top: 0;
+            overflow: scroll;
+        }
     </style>
 </head>
 
@@ -74,6 +96,9 @@ $profile = $row['profile'] ?? $defaultProfile;
     </div>
     <div class="noti-content" id="noti_content">
         <?php include 'noti_content.php' ?>
+    </div>
+    <div class="print-content" id="print_content">
+        <?php include "print_request.php"; ?>
     </div>
     <header>
 
@@ -159,7 +184,7 @@ $profile = $row['profile'] ?? $defaultProfile;
                             <th>PRICE</th>
                             <th>request status</th>
                             <th>DATE REQUESTED</th>
-                            <th>View</th>
+                            <th colspan="2">Action</th>
                             <!-- <th>SPECS</th> -->
                         </tr>
                     </thead>
@@ -278,13 +303,91 @@ $profile = $row['profile'] ?? $defaultProfile;
                                 <td>${price}</td>
                                 <td>${result[0].status!='pending'?'accepted':'pending'}</td>
                                 <td>${moment(result[0].datetime).format('LL')}</td>
-                                <td><button class='btn-viem-items' onclick='viewitems(${result[0].purchase_request_code})'>View Items</button></td>
+                                <td>
+                                    <button class='btn-viem-items' onclick='viewitems(${result[0].purchase_request_code})'>View Items</button>
+
+                                    <button class='btn-viem-items'onclick="printPDF('${result[0].purchase_request_code}')">Print</button>
+                                </td>
                             </tr>
                         `
                     });
                     $("#tableBody").html(tableContent);
                 }
             })
+        }
+
+        function addCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function printPDF(purchase_request_code){
+            document.getElementById("print_content").style.display = 'block';
+            $.ajax({
+                url: "../../logic/dbpurchase_request.php",
+                type: "POST",
+                cache: false,
+                data: {
+                    purchase_code: purchase_request_code,
+                },
+                cache: false,
+                success: res=>{
+                    var data = JSON.parse(res);
+                    displaydata(data);
+                }
+            })
+        }
+
+        function cancel(){
+            document.getElementById("print_content").style.display = 'none';
+        }
+
+        function displaydata(res_obj){
+        // console.log(res_obj);
+            let items_des_text = '';
+            let quantity = 0;
+            let cost = 0;
+            let estimated_unit = '';
+            let estimated_cost = '';
+            let total_cost = 0;
+            for(let i in res_obj.item_name){
+                quantity += ((res_obj.item_name)[i].quantity);
+                cost += ((res_obj.item_name)[i].price);
+                items_des_text +=`
+                    <p>${(res_obj.item_name)[i].item_name} x${(res_obj.item_name)[i].quantity}</p>
+                `;
+                estimated_unit += `
+                    <p>₱ ${(res_obj.item_name)[i].price}.00</p>
+                `
+                total_cost += ((res_obj.item_name)[i].price*(res_obj.item_name)[i].quantity)
+                estimated_cost += `
+                    <p>₱ ${(res_obj.item_name)[i].price*(res_obj.item_name)[i].quantity}.00</p>
+                `
+
+            }
+            var name_ =  `<b>${res_obj.fname}</b>`;
+            var date_ = res_obj.datetime;
+            $("#position_name").html(res_obj.position);
+            $("#data_name").html(name_);
+            $("#date_print").html(date_);
+            $("#total_cost").html(`<span><b>Total: </b></span> ₱${addCommas(total_cost)}.00`);
+            $("#estimated_unit").html(addCommas(estimated_unit));
+            $("#estimated_cost").html(addCommas(estimated_cost));
+            $("#date_").html(date_);
+            $("#item_no").text(res_obj.purchase_request_code);
+            $("#quantity").text(quantity);
+            $("#item_des").html(items_des_text);
+        }
+
+        function print(){
+            var element = document.getElementById('print_data');
+            var opt = {
+                margin:       1,
+                filename:     'purchase_request.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(opt).save();
         }
 
         function fetchTableData() {

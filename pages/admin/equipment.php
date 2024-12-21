@@ -326,7 +326,7 @@ session_start();
             
             var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('YYMMDD');
             var today = moment().format('YYMMDD');
-            if(maintenance_day>=today){
+            if(new Date(maintenance_day)>=new Date(today)){
                 return moment(doingMaintenance).add(num_days, 'days').format('LL');
             }else{
                 $("#maintenance_date").css("color", 'red');
@@ -369,8 +369,8 @@ session_start();
                                         <button onclick="setDurition(${data.purchase_request_id}, ${data.maintance_durition})">${isMaintenanceNull(data.maintance_durition)?"Edit Duration":"Set Duration"}</button>
                                     </td>
                                     <td style="white-space: nowrap">
-                                        <button ${data.isDisabled==1?"style='display: none;'":""} onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)}, ${data.usercode})"}>Maintenance</button>
-                                        <button onclick="disableddata(${data.purchase_request_id}, ${data.isDisabled})"}>${data.isDisabled==0?"Disabled":"Fixed"}</button>
+                                        <button ${data.isDisabled!="working"?"style='display: none;'":""} onclick="resetMain(${data.purchase_request_id}, ${!isMaintenanceNull(data.maintance_durition)}, ${data.usercode}, '${data.isDisabled}')"}>Maintenance</button>
+                                        <button onclick="disableddata(${data.purchase_request_id}, '${data.isDisabled}')"}>${data.isDisabled=="working"?"Disabled":"Fixed"}</button>
                                     </td>
                                 </tr>
                             `;
@@ -389,8 +389,8 @@ session_start();
                                         --
                                     </td>
                                     <td style="white-space: nowrap">
-                                        <button ${data.isDisabled==1?"style='display: none;'":""} onclick="acceptRequest(${data.usercode}, ${data.purchase_request_id})"}>Accepted</button>
-                                        <button onclick="disableddata(${data.purchase_request_id}, ${data.isDisabled})"}>${data.isDisabled==0?"Disabled":"Fixed"}</button>
+                                        <button ${data.isDisabled!="working"?"style='display: none;'":""} onclick="acceptRequest(${data.usercode}, ${data.purchase_request_id})"}>Accepted</button>
+                                        <button onclick="disableddata(${data.purchase_request_id}, '${data.isDisabled}')"}>${data.isDisabled=="working"?"Disabled":"Fixed"}</button>
                                     </td>
                                 </tr>
                             `;
@@ -413,22 +413,47 @@ session_start();
         }
 
         function disableddata(id, isDisabled){
-            
-            $.ajax({
-                url: '../../logic/disabledEquipment.php',
-                type: 'POST',
-                data:{
-                    id, isDisabled
-                },
-                cache: false,
-                success: res=>{
-                    console.log(res);
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: `Do want to change`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../../logic/disabledEquipment.php',
+                        type: 'POST',
+                        data:{
+                            id, isDisabled
+                        },
+                        cache: false,
+                        beforeSend: ()=>{
+                            $("#loader_div").css('display', 'block');
+                        },
+                        success: res=>{
+                            $("#loader_div").css('display', 'none');
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Disabled Success",
+                                showConfirmButton: false,
+                                timer: 1000
+                            }).then(()=>{
+                                getdata("all")
+                            })
+                        }
+                    })
                 }
             })
 
         }
 
-        function resetMain(id, isSetDuration, usercode){
+        function resetMain(id, isSetDuration, usercode, isDisabled){
             if(!isSetDuration){
                 Swal.fire({
                     title: "Are you sure?",
@@ -446,13 +471,14 @@ session_start();
                             type: 'post',
                             data : {
                                 id,
-                                usercode
+                                usercode,
+                                isDisabled
                             },
                             beforeSend: ()=>{
                                 $("#loader_div").css('display', 'block');
                             },
                             success: res=>{
-                                console.log(res);
+                                // console.log(res);
                                 $("#loader_div").css('display', 'none');
                                 Swal.fire({
                                     position: "center",

@@ -7,7 +7,8 @@ function getData($sql, $conn){
     $result = $stmt->get_result();
     $data = [];
     while($row = $result->fetch_assoc()){
-        $row['status_img'] = "item_".$row['purchase_request_code'].".png";
+        $row['equipmentDetail_img'] = "item_".$row['id'].".png";
+        $row['equipmentTracking_img'] = "item_history_".$row['id'].".png";
         $row['datetime'] =date('M-d-Y', strtotime($row['datetime']));
         $data[] = $row;
     }

@@ -6,7 +6,7 @@ if(isset($_POST['code'])){
     $code = $_POST['code'];
     $data = [];
     function getItem($code, $conn){
-        $stmt = $conn->prepare("SELECT `item_name`, `quantity`, `price`, `specs` FROM `purchase_request_list` WHERE `purchase_request_code` = ?;");
+        $stmt = $conn->prepare("SELECT `id`, `item_name`, `quantity`, `price`, `specs` FROM `purchase_request_list` WHERE `purchase_request_code` = ?;");
         $stmt->bind_param('s', $code);
         $stmt->execute();
         $result_count = $stmt->get_result();

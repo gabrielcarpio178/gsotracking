@@ -1337,6 +1337,18 @@ require '../../logic/dbCon.php';
         
         });
 
+
+        function getDurations(num_days, doingMaintenance){
+            var maintenance_day = moment(doingMaintenance).add(num_days, 'days').format('YYMMDD');
+            var today = moment().format('YYMMDD');
+            if(new Date(maintenance_day)>=new Date(today)){
+                return moment(doingMaintenance).add(num_days, 'days').format('LL');
+            }else{
+                return 'need maintenance'
+            }
+        }
+
+
         //view account
         function transferAccount(id){
             
@@ -1368,8 +1380,12 @@ require '../../logic/dbCon.php';
                     if(equipments_list.length!=0){
                         
                         equipments_list.forEach(equipment=>{
+                            var getDuration = getDurations(equipment.maintance, equipment.doingMaintenance);
+                            // console.log(getDuration);
+                            var status_equipment = getDuration=="Need Maintenance"?"Need Maintenance": equipment.isDisabled;
+                            var dataSend = JSON.stringify({id: equipment.id, status_equipment: status_equipment})
                             equiment_html+=`
-                                <input type="checkbox" class="check-box equipment_list" value="${equipment.id}" id="${equipment.id}">
+                                <input type="checkbox" class="check-box equipment_list" value='${dataSend}' id="${equipment.id}">
                                 <label for="${equipment.id}" class="equipment">
                                     <div class="equipment-info">
                                         <div class="equipment-label">Equipment Name: </div>
@@ -1382,6 +1398,11 @@ require '../../logic/dbCon.php';
                                     <div class="equipment-info">
                                         <div class="equipment-label">Purchase Data: </div>
                                         <div class="equipment-data">${moment(equipment.datetime).format("LL")}</div>
+                                    </div>
+
+                                    <div class="equipment-info">
+                                        <div class="equipment-label">Equipment Status: </div>
+                                        <div class="equipment-data">${status_equipment}</div>
                                     </div>
                                     
                                 </label>
@@ -1404,6 +1425,7 @@ require '../../logic/dbCon.php';
             e.preventDefault();
             var from = $("#from").val();
             var to = $("#to").val();
+            var isDiabled = $("#isDiabled");
             var selected_equiments = document.querySelectorAll('.equipment_list:checked');
             let data_selected = [];
             selected_equiments.forEach((element)=>{

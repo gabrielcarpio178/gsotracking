@@ -20,11 +20,12 @@ function insertMaintenance($purchase_request_code, $conn){
     }
 }
 print_r($_POST);
-if(isset($_POST['id'])&&isset($_POST['usercode'])){
+if(isset($_POST['id'])&&isset($_POST['usercode'])&&isset($_POST['isDisabled'])){
     $id = $_POST['id'];
     $usercode = $_POST['usercode'];
+    $isDisabled = $_POST['isDisabled'];
     if(updateMain($id, $conn)=="success"){
-        insertEquipmentHistory($conn, $usercode, $id, "Maintenance");
+        insertEquipmentHistory($conn, $usercode, $id, $isDisabled, "Maintenance");
         echo insertMaintenance($id, $conn);
     }
 }    

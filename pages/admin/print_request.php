@@ -396,7 +396,7 @@
             </div>
         </div>
     </section>
-    <div class="btn-content">
+    <!-- <div class="btn-content">
         <button onclick="print()" id="btn_print_content"><i class="fas fa-print"></i><span>Print</span></button>
-    </div>
+    </div> -->
 </div>

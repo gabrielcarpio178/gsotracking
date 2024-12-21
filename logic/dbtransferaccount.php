@@ -13,8 +13,9 @@ function updateEquipment($conn, $to, $equipment_id){
 function transfersEquipment($conn, $to, $selected_equipments){
     $result = false;
     foreach ($selected_equipments as $equipment) {
-        insertEquipmentHistory($conn, $to, $equipment, 'Transfer Equipment');
-        if(!updateEquipment($conn, $to, $equipment)){
+        $equipmentData = json_decode($equipment, true);
+        insertEquipmentHistory($conn, $to, $equipmentData['id'], $equipmentData['status_equipment'], 'Transfer Equipment');
+        if(!updateEquipment($conn, $to, $equipmentData['id'])){
             $result = true; 
         }
         
@@ -43,7 +44,8 @@ if(isset($_POST['from'])&&isset($_POST['to'])&&isset($_POST['selected_equiments'
     $from = $_POST['from'];
     $to = $_POST['to'];
     $selected_equiments = $_POST['selected_equiments'];
-    if(insertNotification($conn)=="success"){
-        echo userData($conn, $to, $selected_equiments);
-    }
+    userData($conn, $to, $selected_equiments);
+    // if(insertNotification($conn)=="success"){
+    //     echo userData($conn, $to, $selected_equiments);
+    // }
 }

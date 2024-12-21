@@ -56,7 +56,7 @@ function generateQrCode($dataInsert, $dataUpdate){
 
 
 function getAllItems($conn, $id){
-    $stmt = $conn->prepare("SELECT l.item_name, u.fullname, l.quantity, p.datetime, l.maintance, p.purchase_request_code, u.department FROM purchase_request AS p JOIN purchase_request_list AS l ON p.purchase_request_code = l.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode WHERE l.id = ?;");
+    $stmt = $conn->prepare("SELECT l.id, l.item_name, u.fullname, l.quantity, p.datetime, l.maintance, p.purchase_request_code, u.department FROM purchase_request AS p JOIN purchase_request_list AS l ON p.purchase_request_code = l.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode WHERE l.id = ?;");
     $stmt->bind_param("s", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -69,8 +69,19 @@ function getAllItems($conn, $id){
     $equiment_code =  "Equiment Code: ". $row['purchase_request_code']."\n";
     $department =  "Department: ". $row['department']."\n";
     $insertData = $fullname.$item_name.$quantity.$datetime.$equiment_code.$department.$maintance;
-    return generateQrCode($insertData, $row['purchase_request_code']);
+    return generateQrCode($insertData, $row['id']);
 }
+
+function reCreateQr($conn){
+    $stmt = $conn->prepare("SELECT id, status FROM purchase_request_list WHERE status != 'pending';");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while($row = $result->fetch_assoc()){
+        echo getAllItems($conn, $row['id']);
+    }
+}
+
+// reCreateQr($conn);
 
 
 function generateQrcodeHistory($itemId){
@@ -99,14 +110,16 @@ function insertEquipmentHistory($conn, $request_data, $request_data_list, $actio
 
 
 function generateCodePerItem($items_list, $conn){
+    $returnData = false;
     foreach($items_list as $item){
         $random = generateCode($conn);
-        $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `status`= ?, doingMaintenance = NOW() WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `isDisabled`='working' ,`status`= ?, doingMaintenance = NOW() WHERE id = ?");
         $stmt->bind_param("ss", $random, $item['id']);
         if($stmt->execute()){
-            return getAllItems($conn, $item['id'])==="success";
+            $returnData = getAllItems($conn, $item['id'])==="success";
         }
     }
+    return $returnData;
 }
 
 

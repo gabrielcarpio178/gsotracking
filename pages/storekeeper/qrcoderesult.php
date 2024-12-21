@@ -53,6 +53,15 @@ session_start();
         border: none;
         border-radius: 5px/5px;
     }
+    .btn-view > button{
+        background-color: #4ECB71;
+        cursor: pointer;
+        color: white;
+        border: none;
+        border-radius: 5px/5px;
+        width: 50%;
+        padding: 2% 0;
+    }
     </style>
     <header>
 
@@ -132,6 +141,7 @@ session_start();
                             <th>QUANTITY</th>
                             <th>PRICE</th>
                             <th>TOTAL PRICE</th>
+                            <th>Equipment Tracking</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -173,7 +183,7 @@ session_start();
                 },
                 cache: false,
                 success: res=>{
-                    // console.log(JSON.parse(res));
+                    console.log(JSON.parse(res));
                     displayData(JSON.parse(res))
                 }
             })
@@ -195,15 +205,18 @@ session_start();
                         <td>${data.quantity}</td>
                         <td>${data.price}.00</td>
                         <td>${(data.price)*(data.quantity)}.00</td>
+                        <td class="btn-view">
+                            <button class="btn-viem-tracking" onclick="viewTracking(${data.id})">View</button>    
+                        </td>
                     </tr>
                 `;
             })
             $("#tableBody").html(data_html);
             $("#total_cost").text(total_cost);
         }
-        document.getElementById("print").addEventListener('click', ()=>{
-            alert('click')
-        })
+        function viewTracking(id){
+            window.open("../../equipment-tracking.php?id="+id);
+        }
     </script>
     
 </body>

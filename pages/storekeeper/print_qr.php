@@ -185,7 +185,7 @@ session_start();
                 overflow-y: scroll;
                 height: 50vh;
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
                 gap: 10px;
                 padding: 10px;
             }
@@ -208,7 +208,7 @@ session_start();
                 align-items: center;
             }
             .qr_img > img{
-                min-width: 40%;
+                max-width: 100%;
             }
             .qr-contents{
                 cursor: pointer;
@@ -249,7 +249,7 @@ session_start();
             }
             .qrs_view{
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
                 gap: 10px;
             }
             .qrs_view > section{
@@ -264,12 +264,15 @@ session_start();
                 text-align: center;
             }
 
+            .data_content-label{
+                width: 100%;
+            }
 
             .qrs_view > section > .qr-data_content-content > .qr_img{
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                
+                width: 100%;
             }
             .close_icon{
                 align-self: end;
@@ -342,12 +345,31 @@ session_start();
                 let qr_lists = ''
                 datas.forEach(data=>{
                     qr_lists += `
-                        <section class="qr-contents" onclick=selectedCheck(this) id=${data.id}>
-                            <input type="checkbox" value='${JSON.stringify(data)}'>
+                        <section class="qr-contents" onclick=selectedCheck(this) id='detail_${data.id}'>
+                            <input type="checkbox" value='${JSON.stringify([data, {qrImg: 'detail'}])}'>
                             <div class="qr-data-content">
+                                <div class="qr-title">Equipment Details</div>
                                 <div class="item_name">${data.item_name}</div>
                                 <div class="qr_img">
-                                    <img src="../../qrcode_img/${data.status_img}"
+                                    <img src="../../qrcode_img/${data.equipmentDetail_img}"
+                                </div>
+                                <div class="data-label">
+                                    <div class="fullname"><span>Fullname: </span>${data.fullname}</div>
+                                    <div class="code"><span>Equipment Code: </span>${data.purchase_request_code}</div>
+                                    <div class="quantity"><span>Quantity: </span>${data.quantity}</div>
+                                    <div class="spec"><span>Specs: </span>${(data.specs)}</div>
+                                    <div class="purchase_date"><span>Purchase Date: </span>${data.datetime}</div>
+                                </div> 
+                            </div>
+                        </section>
+
+                        <section class="qr-contents" onclick=selectedCheck(this) id='tracking_${data.id}'>
+                            <input type="checkbox" value='${JSON.stringify([data, {qrImg: 'tracking'}])}'>
+                            <div class="qr-data-content">
+                                <div class="qr-title">Equipment Tracking Information</div>
+                                <div class="item_name">${data.item_name}</div>
+                                <div class="qr_img">
+                                    <img src="../../qrcode_img/${data.equipmentTracking_img}"
                                 </div>
                                 <div class="data-label">
                                     <div class="fullname"><span>Fullname: </span>${data.fullname}</div>
@@ -374,7 +396,10 @@ session_start();
 
             function selectedCheck(element){
                 var id = $(element).attr('id');
-                var obj_data = $(element.children[0]).val();
+                var dataCons = JSON.parse($(element.children[0]).val())[0];
+                dataCons['qrimg'] = JSON.parse($(element.children[0]).val())[1].qrImg;
+                var obj_data = JSON.stringify(dataCons);
+                // console.log(obj_data);
                 var isCheck = $(element.children[0]).prop('checked');
                 if(isCheck){
                     ids = removeItem(ids, id);
@@ -407,13 +432,14 @@ session_start();
                 let data_html = ''
                 selected_data.forEach(data=>{
                     var data_content = JSON.parse(data);
-                    
+                    console.log(data_content);
                     data_html += `
                         <section class="qr-contents" onclick=selectedCheck(this) id=${data_content.id}>
                             <div class="qr-data_content-content">
+                                <div class="qr-title" style="text-align: center">${data_content.qrimg=='tracking'?"Equipment Tracking Information":"Equipment Details"}</div>
                                 <div class="item_name">${data_content.item_name}</div>
                                 <div class="qr_img">
-                                    <img src="../../qrcode_img/${data_content.status_img}"
+                                    <img src="../../qrcode_img/${data_content.qrimg=='tracking'?data_content.equipmentTracking_img:data_content.equipmentDetail_img}"
                                 </div>
                                 <div class="data_content-label">
                                     <div class="fullname"><span>Fullname: </span>${data_content.fullname}</div>

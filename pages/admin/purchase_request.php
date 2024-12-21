@@ -488,16 +488,14 @@ $stmt->close();
                             },
                             cache: false,
                             success: res=>{
-                                // console.log(res);
                                 var result = JSON.parse(res);
-                                
                                 let data_html = '';
                                 for(let i in result){
                                     var button = result[i].status == 'pending'
                             ? `<button type="button" onclick="confirmation('${result[i].request_data_list}', '${result[i].request_data}', '${result[i].purchase_request_code}', 'accept', '${result[i].purchase_request_code}')" value="accept">ACCEPT</button><button type="button" onclick="confirmation('${result[i].request_data_list}', '${result[i].request_data}', '${result[i].purchase_request_code}', 'reject', '${result[i].purchase_request_code}')" value="reject" class="btn-reject">REJECT</button>`
                             : (result[i].status == 'reject'
                                 ? '<button type="button" disabled>REQUEST REJECTED</button>'
-                                : `<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('${result[i].purchase_request_code}')">PRINT</button>`);
+                                : `<button type="button" disabled>REQUEST ACCEPTED</button><button type="button" onclick="printPDF('${result[i].purchase_request_code}')">View</button>`);
                                     data_html += `
                                         
                                         <div class="holds">
@@ -519,10 +517,10 @@ $stmt->close();
                                                 </div>
                                             <div class="data-request">
                                                 <div class="data-list">
-                                                    ${dataHtml(result[i].purchase_list)}
+                                                    ${dataHtml(result[i].purchase_list)['content']}
                                                 </div>
                                                 <div class="total_cost">
-                                                    Total Cost: <span class="total_data">3900.00</span>
+                                                    Total Cost: <span class="total_const">${dataHtml(result[i].purchase_list)['total_cost']}</span>
                                                 </div>
                                                 <div class="form">
                                                     ${button}
@@ -622,6 +620,7 @@ $stmt->close();
                     
                     function dataHtml(datas){
                         let content = '';
+                        let total_cost = 0;
                         let x = 1;
                         datas.forEach(data=>{
                             content+=`
@@ -634,8 +633,9 @@ $stmt->close();
                                     <div class="items est-Cost">Estemated Cost: ${addCommas(data.quantity*data.price)}.</div>
                                 </div>
                             `
+                            total_cost+=data.quantity*data.price;
                         })
-                        return content;
+                        return {content: content, total_cost: addCommas(total_cost)};
                     }
                 </script>
 
