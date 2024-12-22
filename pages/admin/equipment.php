@@ -383,8 +383,9 @@ session_start();
                                     <td>${data.fullname}</td>
                                     <td>${data.quantity}</td>
                                     <td>${moment(data.datetime).format('LL')}</td>
-                                    <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
                                     <td>${moment(data.request_maintenance).format('MMM D, YYYY hh:mm a')}</td>
+                                    <td>${isMaintenanceNull(data.maintance_durition)?getDuration(data.maintance_durition, data.doingMaintenance):"<div style='color: red;'>Not Set Duration</div>"}</td>
+                                    
                                     <td>
                                         --
                                     </td>

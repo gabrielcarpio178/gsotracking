@@ -1,7 +1,7 @@
 <?php
 require 'logic/dbCon.php';
 function equipmentTracking($conn, $id){
-    $stmt = $conn->prepare("SELECT u.fullname, u.department, u.position, pl.purchase_request_code, pl.status, pl.maintance, eh.action, eh.transaction_date, eh.isDisabled FROM equipment_history AS eh JOIN purchase_request_list AS pl ON eh.equiment_id = pl.id JOIN users AS u ON u.usercode = eh.usercode WHERE pl.id = ? ORDER BY eh.id DESC");
+    $stmt = $conn->prepare("SELECT u.fullname, u.department, u.position, pl.purchase_request_code, pl.status, pl.maintance, eh.action, eh.transaction_date, eh.isDisabled, pl.doingMaintenance , pl.maintance FROM equipment_history AS eh JOIN purchase_request_list AS pl ON eh.equiment_id = pl.id JOIN users AS u ON u.usercode = eh.usercode WHERE pl.id = ? ORDER BY eh.id DESC");
     $stmt->bind_param("s",  $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -13,7 +13,7 @@ function equipmentTracking($conn, $id){
 }
 
 function getEquipmentData($conn, $id){
-    $stmt = $conn->prepare("SELECT pl.`item_name`, pl.`quantity`, pl.`price`, pl.`specs`, pl.`purchase_request_code`, p.`datetime` FROM `purchase_request_list` AS pl JOIN `purchase_request` AS p ON pl.`purchase_request_code` = p.`purchase_request_code` WHERE pl.`id` = ?");
+    $stmt = $conn->prepare("SELECT pl.`item_name`, pl.`quantity`, pl.`price`, pl.`specs`, pl.`purchase_request_code`, p.`datetime`, pl.`maintance`, pl.`doingMaintenance` FROM `purchase_request_list` AS pl JOIN `purchase_request` AS p ON pl.`purchase_request_code` = p.`purchase_request_code` WHERE pl.`id` = ?");
     $stmt->bind_param("s",  $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -71,6 +71,7 @@ if(isset($_GET['id'])){
             <div class="equipment-specs">Specs: <?=$getEquipmentData['specs'] ?></div>
             <div class="equipment-quantity">quantity: <?=$getEquipmentData['quantity'] ?></div>
             <div class="equipment-price">Price: <?=number_format($getEquipmentData['price']) ?></div>
+            <div class="equipment-maintenance-date">Maintenance Date: <span id="maintenance_date"></span></div>
             <div class="equipment-purchase-date">Purchase Date: <span id="purchase_date"></span></div>
         </section>
         <section class="table-content">
@@ -82,6 +83,7 @@ if(isset($_GET['id'])){
                         <td>Transaction Action</td>
                         <td>Transaction Date</td>
                         <td>Equipment Status</td>
+                        
                     </tr>
                 </thead>
                 <tbody id="table_body">
@@ -93,6 +95,8 @@ if(isset($_GET['id'])){
     <script>
         $(document).ready(()=>{
             $("#purchase_date").html(convertDate('<?=$getEquipmentData['datetime']?>'))
+            
+            $("#maintenance_date").html(maintenanceData('<?=$getEquipmentData['doingMaintenance']?>', <?=$getEquipmentData['maintance']?>))
             var dataContent = JSON.parse(JSON.stringify(<?php print_r(json_encode($equipmentTrackings)) ?>))
             let tableBody = '';
             dataContent.forEach(data=>{
@@ -101,7 +105,7 @@ if(isset($_GET['id'])){
                         <td>${data.fullname}</td>
                         <td>${data.department}</td>
                         <td>${data.action}</td>
-                        <td>${moment(data.transaction_date).format('LL')}</td>
+                        <td>${moment(data.transaction_date).format('MMMM DD,YYYY hh:ss A')}</td>
                         <td>${data.isDisabled}</td>
                     </tr>
                 `
@@ -110,6 +114,9 @@ if(isset($_GET['id'])){
         })
         function convertDate(date){
             return moment(date).format('LL');
+        }
+        function maintenanceData(doingMaintenance, numDays){
+            return moment(doingMaintenance).add('days', numDays).format('LL');
         }
     </script>
 </body>

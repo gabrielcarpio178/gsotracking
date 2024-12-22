@@ -56,21 +56,33 @@ function generateQrCode($dataInsert, $dataUpdate){
 
 
 function getAllItems($conn, $id){
-    $stmt = $conn->prepare("SELECT l.id, l.item_name, u.fullname, l.quantity, p.datetime, l.maintance, p.purchase_request_code, u.department FROM purchase_request AS p JOIN purchase_request_list AS l ON p.purchase_request_code = l.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode WHERE l.id = ?;");
+    $stmt = $conn->prepare("SELECT l.id, l.item_name, u.fullname, l.quantity, p.datetime, l.maintance, p.purchase_request_code, u.department, l.doingMaintenance FROM purchase_request AS p JOIN purchase_request_list AS l ON p.purchase_request_code = l.purchase_request_code JOIN users AS u ON l.requester_code = u.usercode WHERE l.id = ?;");
     $stmt->bind_param("s", $id);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
+    $maintance_date = date('M d, Y', strtotime($row['doingMaintenance']."+".$row['maintance']." days"));
     $fullname =  "Fullname: ". $row['fullname']."\n";
     $item_name =  "Equiment name: ". $row['item_name']."\n";
     $quantity =  "Quantity: ". $row['quantity']."\n";
-    $datetime =  "Purchase Date: ". date_format(date_create($row['datetime']),"Y/m/d h:i a")."\n";
-    $maintance =  "Maintenance: ". $row['maintance']."\n";
+    $datetime =  "Purchase Date: ". date_format(date_create($row['datetime']),"M d, Y h:i a")."\n";
+    $maintance =  "Maintenance: ". $maintance_date."\n";
     $equiment_code =  "Equiment Code: ". $row['purchase_request_code']."\n";
     $department =  "Department: ". $row['department']."\n";
     $insertData = $fullname.$item_name.$quantity.$datetime.$equiment_code.$department.$maintance;
     return generateQrCode($insertData, $row['id']);
 }
+
+function recreateQrDetails($conn){
+    $stmt = $conn->prepare("SELECT id FROM purchase_request_list WHERE status != 'pending'");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while($row=$result->fetch_assoc()){
+        echo getAllItems($conn, $row['id']);
+    }
+}
+
+// recreateQrDetails($conn);
 
 function reCreateQr($conn){
     $stmt = $conn->prepare("SELECT id, status FROM purchase_request_list WHERE status != 'pending';");
