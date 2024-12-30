@@ -3,6 +3,8 @@ include 'dbCon.php';
 include 'phpmailer.php';
 sleep(1);
 
+echo encrypt("storekeeper", secretKey());
+
 if(isset($_POST['full_name'])&&isset($_POST['birthday'])&&isset($_POST['sex'])&&isset($_POST['email'])&&isset($_POST['pnumber'])&&isset($_POST['department'])&&isset($_POST['position'])&&isset($_POST['employee_id'])){
     $full_name = $_POST['full_name'];
     $email = $_POST['email'];

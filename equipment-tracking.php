@@ -1,7 +1,7 @@
 <?php
 require 'logic/dbCon.php';
 function equipmentTracking($conn, $id){
-    $stmt = $conn->prepare("SELECT u.fullname, u.department, u.position, pl.purchase_request_code, pl.status, pl.maintance, eh.action, eh.transaction_date, eh.isDisabled, pl.doingMaintenance , pl.maintance FROM equipment_history AS eh JOIN purchase_request_list AS pl ON eh.equiment_id = pl.id JOIN users AS u ON u.usercode = eh.usercode WHERE pl.id = ? ORDER BY eh.id DESC");
+    $stmt = $conn->prepare("SELECT u.fullname, u.department, u.position, pl.purchase_request_code, pl.status, pl.maintance, eh.action, eh.transaction_date, eh.isDisabled, pl.doingMaintenance , pl.maintance FROM equipment_history AS eh JOIN purchase_request_list AS pl ON eh.equiment_id = pl.id JOIN users AS u ON u.usercode = eh.usercode WHERE pl.id = ? ORDER BY eh.transaction_date DESC");
     $stmt->bind_param("s",  $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -99,17 +99,21 @@ if(isset($_GET['id'])){
             $("#maintenance_date").html(maintenanceData('<?=$getEquipmentData['doingMaintenance']?>', <?=$getEquipmentData['maintance']?>))
             var dataContent = JSON.parse(JSON.stringify(<?php print_r(json_encode($equipmentTrackings)) ?>))
             let tableBody = '';
-            dataContent.forEach(data=>{
+            for(let x in dataContent){
+                var data = dataContent[x];
                 tableBody += `
                     <tr>
-                        <td>${data.fullname}</td>
+                        <td>
+                            <div>${data.fullname}</div>
+                            <div>${x==0?"current user":""}</div>
+                        </td>
                         <td>${data.department}</td>
                         <td>${data.action}</td>
                         <td>${moment(data.transaction_date).format('MMMM DD,YYYY hh:ss A')}</td>
                         <td>${data.isDisabled}</td>
                     </tr>
                 `
-            })
+            }
             $("#table_body").html(tableBody);
         })
         function convertDate(date){

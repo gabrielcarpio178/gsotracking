@@ -52,6 +52,12 @@ session_start();
             
         }
 
+        .fraction-label{
+            width: 100%;
+            text-align: end;
+            font-size: 1.5rem;
+        }
+
 
     </style>
     <div class="loader-content" id="loader_div">
@@ -294,7 +300,7 @@ session_start();
         <div class="main-content">
             <div class="qr-content">
                 <div class="qrs">
-                    <button onclick="viewselected()">QR's <span class="qr_count" id="selected_count">0</span></button>
+                    <button onclick="viewselected()">Equipments <span class="qr_count" id="selected_count">0</span></button>
                 </div>
             </div>
             <div class="selectall">
@@ -345,26 +351,8 @@ session_start();
                 let qr_lists = ''
                 datas.forEach(data=>{
                     qr_lists += `
-                        <section class="qr-contents" onclick=selectedCheck(this) id='detail_${data.id}'>
-                            <input type="checkbox" value='${JSON.stringify([data, {qrImg: 'detail'}])}'>
-                            <div class="qr-data-content">
-                                <div class="qr-title">Equipment Details</div>
-                                <div class="item_name">${data.item_name}</div>
-                                <div class="qr_img">
-                                    <img src="../../qrcode_img/${data.equipmentDetail_img}"
-                                </div>
-                                <div class="data-label">
-                                    <div class="fullname"><span>Fullname: </span>${data.fullname}</div>
-                                    <div class="code"><span>Equipment Code: </span>${data.purchase_request_code}</div>
-                                    <div class="quantity"><span>Quantity: </span>${data.quantity}</div>
-                                    <div class="spec"><span>Specs: </span>${(data.specs)}</div>
-                                    <div class="purchase_date"><span>Purchase Date: </span>${data.datetime}</div>
-                                </div> 
-                            </div>
-                        </section>
-
                         <section class="qr-contents" onclick=selectedCheck(this) id='tracking_${data.id}'>
-                            <input type="checkbox" value='${JSON.stringify([data, {qrImg: 'tracking'}])}'>
+                            <input type="checkbox" value='${JSON.stringify(data)}'>
                             <div class="qr-data-content">
                                 <div class="qr-title">Equipment Tracking Information</div>
                                 <div class="item_name">${data.item_name}</div>
@@ -396,8 +384,7 @@ session_start();
 
             function selectedCheck(element){
                 var id = $(element).attr('id');
-                var dataCons = JSON.parse($(element.children[0]).val())[0];
-                dataCons['qrimg'] = JSON.parse($(element.children[0]).val())[1].qrImg;
+                var dataCons = JSON.parse($(element.children).val());
                 var obj_data = JSON.stringify(dataCons);
                 // console.log(obj_data);
                 var isCheck = $(element.children[0]).prop('checked');
@@ -421,7 +408,6 @@ session_start();
             }
 
             function selectAll(){
-                console.log($(".qr-contents"));
                 $(".qr-contents").each((index ,element) =>{
                     element.click();
                 })
@@ -432,25 +418,28 @@ session_start();
                 let data_html = ''
                 selected_data.forEach(data=>{
                     var data_content = JSON.parse(data);
-                    console.log(data_content);
-                    data_html += `
-                        <section class="qr-contents" onclick=selectedCheck(this) id=${data_content.id}>
-                            <div class="qr-data_content-content">
-                                <div class="qr-title" style="text-align: center">${data_content.qrimg=='tracking'?"Equipment Tracking Information":"Equipment Details"}</div>
-                                <div class="item_name">${data_content.item_name}</div>
-                                <div class="qr_img">
-                                    <img src="../../qrcode_img/${data_content.qrimg=='tracking'?data_content.equipmentTracking_img:data_content.equipmentDetail_img}"
+                    for(let i = 1; i<=data_content.quantity; i++){
+                        data_html += `
+                            <section class="qr-contents" onclick=selectedCheck(this) id=${data_content.id}>
+                                <div class="fraction-label">${i+"/"+data_content.quantity}</div>
+                                <div class="qr-data_content-content">
+                                    <div class="qr-title" style="text-align: center">Equipment Tracking Information</div>
+                                    <div class="item_name">${data_content.item_name}</div>
+                                    <div class="qr_img">
+                                        <img src="../../qrcode_img/${data_content.equipmentTracking_img}"
+                                    </div>
+                                    <div class="data_content-label">
+                                        <div class="fullname"><span>Fullname: </span>${data_content.fullname}</div>
+                                        <div class="code"><span>Equipment Code: </span>${data_content.purchase_request_code}</div>
+                                        <div class="quantity"><span>Quantity: </span>${data_content.quantity}</div>
+                                        <div class="spec"><span>Specs: </span>${(data_content.specs)}</div>
+                                        <div class="purchase_date"><span>Purchase Date: </span>${data_content.datetime}</div>
+                                    </div> 
                                 </div>
-                                <div class="data_content-label">
-                                    <div class="fullname"><span>Fullname: </span>${data_content.fullname}</div>
-                                    <div class="code"><span>Equipment Code: </span>${data_content.purchase_request_code}</div>
-                                    <div class="quantity"><span>Quantity: </span>${data_content.quantity}</div>
-                                    <div class="spec"><span>Specs: </span>${(data_content.specs)}</div>
-                                    <div class="purchase_date"><span>Purchase Date: </span>${data_content.datetime}</div>
-                                </div> 
-                            </div>
-                        </section>
-                    `
+                            </section>
+                        `
+                    }
+                    
                     
                 })
                 $("#qr_lists_view").html(data_html);

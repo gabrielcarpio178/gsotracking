@@ -127,9 +127,7 @@ function generateCodePerItem($items_list, $conn){
         $random = generateCode($conn);
         $stmt = $conn->prepare("UPDATE `purchase_request_list` SET `isDisabled`='working' ,`status`= ?, doingMaintenance = NOW() WHERE id = ?");
         $stmt->bind_param("ss", $random, $item['id']);
-        if($stmt->execute()){
-            $returnData = getAllItems($conn, $item['id'])==="success";
-        }
+        $returnData = $stmt->execute();
     }
     return $returnData;
 }
@@ -144,8 +142,6 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
     $request_data_list =  $_POST['request_data_list'];
     $isSeen = 1;
     $items_list = json_decode($request_data_list, true);
-
-    
     if(generateCodePerItem($items_list, $conn)){
         if(insertEquipmentHistory($conn, $request_data, $request_data_list, 'Purchase Equipment')){
 
