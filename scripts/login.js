@@ -40,4 +40,18 @@ $(document).ready(()=>{
             })
         }
     })
+
+    $("#btn_eye").on('click', ()=>{
+        var x = document.getElementById("password");
+    
+        if (x.type === "password") {
+            x.type = "text";
+            $("#btn_eye").removeClass("fa-eye");
+            $("#btn_eye").addClass("fa-eye-slash");
+        } else {
+            x.type = "password";
+            $("#btn_eye").addClass("fa-eye");
+            $("#btn_eye").removeClass("fa-eye-slash");
+        }
+    })
 })

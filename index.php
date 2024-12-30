@@ -15,6 +15,7 @@ session_start();
     <link rel="stylesheet" href="styles/login.css">
     <script src="scripts/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="styles/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
     <title>Login</title>
 </head>
 <body>
@@ -56,10 +57,16 @@ session_start();
                             <label for="username">Email</label>
                             <input type="text" name="username" id="username" class="input-content" required>
                         </div>
-                        <div class="inputs">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="password" class="input-content" required>
+                        <div class="password-content">
+                            <div class="inputs">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password" class="input-content" required>
+                            </div>
+                            <div class="eye-btn">
+                                <i class="fa-solid fa-eye" id="btn_eye"></i>
+                            </div>
                         </div>
+                        
                         <button type="submit" class="btn-submit">Log in</button>
                     </form>
                     <a href="forgotPassword.php">Forgot Password</a>
