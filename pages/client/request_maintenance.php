@@ -259,7 +259,7 @@ session_start();
                 <hr>
             </div>
             <div class="filter-btn">
-                <input type="number" id="search" placeholder="Search by ID" oninput="getdata(`${this.value}`)">
+                <input type="number" id="search" placeholder="Search by ID" oninput="searchgetdata(`${this.value}`)">
             </div>
             <div class="table-content">
                 <table id="dataTable">
@@ -286,7 +286,9 @@ session_start();
     
     <script>
         $(document).ready(()=>{
-            getdata("all")
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchID = urlParams.get('data_id')!=null?urlParams.get('data_id'):0;
+            getdata(searchID, 'all')
             $("#open_noti").on('click',()=>{
                 $("#noti_content").show();
             })
@@ -306,14 +308,19 @@ session_start();
         function isMaintenanceNull(duration){
             return duration!=null;
         }
+
+        function searchgetdata(search){
+            getdata(0 ,search)
+        }
         
 
-        function getdata(search){
+        function getdata(id ,search){
             $.ajax({
                 url: '../../logic/getEquimentRequest_maintenance.php',
                 type: 'post',
                 data : {
-                    search
+                    search,
+                    id
                 },
                 cache: false,
                 success: res=>{
@@ -387,7 +394,7 @@ session_start();
                                 showConfirmButton: false,
                                 timer: 1000
                             }).then(()=>{
-                                getdata("all")
+                                window.location = '/qrcodeupsss/pages/client/request_maintenance.php'
                             })
                         }
                     })

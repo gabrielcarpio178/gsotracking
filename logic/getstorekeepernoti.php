@@ -12,7 +12,6 @@ if(isset($_POST['user'])){
         while($row = $result->fetch_assoc()){
             $return_data[] = $row;
         }
-
         print_r(json_encode($return_data));
 
     }

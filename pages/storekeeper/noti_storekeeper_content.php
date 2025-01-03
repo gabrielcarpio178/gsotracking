@@ -112,7 +112,7 @@
         let content_noti = '';
         datas.forEach(data=>{
             content_noti += `
-                <div class="noti-message-content ${data.storekeeper==0?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.storekeeper})">
+                <div class="noti-message-content ${data.storekeeper==0?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.storekeeper}, ${data.purchase_request_code})">
                     <div class="line-bar"></div>
                     <div class="noti-content-info">
                         <div class="content-message">
@@ -131,7 +131,7 @@
         $("#data_display").html(content_noti);
     }
 
-    function updateIsSeen(id, isSeen){
+    function updateIsSeen(id, isSeen, purchase_request_code){
         $.ajax({
             url: '../../logic/dbisSeenUpdateStorekeeper.php',
             type: 'POST',
@@ -142,6 +142,9 @@
             cache: false,
             success: res=>{
                 if(res=='success'){
+                    if(isSeen==0){
+                        window.location = `/qrcodeupsss/pages/storekeeper/equipment_list.php?data_id=${purchase_request_code}`
+                    }
                     displayNotification('storekeeper');
                     getCountNoti()
                 }
@@ -188,7 +191,7 @@
                         <br/><br/>
                     `
                 }).then(()=>{
-                    location.reload();
+                    window.location = `/qrcodeupsss/pages/storekeeper/equipment_list.php?data_id=${parsedData.data_id}`
                 });
                 }
             }catch(error){

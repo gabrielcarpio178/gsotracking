@@ -154,7 +154,8 @@ if(isset($_POST['status'])&&isset($_POST['request_code'])&&isset($_POST['request
                     'status' => $status,
                     'request_data' => $request_data,
                     'request_data_list' => $request_data_list,
-                    'noti_type'=>'purchase_request'
+                    'noti_type'=>'purchase_request',
+                    'data_id'=>$request_code
                 ];
                 $pusher->trigger('my-channel', 'my-event', json_encode($data));
                 header('Location: ../../pages/admin/purchase_request.php');

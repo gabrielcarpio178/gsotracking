@@ -154,7 +154,7 @@ $profile = $row['profile'] ?? $defaultProfile;
                 <div class="content2">
                     <div class="search">
                         <i class="fa-solid fa-search"></i>
-                        <input type="search" id="searchInput" placeholder="Search" class="search-input">
+                        <input type="search" id="searchInput" oninput="displatData(this.value)" placeholder="Search" class="search-input">
                     </div>
                     <div class="notpic">
                         <div class="ahehe">
@@ -271,19 +271,22 @@ $profile = $row['profile'] ?? $defaultProfile;
         let data = []; // To hold the original table data
 
         function fetchcontent(){
-            displatData();
-            fetchTableData();
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchID = urlParams.get('data_id')!=null?urlParams.get('data_id'):'all';
+            displatData(searchID);
+            
         }
 
-        function displatData(){
+        function displatData(search){
             $.ajax({
                 url: '../../logic/usersAccountable.php',
-                type: 'GET',
+                type: 'POST',
                 data: {
-                    userData:'user_data'
+                    search
                 },
                 cache: false,
                 success: res=>{
+                    
                     var results = Object.values(JSON.parse(res));
                     let tableContent = '';              
                     results.forEach(result => {
@@ -305,7 +308,6 @@ $profile = $row['profile'] ?? $defaultProfile;
                                 <td>${moment(result[0].datetime).format('LL')}</td>
                                 <td>
                                     <button class='btn-viem-items' onclick='viewitems(${result[0].purchase_request_code})'>View Items</button>
-
                                     <button class='btn-viem-items'onclick="printPDF('${result[0].purchase_request_code}')">Print</button>
                                 </td>
                             </tr>

@@ -113,7 +113,7 @@
                     notification_datas.forEach(notification_data=>{
                         if(notification_data.request_type==="purchase_request"){
                             content_noti += `
-                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin})">
+                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin}, ${notification_data.purchase_request_code}, '${notification_data.notify_type}')">
                                     <div class="noti-fullname">
                                         <h2>${notification_data.fullname}</h2>
                                     </div>
@@ -133,7 +133,7 @@
                             `
                         }else{
                             content_noti += `
-                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin})">
+                                <div class="noti-message-content ${notification_data.admin==0?'isSeen':''}" onclick="updateIsSeen(${notification_data.id},${notification_data.admin}, ${notification_data.purchase_request_code}, '${notification_data.notify_type}')">
                                     <div class="noti-fullname">
                                         <h2>${notification_data.fullname}</h2>
                                     </div>
@@ -192,7 +192,7 @@
         
     }
 
-    function updateIsSeen(id, isSeen){
+    function updateIsSeen(id, isSeen, items_id, notify_content){
         $.ajax({
             url: '../../logic/dbisSeenUpdateAdmin.php',
             type: 'POST',
@@ -202,7 +202,15 @@
             },
             cache: false,
             success: res=>{
-                if(res=='success'){
+                var result = JSON.parse(res);
+                if(result.message=='success'){
+                    if(result.isSeen==1){
+                        if(notify_content=='maintenance_content'){
+                            window.location = `/qrcodeupsss/pages/admin/equipment.php?equipment_id=${items_id}`
+                        }else if(notify_content=='purchase_content'){
+                            window.location = `/qrcodeupsss/pages/admin/purchase_request.php?equipment_id=${items_id}`
+                        }
+                    }
                     getNotificationData();
                     getCountNoti()
                 }
@@ -228,7 +236,7 @@
                             </div>
                         `
                     }).then(()=>{
-                        location.reload();
+                        window.location = `/qrcodeupsss/pages/admin/equipment.php?equipment_id=${parsedData.request_code}`
                     });
                 }else if(parsedData.noti_type=="purchase_request_admin"){
                     var items = parsedData.items_name;
@@ -251,7 +259,7 @@
                             </div>
                         `
                     }).then(()=>{
-                        location.reload();
+                        window.location = `/qrcodeupsss/pages/admin/purchase_request.php?equipment_id=${parsedData.request_code}`
                     });
                 }
             }catch(error){

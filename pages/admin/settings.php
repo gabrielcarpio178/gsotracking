@@ -394,9 +394,24 @@ header .navbar ul li:last-child{
                     <div class="ins">
                         <input type="text" name="email" placeholder="Email" value="<?php echo $row['email']; ?>" required />
                         <input type="text" name="phone_number" placeholder="Phone Number" value="<?php echo $row['phone_number']; ?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);" required />
-                        <input type="password" name="currentPassword" placeholder="Current Password" required />
-                        <input type="password" id="password" name="newPassword" placeholder="Enter new password" required />
-                        <input type="password" id="confirmPassword" placeholder="Confirm password" required />
+                        <div class="password-content">
+                            <input type="password" name="currentPassword" placeholder="Current Password" required  id="currentPassword" />
+                            <div class="eye-btn">
+                                <i class="fa-solid fa-eye" id="btn_eyecurrentpassword"></i>
+                            </div>
+                        </div>
+                        <div class="password-content">
+                            <input type="password" name="newPassword" placeholder="Enter new password" required id="newPassword"/>
+                            <div class="eye-btn">
+                                <i class="fa-solid fa-eye" id="btn_eyenewpassword"></i>
+                            </div>
+                        </div>
+                        <div class="password-content">
+                            <input type="password" id="confirmPassword" placeholder="Confirm password" required />
+                            <div class="eye-btn">
+                                <i class="fa-solid fa-eye" id="btn_eyeconfirmpassword"></i>
+                            </div>
+                        </div>
                     </div>
                     <div class="ups">
                         <span>Profile</span>
@@ -438,6 +453,51 @@ header .navbar ul li:last-child{
             const image = document.getElementById('profileImage');
             image.src = URL.createObjectURL(event.target.files[0]);
         }
+
+        
+        $("#btn_eyecurrentpassword").on('click', ()=>{
+            var x = document.getElementById("currentPassword");
+        
+            if (x.type === "password") {
+                x.type = "text";
+                $("#btn_eyecurrentpassword").removeClass("fa-eye");
+                $("#btn_eyecurrentpassword").addClass("fa-eye-slash");
+            } else {
+                x.type = "password";
+                $("#btn_eyecurrentpassword").addClass("fa-eye");
+                $("#btn_eyecurrentpassword").removeClass("fa-eye-slash");
+            }
+        })
+
+        $("#btn_eyenewpassword").on('click', ()=>{
+            var x = document.getElementById("newPassword");
+        
+            if (x.type === "password") {
+                x.type = "text";
+                $("#btn_eyenewpassword").removeClass("fa-eye");
+                $("#btn_eyenewpassword").addClass("fa-eye-slash");
+            } else {
+                x.type = "password";
+                $("#btn_eyenewpassword").addClass("fa-eye");
+                $("#btn_eyenewpassword").removeClass("fa-eye-slash");
+            }
+        })
+
+        $("#btn_eyeconfirmpassword").on('click', ()=>{
+            var x = document.getElementById("confirmPassword");
+        
+            if (x.type === "password") {
+                x.type = "text";
+                $("#btn_eyeconfirmpassword").removeClass("fa-eye");
+                $("#btn_eyeconfirmpassword").addClass("fa-eye-slash");
+            } else {
+                x.type = "password";
+                $("#btn_eyeconfirmpassword").addClass("fa-eye");
+                $("#btn_eyeconfirmpassword").removeClass("fa-eye-slash");
+            }
+        })
+
+
     </script>
 
 

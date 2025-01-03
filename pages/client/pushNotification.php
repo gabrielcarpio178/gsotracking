@@ -37,7 +37,7 @@
                         <br/><br/>
                     `
                 }).then(()=>{
-                    location.reload();
+                    window.location = `/qrcodeupsss/pages/client/accountability.php?data_id=${parsedData.data_id}`
                 });
             }
             getnotiCount(<?=$_SESSION['usercode'] ?>);

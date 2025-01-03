@@ -122,7 +122,7 @@
                     action = `<p>Purchase request ${data.status}</p>`;
                 }
                 data_html += `
-                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client})">
+                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client}, ${data.gotoID}, '${data.gotoContent}')">
                         <div class="noti-profile-content">
                             <div class="img-profile">
                                 <img src="../../profile/boy.jpeg" alt="profile">
@@ -146,7 +146,7 @@
             }else{
 
                 data_html += `
-                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client})">
+                    <div class="noti-message ${(data.client==0)?'isSeen':''}" onclick="updateIsSeen(${data.id},${data.client}, ${data.gotoID}, '${data.gotoContent}')">
                         <div class="noti-profile-content">
                             <div class="img-profile">
                                 <img src="../../profile/boy.jpeg" alt="profile">
@@ -172,7 +172,7 @@
         $("#data_display").html(data_html);
     }
 
-    function updateIsSeen(id, isSeen){
+    function updateIsSeen(id, isSeen, gotoID, gotoContent){
         $.ajax({
             url: '../../logic/dbisSeenUpdate.php',
             type: 'POST',
@@ -183,6 +183,13 @@
             cache: false,
             success: res=>{
                 if(res=='success'){
+                    if(isSeen==0){
+                        if(gotoContent=='maintenance'){
+                            window.location = `/qrcodeupsss/pages/client/request_maintenance.php?data_id=${gotoID}`
+                        }else{
+                            window.location = `/qrcodeupsss/pages/client/accountability.php?data_id=${gotoID}`
+                        }
+                    }
                     getNoti(<?=$_SESSION['usercode'] ?>);
                     getnotiCount(<?=$_SESSION['usercode'] ?>);
                 }

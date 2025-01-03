@@ -252,7 +252,7 @@ $stmt->close();
                 <div class="content2">
                     <div class="search">
                         <i class="fa-solid fa-search"></i>
-                        <input type="number" class="search-input" id="filterInput" placeholder="Search by employee ID" oninput="getsearch(this.value)"/>
+                        <input type="text" class="search-input" id="filterInput" placeholder="Search by employee ID" oninput="getsearch(this.value)"/>
                         <i class="fa-solid fa-calendar-days" id="toggleDatepicker" style="cursor: pointer;"></i>
                     </div>
                     <div class="notpic">
@@ -400,6 +400,8 @@ $stmt->close();
                     let date_data_in = '';
                     let status_data_in = ''
                     $(function() {
+                        const urlId = new URLSearchParams(window.location.search);
+                        const search_in = urlId.get('equipment_id')==null?'':urlId.get('equipment_id');
                         var isDatepickerActive = false;
                         filtercontent(search_in, status_data_in, date_data_in);
                         const req_content = document.querySelector("#req_content");

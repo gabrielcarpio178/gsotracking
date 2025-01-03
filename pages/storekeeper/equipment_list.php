@@ -226,6 +226,13 @@ $data2['it'] = $data22['it']; // No slicing here
         </main>    
     </div>                  
     <script>
+        $(document).ready(()=>{
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('data_id');
+            if(id!==null){
+                getsearch(id);
+            }
+        })
         function getsearch(search){
             $.ajax({
                 url: '../../logic/dbequipment_search.php',

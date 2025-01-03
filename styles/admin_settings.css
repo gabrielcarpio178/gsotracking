@@ -470,3 +470,17 @@ header .navbar ul li:last-child{
 
 }
 
+.password-content{
+    position: relative;
+}
+.password-content>.eye-btn{
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    transform: translate(0, -50%);
+    cursor: pointer;
+}
+
+.password-content>.eye-btn>i{
+    font-size: 1.5rem;
+}

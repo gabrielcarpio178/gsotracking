@@ -319,7 +319,9 @@ session_start();
     
     <script>
         $(document).ready(()=>{
-            getdata("all")
+            const urlId = new URLSearchParams(window.location.search);
+            const equipmentID = urlId.get('equipment_id')==null?'all':urlId.get('equipment_id');
+            getdata(equipmentID);
         })
 
         function getDuration(num_days, doingMaintenance){

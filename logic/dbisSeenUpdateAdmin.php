@@ -6,6 +6,6 @@ if(isset($_POST['id'])&&isset($_POST['isSeen'])){
     $stmt = $conn->prepare('UPDATE `notification` SET `admin` = ? WHERE `id` = ?');
     $stmt->bind_param("ss", $isSeen ,$id);
     if($stmt->execute()){
-        echo "success";
+        print_r(json_encode(['message'=>'success', 'isSeen'=>$isSeen]));
     }
 }
