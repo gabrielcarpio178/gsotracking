@@ -931,7 +931,7 @@ require '../../logic/dbCon.php';
     <div id="form-content">
         <div id="form-modal">
             <div class="header-content-modal">
-                <h1>Transfer account</h1>
+                <h1>Transfer Equipment Accountability</h1>
                 <i class="fa-solid fa-xmark" style="font-size: 2rem" onclick="document.getElementById('form-content').style.display='none'"></i>
             </div>
             <form id="form_submit" class="submit-form">
@@ -1172,7 +1172,7 @@ require '../../logic/dbCon.php';
                                 </div>
                             </div>
                             <div class="ft">
-                                <button onclick="transferAccount('${employee.usercode}')">Transfer Account</button>
+                                <button onclick="transferAccount('${employee.usercode}')">Transfer Equipment</button>
                                 <button type="button" onclick="viewRecords('${employee.usercode}')">View Records</button>
                             </div>
                         `;
